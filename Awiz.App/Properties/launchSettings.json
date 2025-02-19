@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Awiz (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "Awiz (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
