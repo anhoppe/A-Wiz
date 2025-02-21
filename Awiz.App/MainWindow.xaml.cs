@@ -26,11 +26,8 @@ namespace Awiz
         public MainWindow()
         {
             this.InitializeComponent();
-        }
 
-        private void myButton_Click(object sender, RoutedEventArgs e)
-        {
-            myButton.Content = "Clicked";
+            _uiControl.DataContext = new MainWindowViewModel("c:/repo/G-Wiz/");
         }
     }
 }

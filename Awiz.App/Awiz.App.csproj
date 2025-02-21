@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
@@ -12,6 +12,9 @@
     <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Remove="Assets\Uml.yaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -21,6 +24,10 @@
     <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
     <Content Include="Assets\StoreLogo.png" />
     <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Uml.yaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,6 +45,13 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.SDK.BuildTools" Version="10.0.26100.1742" />
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250205002" />
+    <PackageReference Include="Prism.Core" Version="9.0.537" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\G-Wiz\Gwiz.Core.Contract\Gwiz.Core.Contract.csproj" />
+    <ProjectReference Include="..\..\G-Wiz\Gwiz.Core\Gwiz.Core.csproj" />
+    <ProjectReference Include="..\..\G-Wiz\Gwiz.UiControl.WinUi3\Gwiz.UiControl.WinUi3.csproj" />
+    <ProjectReference Include="..\Awiz.Core\Awiz.Core.csproj" />
   </ItemGroup>
 
   <!--

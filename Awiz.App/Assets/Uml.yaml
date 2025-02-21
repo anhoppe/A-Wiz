@@ -1,0 +1,10 @@
+﻿Templates:
+  - Name: Class
+    BackgroundColor: 255, 255, 255, 255
+    LineColor: 255, 0, 0, 0
+    Resize: Both
+    Grid:
+      Rows:
+        - 2
+        - 5
+        - 5
