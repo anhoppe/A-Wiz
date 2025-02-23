@@ -1,0 +1,4 @@
+﻿Namespaces:
+  Whitelist:
+    - Gwiz.Core
+    - Gwiz.Core.Contract

@@ -4,8 +4,15 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Awiz.Core
 {
-    public class ClassParser
+    public class ClassParser : IClassProvider
     {
+        public ClassParser(string repoPath)
+        {
+            Classes = ParseClasses(repoPath);
+        }
+
+        public List<ClassInfo> Classes { get; private set; } = new();
+
         public List<ClassInfo> ParseClasses(string repoPath)
         {
             List<ClassInfo> classInfos = new List<ClassInfo>();
@@ -27,7 +34,7 @@ namespace Awiz.Core
                         string namespaceName = GetNamespace(classDeclaration, model);
                         string className = classDeclaration.Identifier.ToString();
 
-                        var classInfo = new ClassInfo { Namespace = namespaceName, ClassName = className };
+                        var classInfo = new ClassInfo { Namespace = namespaceName, Name = className };
 
                         // Extract members
                         classInfo.Methods = GetMethods(classDeclaration, model);

@@ -5,8 +5,6 @@ using System.Collections.Generic;
 using Awiz.Core;
 using System.Reflection;
 using Gwiz.Core.Contract;
-using System;
-using System.Linq;
 
 namespace Awiz
 {
@@ -16,35 +14,33 @@ namespace Awiz
         {
             using (var stream = GetEmbeddedUmlYaml())
             {
-                var serializer = new YamlSerializer((text) => new Size(80,30));
+                var gwizDeserializer = new YamlSerializer();
 
-                var graph = serializer.Deserialize(stream);
+                var graph = gwizDeserializer.Deserialize(stream);
 
-                var classParser = new ClassParser();
-
-                var classInfos = classParser.ParseClasses(path);
-
-                foreach (var classInfo in classInfos)
+                // Load config
+                using (var configStream = File.OpenRead("C:\\repo\\A-Wiz\\Awiz.App\\Assets\\ClassConfig.yaml"))
                 {
-                    var node = graph.AddNode("Class");
-                    node.Grid.FieldText[0][0] = classInfo.ClassName;
-                    node.X = 10;
-                    node.Y = 10;
+                    var awizDeserializer = new YamlConfigSerializer();
+                    var config = awizDeserializer.Deserialize(configStream);
 
-                    node.Width = 180;
-                    node.Height = 120;
+                    var classGenerator = new ClassGenerator()
+                    {
+                        Config = config,
+                    };
 
-                    node.Grid.TextSizeFactory = (text) => new Size(80, 30);
+                    var classParser = new ClassParser("c:/repo/G-Wiz/");
 
-                    node.Grid.FieldText[0][1] = classInfo.Properties.Aggregate("", (current, prop) => current += prop.Name + "\n");
-                    node.Grid.FieldText[0][2] = classInfo.Methods.Aggregate("", (current, method) => current += method.Name + "\n");
+                    classGenerator.Generate(classParser, graph);
+
+                    Nodes = graph.Nodes;
                 }
 
                 Nodes = graph.Nodes;
             }
         }
 
-        public List<Node> Nodes { get; set; } = new();
+        public List<INode> Nodes { get; set; } = new();
 
         private static Stream GetEmbeddedUmlYaml()
         {

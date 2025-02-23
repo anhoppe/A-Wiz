@@ -13,6 +13,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <Content Remove="Assets\ClassConfig.yaml" />
     <Content Remove="Assets\Uml.yaml" />
   </ItemGroup>
 
