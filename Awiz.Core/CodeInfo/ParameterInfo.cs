@@ -1,4 +1,4 @@
-﻿namespace Awiz.Core
+﻿namespace Awiz.Core.CodeInfo
 {
     public class ParameterInfo
     {

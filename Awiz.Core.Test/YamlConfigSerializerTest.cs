@@ -14,7 +14,8 @@ namespace Awiz.Core.Test
         public void Deserialize()
         {
             // Arrange
-            var yaml = "Namespaces:\n" +
+            var yaml = "EnableAssociations: true\n" +
+                       "Namespaces:\n" +
                        "  Blacklist:\n" +
                        "    - System\n" +
                        "    - System.Collections\n" +
@@ -28,10 +29,11 @@ namespace Awiz.Core.Test
 
             var sut = new YamlConfigSerializer();
 
-            //Act
+            // Act
             var config = sut.Deserialize(stream);
 
             // Assert
+            Assert.That(config.EnableAssociations, Is.True);
             Assert.That(config.Namespaces.Blacklist, Is.EquivalentTo(new[] { "System", "System.Collections", "System.Collections.Generic" }));
             Assert.That(config.Namespaces.Whitelist, Is.EquivalentTo(new[] { "System.Text", "System.Text.RegularExpressions", "System.Text.RegularExpressions.Regex" }));
         }

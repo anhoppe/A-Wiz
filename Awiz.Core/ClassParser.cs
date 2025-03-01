@@ -1,4 +1,5 @@
-﻿using Microsoft.CodeAnalysis;
+﻿using Awiz.Core.CodeInfo;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -28,7 +29,6 @@ namespace Awiz.Core
                     var model = compilation.GetSemanticModel(tree);
 
                     var classDeclarations = tree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>();
-
                     foreach (var classDeclaration in classDeclarations)
                     {
                         string namespaceName = GetNamespace(classDeclaration, model);
@@ -43,6 +43,23 @@ namespace Awiz.Core
 
                         classInfos.Add(classInfo);
                     }
+
+                    var interfaceDeclarations = tree.GetRoot().DescendantNodes().OfType<InterfaceDeclarationSyntax>();
+                    foreach (var interfaceDeclaration in interfaceDeclarations)
+                    {
+                        string namespaceName = GetNamespace(interfaceDeclaration, model);
+                        string className = interfaceDeclaration.Identifier.ToString();
+
+                        var classInfo = new ClassInfo { Namespace = namespaceName, Name = className };
+
+                        // Extract members
+                        classInfo.Methods = GetMethods(interfaceDeclaration, model);
+                        classInfo.Properties = GetProperties(interfaceDeclaration, model);
+
+                        classInfos.Add(classInfo);
+                    }
+
+
                 }
                 catch (Exception ex)
                 {
@@ -84,7 +101,7 @@ namespace Awiz.Core
             return ""; // Default (no explicit modifier)
         }
 
-        private static List<FieldInfo> GetFields(ClassDeclarationSyntax classDeclaration, SemanticModel model)
+        private static List<FieldInfo> GetFields(SyntaxNode classDeclaration, SemanticModel model)
         {
             return classDeclaration.DescendantNodes().OfType<FieldDeclarationSyntax>()
                 .Select(field => new FieldInfo
@@ -95,7 +112,7 @@ namespace Awiz.Core
                 }).ToList();
         }
 
-        private static List<MethodInfo> GetMethods(ClassDeclarationSyntax classDeclaration, SemanticModel model)
+        private static List<MethodInfo> GetMethods(SyntaxNode classDeclaration, SemanticModel model)
         {
             return classDeclaration.DescendantNodes().OfType<MethodDeclarationSyntax>()
                 .Select(method => new MethodInfo
@@ -111,7 +128,7 @@ namespace Awiz.Core
                 }).ToList();
         }
 
-        private static string GetNamespace(ClassDeclarationSyntax classDeclaration, SemanticModel model)
+        private static string GetNamespace(SyntaxNode classDeclaration, SemanticModel model)
         {
             // Handle nested classes and namespaces
             var parent = classDeclaration.Parent;
@@ -131,7 +148,7 @@ namespace Awiz.Core
             return ""; // Or handle the case where no namespace is found
         }
 
-        private static List<PropertyInfo> GetProperties(ClassDeclarationSyntax classDeclaration, SemanticModel model)
+        private static List<PropertyInfo> GetProperties(SyntaxNode classDeclaration, SemanticModel model)
         {
             return classDeclaration.DescendantNodes().OfType<PropertyDeclarationSyntax>()
                 .Select(property => new PropertyInfo

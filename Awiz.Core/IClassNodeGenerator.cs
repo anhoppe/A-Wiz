@@ -1,4 +1,5 @@
-﻿using Gwiz.Core.Contract;
+﻿using Awiz.Core.CodeInfo;
+using Gwiz.Core.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace Awiz.Core
     /// </summary>
     internal interface IClassNodeGenerator
     {
-        void Create(IGraph graph, ClassInfo classInfo);
+        void CreateAssociation(IGraph graph, ClassInfo from, ClassInfo to);
+
+        void CreateClassNode(IGraph graph, ClassInfo classInfo);
     }
 }

@@ -1,4 +1,5 @@
-﻿Namespaces:
+﻿EnableAssociations: true
+Namespaces:
   Whitelist:
     - Gwiz.Core
     - Gwiz.Core.Contract

@@ -32,13 +32,15 @@ namespace Awiz
                     var classParser = new ClassParser("c:/repo/G-Wiz/");
 
                     classGenerator.Generate(classParser, graph);
-
-                    Nodes = graph.Nodes;
                 }
 
                 Nodes = graph.Nodes;
+                Edges = graph.Edges;
+
             }
         }
+
+        public List<IEdge> Edges { get; set; } = new();
 
         public List<INode> Nodes { get; set; } = new();
 

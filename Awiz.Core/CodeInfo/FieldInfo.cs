@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Awiz.Core
+namespace Awiz.Core.CodeInfo
 {
     public class FieldInfo
     {

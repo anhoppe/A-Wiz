@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Awiz.Core
+namespace Awiz.Core.CodeInfo
 {
     public class ClassInfo
     {
         public List<FieldInfo> Fields { get; set; } = new List<FieldInfo>();
+
+        public string Id => $"{Namespace}.{Name}";
         
         public List<MethodInfo> Methods { get; set; } = new List<MethodInfo>();
 
