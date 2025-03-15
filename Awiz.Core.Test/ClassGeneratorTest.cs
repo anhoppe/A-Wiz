@@ -8,10 +8,9 @@ namespace Awiz.Core.Test
     [TestFixture]
     public class ClassGeneratorTest
     {
+        private ClassFilter _config = new();
         private Mock<IClassNodeGenerator> _classNodeGeneratorMock = new();
         private Mock<IClassProvider> _classProviderMock = new();
-
-        private Config _config = new();
 
         private Mock<IGraph> _graphMock = new();
 
@@ -20,154 +19,25 @@ namespace Awiz.Core.Test
         [SetUp]
         public void SetUp()
         {
+            _config = new();
+
             _classNodeGeneratorMock = new Mock<IClassNodeGenerator>();
             _classProviderMock = new Mock<IClassProvider>();
-
-            _config = new Config();
 
             _graphMock = new Mock<IGraph>();
 
             _sut = new ClassGenerator()
             {
                 ClassNodeGenerator = _classNodeGeneratorMock.Object,
-                Config = _config,
+                ClassFilter = _config,
             };
         }
 
         [Test]
-        public void Generate_WhenWhiteListIsEmpty_ThenClassIsGenerated()
-        {
-            // Arrange
-            var classInfo = new ClassInfo()
-            {
-                Name = "foo",
-                Namespace = "My.W1",
-            };
-
-            _classProviderMock.Setup(p => p.Classes).Returns(new[]
-            {
-                classInfo,
-            }.ToList());
-
-            // Act
-            _sut.Generate(_classProviderMock.Object, _graphMock.Object);
-
-            // Assert
-            _classNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, classInfo), Times.Exactly(1));
-        }
-
-        [Test]
-        public void Generate_WhenNamespaceIsBlckListed_ThenClassIsNotGenerated()
-        {
-            // Arrange
-            _config.Namespaces.Blacklist.AddRange(new[] { "My.W1" }.ToList());
-
-            var classInfo = new ClassInfo()
-            {
-                Name = "foo",
-                Namespace = "My.W1",
-            };
-
-            _classProviderMock.Setup(p => p.Classes).Returns(new[]
-            {
-                classInfo,
-            }.ToList());
-
-            // Act
-            _sut.Generate(_classProviderMock.Object, _graphMock.Object);
-
-            // Assert
-            _classNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, classInfo), Times.Never);
-        }
-
-
-        [Test]
-        public void Generate_WhenNamespaceWhitelisted_ThenOnlyClassesInNamespacesGenerated()
-        {
-            // Arrange
-            _config.Namespaces.Whitelist.AddRange(new [] { "My.W1", "My.W2" });
-
-            var classInfo1 = new ClassInfo()
-            {
-                Name = "foo",
-                Namespace = "My.W1",
-            };
-
-            var classInfo2 = new ClassInfo()
-            {
-                Name = "bar",
-                Namespace = "My.W2",
-            };
-
-            var classInfo3 = new ClassInfo()
-            {
-                Name = "buz",
-                Namespace = "My.W3",
-            };
-
-            _classProviderMock.Setup(p => p.Classes).Returns(new[]
-            {
-                classInfo1,
-                classInfo2,
-                classInfo3
-            }.ToList());
-
-            // Act
-            _sut.Generate(_classProviderMock.Object, _graphMock.Object);
-
-            // Assert
-            _classNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, classInfo1), Times.Exactly(1));
-            _classNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, classInfo2), Times.Exactly(1));
-            _classNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, classInfo3), Times.Never);
-        }
-
-        [Test]
-        public void Generate_WhenNamespaceBlackListed_ThenClassIsNotGenerated()
-        {
-            // Arrange
-            _config.Namespaces.Whitelist.AddRange(new[] { "My.W1", "My.W2" });
-            _config.Namespaces.Blacklist.AddRange(new[] { "My.W1" });
-
-            var classInfo1 = new ClassInfo()
-            {
-                Name = "foo",
-                Namespace = "My.W1",
-            };
-
-            var classInfo2 = new ClassInfo()
-            {
-                Name = "bar",
-                Namespace = "My.W2",
-            };
-
-            var classInfo3 = new ClassInfo()
-            {
-                Name = "buz",
-                Namespace = "My.W3",
-            };
-
-            _classProviderMock.Setup(p => p.Classes).Returns(new[]
-            {
-                classInfo1,
-                classInfo2,
-                classInfo3
-            }.ToList());
-
-            // Act
-            _sut.Generate(_classProviderMock.Object, _graphMock.Object);
-
-            // Assert
-            _classNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, classInfo1), Times.Never);
-            _classNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, classInfo2), Times.Exactly(1));
-            _classNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, classInfo3), Times.Never);
-        }
-
-        [Test]
-        public void Generate_WhenAssociationsEnabledAndClassHasPropertyOfOtherClass_ThenEdgeIsInsertedBetweenClasses()
+        public void Associations_WhenAssociationsEnabledAndClassHasPropertyOfOtherClass_ThenEdgeIsInsertedBetweenClasses()
         {
             // Arrange
             _config.EnableAssociations = true;
-            _config.Namespaces.Whitelist.AddRange(new[] { "My.W1", "My.W2" });
 
             var classInfo1 = new ClassInfo()
             {
@@ -210,6 +80,108 @@ namespace Awiz.Core.Test
             
             _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, classInfo2, classInfo1), 
                 "Expected to have an association from classInfo2 to claaInfo1 because classInfo2 has a property with the type of classInfo1");
+        }
+
+        [Test]
+        public void Implements_WhenClassImplementsInterface_ThenEdgeIsInsertedBetweenClassAndInterface()
+        {
+            // Arrange
+            var classInfo1 = new ClassInfo()
+            {
+                Name = "foo",
+                Namespace = "My.W1",
+                Type = ClassType.Class,
+            };
+
+            classInfo1.ImplementedInterfaces.Add("My.W2.IBar");
+
+            var classInfo2 = new ClassInfo()
+            {
+                Name = "IBar",
+                Namespace = "My.W2",
+                Type = ClassType.Interface,
+            };
+
+            _classProviderMock.Setup(p => p.Classes).Returns(new[]
+            {
+                classInfo1,
+                classInfo2,
+            }.ToList());
+
+            // Act
+            _sut.Generate(_classProviderMock.Object, _graphMock.Object);
+            
+            // Assert
+            _classNodeGeneratorMock.Verify(m => m.CreateImplementation(_graphMock.Object, classInfo2, classInfo1),
+                "Expected that classInfo1 implements the interface classInfo2");
+        }
+
+
+        [Test]
+        public void Implements_WhenClassImplementsInterfaceButInterfaceIsNotInWhitelist_ThenEdgeIsNotInsertedBetweenClassAndInterface()
+        {
+            // Arrange
+            _config.Namespaces.Whitelist.AddRange(new[] { "My.W1" });
+            var classInfo1 = new ClassInfo()
+            {
+                Name = "foo",
+                Namespace = "My.W1",
+                Type = ClassType.Class,
+            };
+
+            classInfo1.ImplementedInterfaces.Add("My.W2.IBar");
+
+            var classInfo2 = new ClassInfo()
+            {
+                Name = "IBar",
+                Namespace = "My.W2",
+                Type = ClassType.Interface,
+            };
+            _classProviderMock.Setup(p => p.Classes).Returns(new[]
+            {
+                classInfo1,
+                classInfo2,
+            }.ToList());
+
+            // Act
+            _sut.Generate(_classProviderMock.Object, _graphMock.Object);
+
+            // Assert
+            _classNodeGeneratorMock.Verify(m => m.CreateImplementation(_graphMock.Object, classInfo2, classInfo1), 
+                Times.Never,
+                "Expected that classInfo1 implements the interface classInfo2");
+        }
+
+        [Test]
+        public void Extends_WhenClassExtendsOtherClass_ThenExtentionRelationIsGenerated()
+        {
+            // Arrange
+            var classInfo1 = new ClassInfo()
+            {
+                Name = "foo",
+                Namespace = "My.W1",
+                Type = ClassType.Class,
+            };
+
+            var classInfo2 = new ClassInfo()
+            {
+                BaseClass = "My.W1.foo",
+                Name = "IBar",
+                Namespace = "My.W1",
+                Type = ClassType.Class,
+            };
+
+            _classProviderMock.Setup(p => p.Classes).Returns(new[]
+            {
+                classInfo1,
+                classInfo2,
+            }.ToList());
+
+            // Act
+            _sut.Generate(_classProviderMock.Object, _graphMock.Object);
+
+            // Assert
+            _classNodeGeneratorMock.Verify(m => m.CreateExtension(_graphMock.Object, classInfo1, classInfo2));
         }
     }
 }

@@ -16,50 +16,116 @@ namespace Awiz.Core
 
         public List<ClassInfo> ParseClasses(string repoPath)
         {
-            List<ClassInfo> classInfos = new List<ClassInfo>();
+            var classInfos = new List<ClassInfo>();
 
+            List<SyntaxTree> syntaxTrees = GenerateSyntaxTrees(repoPath);
+
+            var references = new List<MetadataReference>
+            {
+                MetadataReference.CreateFromFile(typeof(object).Assembly.Location), // Core runtime
+                MetadataReference.CreateFromFile(typeof(Console).Assembly.Location) // System.Console
+                // Add other assemblies if needed
+            };
+
+            var compilation = CSharpCompilation.Create(
+                "MyAnalysis",
+                syntaxTrees,
+                references,
+                new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
+            );
+
+            foreach (var syntaxTree in syntaxTrees)
+            {
+                var model = compilation.GetSemanticModel(syntaxTree);
+                var root = syntaxTree.GetRoot();
+
+                var classDeclarations = root.DescendantNodes().OfType<ClassDeclarationSyntax>();
+                AddClassDefinitions(classInfos, model, classDeclarations);
+
+                var interfaceDeclarations = root.DescendantNodes().OfType<InterfaceDeclarationSyntax>();
+                AddInterfaceDefinitions(classInfos, model, interfaceDeclarations);
+            }
+
+            return classInfos;
+        }
+
+        private static void AddClassDefinitions(List<ClassInfo> classInfos, SemanticModel model, IEnumerable<ClassDeclarationSyntax> classDeclarations)
+        {
+            foreach (var classDeclaration in classDeclarations)
+            {
+                string namespaceName = GetNamespace(classDeclaration, model);
+                string className = classDeclaration.Identifier.ToString();
+
+                var classInfo = new ClassInfo
+                {
+                    Name = className,
+                    Namespace = namespaceName,
+                    Type = ClassType.Class,
+                };
+
+                // Extract members
+                classInfo.Methods = GetMethods(classDeclaration, model);
+                classInfo.Properties = GetProperties(classDeclaration, model);
+                classInfo.Fields = GetFields(classDeclaration, model);
+
+                var classSymbol = model.GetDeclaredSymbol(classDeclaration);
+                if (classSymbol != null)
+                {
+                    var baseType = classSymbol.BaseType;
+
+                    if (baseType != null && baseType.TypeKind != TypeKind.Interface && baseType.Name != null)
+                    {
+                        classInfo.BaseClass = baseType.Name != "Object" ? baseType.ToString() : string.Empty;
+                    }
+
+                    classInfo.ImplementedInterfaces.AddRange(classSymbol.Interfaces.Select(i => i.ToString()).ToList());
+                }
+
+                classInfos.Add(classInfo);
+            }
+        }
+
+        private static void AddInterfaceDefinitions(List<ClassInfo> classInfos, SemanticModel model, IEnumerable<InterfaceDeclarationSyntax> interfaceDeclarations)
+        {
+            foreach (var interfaceDeclaration in interfaceDeclarations)
+            {
+                string namespaceName = GetNamespace(interfaceDeclaration, model);
+                string className = interfaceDeclaration.Identifier.ToString();
+
+                var classInfo = new ClassInfo
+                {
+                    Name = className,
+                    Namespace = namespaceName,
+                    Type = ClassType.Interface,
+                };
+
+                // Extract members
+                classInfo.Methods = GetMethods(interfaceDeclaration, model);
+                classInfo.Properties = GetProperties(interfaceDeclaration, model);
+
+                var classSymbol = model.GetDeclaredSymbol(interfaceDeclaration);
+                if (classSymbol != null)
+                {
+                    classInfo.ImplementedInterfaces.AddRange(classSymbol.Interfaces.Select(i => i.ToString()).ToList());
+                }
+
+                classInfos.Add(classInfo);
+            }
+        }
+
+        private static List<SyntaxTree> GenerateSyntaxTrees(string repoPath)
+        {
             var files = Directory.GetFiles(repoPath, "*.cs", SearchOption.AllDirectories);
+
+            var syntaxTrees = new List<SyntaxTree>();
+            var options = CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.CSharp10);
 
             foreach (var file in files)
             {
                 try
                 {
                     SyntaxTree tree = CSharpSyntaxTree.ParseText(File.ReadAllText(file));
-                    var compilation = CSharpCompilation.Create("MyCompilation", syntaxTrees: new[] { tree });
-                    var model = compilation.GetSemanticModel(tree);
-
-                    var classDeclarations = tree.GetRoot().DescendantNodes().OfType<ClassDeclarationSyntax>();
-                    foreach (var classDeclaration in classDeclarations)
-                    {
-                        string namespaceName = GetNamespace(classDeclaration, model);
-                        string className = classDeclaration.Identifier.ToString();
-
-                        var classInfo = new ClassInfo { Namespace = namespaceName, Name = className };
-
-                        // Extract members
-                        classInfo.Methods = GetMethods(classDeclaration, model);
-                        classInfo.Properties = GetProperties(classDeclaration, model);
-                        classInfo.Fields = GetFields(classDeclaration, model);
-
-                        classInfos.Add(classInfo);
-                    }
-
-                    var interfaceDeclarations = tree.GetRoot().DescendantNodes().OfType<InterfaceDeclarationSyntax>();
-                    foreach (var interfaceDeclaration in interfaceDeclarations)
-                    {
-                        string namespaceName = GetNamespace(interfaceDeclaration, model);
-                        string className = interfaceDeclaration.Identifier.ToString();
-
-                        var classInfo = new ClassInfo { Namespace = namespaceName, Name = className };
-
-                        // Extract members
-                        classInfo.Methods = GetMethods(interfaceDeclaration, model);
-                        classInfo.Properties = GetProperties(interfaceDeclaration, model);
-
-                        classInfos.Add(classInfo);
-                    }
-
-
+                    syntaxTrees.Add(tree);
                 }
                 catch (Exception ex)
                 {
@@ -67,7 +133,7 @@ namespace Awiz.Core
                 }
             }
 
-            return classInfos;
+            return syntaxTrees;
         }
 
         private static string GetAccessModifier(SyntaxNode node)

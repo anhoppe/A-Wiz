@@ -26,10 +26,11 @@ namespace Awiz
 
                     var classGenerator = new ClassGenerator()
                     {
-                        Config = config,
+                        ClassFilter = config,
                     };
 
-                    var classParser = new ClassParser("c:/repo/G-Wiz/");
+                    var classParser = new ClassParser("C:\\repo\\G-Wiz\\");
+                    //var classParser = new ClassParser("C:\\repo\\A-Wiz\\Awiz.Core.Test\\Assets\\ExtendsImplements\\");
 
                     classGenerator.Generate(classParser, graph);
                 }

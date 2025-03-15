@@ -1,10 +1,5 @@
 ﻿using Awiz.Core.CodeInfo;
 using Gwiz.Core.Contract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Awiz.Core
 {
@@ -13,8 +8,30 @@ namespace Awiz.Core
     /// </summary>
     internal interface IClassNodeGenerator
     {
+        /// <summary>
+        /// Generates an association between two classes
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="from">The class that is owner of the instance to the 'to' class</param>
+        /// <param name="to">The 'to' class, the instance that is hold be 'from'</param>
         void CreateAssociation(IGraph graph, ClassInfo from, ClassInfo to);
 
         void CreateClassNode(IGraph graph, ClassInfo classInfo);
+
+        /// <summary>
+        /// Generates an extension between baseClass and derivedClass
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="baseClass"></param>
+        /// <param name="derivedClass"></param>
+        void CreateExtension(IGraph graph, ClassInfo baseClass, ClassInfo derivedClass);
+
+        /// <summary>
+        /// Generates an edge indicating and implementation of an interface by a class
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="implementedInterface">The interface that is implemented by the class</param>
+        /// <param name="implementingClass">The class that is implementing the interface</param>
+        void CreateImplementation(IGraph graph, ClassInfo implementedInterface, ClassInfo implementingClass);
     }
 }

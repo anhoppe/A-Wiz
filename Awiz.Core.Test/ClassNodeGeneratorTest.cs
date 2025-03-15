@@ -50,6 +50,80 @@ namespace Awiz.Core.Test
             graphMock.Verify(m => m.AddEdge(node1Mock.Object, node2Mock.Object));
         }
 
+        [Test]
+        public void CreateImplementation_WhenImplementationIsAddedForClasses_ThenAnEdgeWithClosedArrowAndDashedLineInDirectionOfInterfaceIsInserted()
+        {
+            // Arrange
+            var node1Mock = new Mock<INode>();
+            var node2Mock = new Mock<INode>();
+
+            var classInfo1 = new ClassInfo()
+            {
+                Name = "foo",
+                Type = ClassType.Interface,
+            };
+
+            var classInfo2 = new ClassInfo()
+            {
+                Name = "bar",
+                Type = ClassType.Class,
+            };
+
+            var graphMock = new Mock<IGraph>();
+
+            node1Mock.Setup(p => p.Grid).Returns(MockGrid());
+            node2Mock.Setup(p => p.Grid).Returns(MockGrid());
+
+            graphMock.Setup(p => p.AddNode("Class")).Returns(node1Mock.Object);
+            _sut.CreateClassNode(graphMock.Object, classInfo1);
+
+            graphMock.Setup(p => p.AddNode("Class")).Returns(node2Mock.Object);
+            _sut.CreateClassNode(graphMock.Object, classInfo2);
+
+            // Act
+            _sut.CreateImplementation(graphMock.Object, classInfo1, classInfo2);
+
+            // Assert
+            graphMock.Verify(m => m.AddEdge(node2Mock.Object, node1Mock.Object, Ending.ClosedArrow, Style.Dashed));
+        }
+
+        [Test]
+        public void CreateExtension_WhenExtensionIsAddedForClasses_ThenAnEdgeWithClosedArrowIsInserted()
+        {
+            // Arrange
+            var node1Mock = new Mock<INode>();
+            var node2Mock = new Mock<INode>();
+
+            var classInfo1 = new ClassInfo()
+            {
+                Name = "foo",
+                Type = ClassType.Class,
+            };
+
+            var classInfo2 = new ClassInfo()
+            {
+                Name = "bar",
+                Type = ClassType.Class,
+            };
+
+            var graphMock = new Mock<IGraph>();
+
+            node1Mock.Setup(p => p.Grid).Returns(MockGrid());
+            node2Mock.Setup(p => p.Grid).Returns(MockGrid());
+
+            graphMock.Setup(p => p.AddNode("Class")).Returns(node1Mock.Object);
+            _sut.CreateClassNode(graphMock.Object, classInfo1);
+
+            graphMock.Setup(p => p.AddNode("Class")).Returns(node2Mock.Object);
+            _sut.CreateClassNode(graphMock.Object, classInfo2);
+
+            // Act
+            _sut.CreateExtension(graphMock.Object, classInfo1, classInfo2);
+
+            // Assert
+            graphMock.Verify(m => m.AddEdge(node2Mock.Object, node1Mock.Object, Ending.ClosedArrow, Style.None));
+        }
+
         private IGrid MockGrid()
         {
             var gridMock = new Mock<IGrid>();

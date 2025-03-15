@@ -6,7 +6,7 @@ namespace Awiz.Core
 {
     public class YamlConfigSerializer
     {
-        public Config Deserialize(Stream stream)
+        public ClassFilter Deserialize(Stream stream)
         {
             var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(PascalCaseNamingConvention.Instance)
@@ -15,7 +15,7 @@ namespace Awiz.Core
             using (var reader = new StreamReader(stream))
             {
                 var yaml = reader.ReadToEnd();
-                return deserializer.Deserialize<Config>(yaml);
+                return deserializer.Deserialize<ClassFilter>(yaml);
             }
         }
     }

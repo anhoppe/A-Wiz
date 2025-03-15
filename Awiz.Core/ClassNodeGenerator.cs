@@ -1,10 +1,5 @@
 ﻿using Awiz.Core.CodeInfo;
 using Gwiz.Core.Contract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Awiz.Core
 {
@@ -33,6 +28,22 @@ namespace Awiz.Core
 
             node.Width = 120;
             node.Height = 160;
+        }
+
+        public void CreateExtension(IGraph graph, ClassInfo baseClass, ClassInfo derivedClass)
+        {
+            var node1 = _nodeMap[baseClass.Id];
+            var node2 = _nodeMap[derivedClass.Id];
+
+            graph.AddEdge(node2, node1, Ending.ClosedArrow, Style.None);
+        }
+
+        public void CreateImplementation(IGraph graph, ClassInfo implementedInterface, ClassInfo implementingClass)
+        {
+            var node1 = _nodeMap[implementedInterface.Id];
+            var node2 = _nodeMap[implementingClass.Id];
+
+            graph.AddEdge(node2, node1, Ending.ClosedArrow, Style.Dashed);
         }
     }
 }

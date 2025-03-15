@@ -1,6 +1,4 @@
-﻿using Awiz.Core;
-using Gwiz.Core.Contract;
-using YamlDotNet.Serialization;
+﻿using Gwiz.Core.Contract;
 
 namespace Awiz.Core
 {
@@ -10,18 +8,22 @@ namespace Awiz.Core
     /// </summary>
     public class ClassGenerator
     {
-        public Config Config { get; set; } = new Config();
+        public ClassFilter ClassFilter { get; set; } = new ClassFilter();
 
         internal IClassNodeGenerator ClassNodeGenerator { get; set; } = new ClassNodeGenerator();
 
         public void Generate(IClassProvider classProvider, IGraph graph)
         {
-            AddClassesToGraph(classProvider, graph);
+            var filteredClassProvider = ClassFilter.Filter(classProvider);
 
-            if (Config.EnableAssociations)
+            AddClassesToGraph(filteredClassProvider, graph);
+
+            if (ClassFilter.EnableAssociations)
             {
-                AddAssociationsToGraph(classProvider, graph);
+                AddAssociationsToGraph(filteredClassProvider, graph);
             }
+
+            AddExtensionsAndImplementationsToGraph(filteredClassProvider, graph);
         }
 
         private void AddAssociationsToGraph(IClassProvider classProvider, IGraph graph)
@@ -48,30 +50,46 @@ namespace Awiz.Core
         {
             foreach (var classInfo in classProvider.Classes)
             {
-                if (IsClassAdded(classInfo.Namespace))
+                ClassNodeGenerator.CreateClassNode(graph, classInfo);
+            }
+        }
+
+        private void AddExtension(IClassProvider classProvider, IGraph graph, CodeInfo.ClassInfo classInfo)
+        {
+            if (!string.IsNullOrEmpty(classInfo.BaseClass))
+            {
+                var baseClass = classProvider.Classes.FirstOrDefault(p => p.Namespace + "." + p.Name == classInfo.BaseClass);
+                if (baseClass != null)
                 {
-                    ClassNodeGenerator.CreateClassNode(graph, classInfo);
+                    ClassNodeGenerator.CreateExtension(graph, baseClass, classInfo);
                 }
             }
         }
 
-
-        private bool IsClassAdded(string namesp)
+        private void AddExtensionsAndImplementationsToGraph(IClassProvider classProvider, IGraph graph)
         {
-            bool addClass = false;
-
-            if (Config.Namespaces.Whitelist.Any())
+            foreach (var classInfo in classProvider.Classes)
             {
-                addClass = Config.Namespaces.Whitelist.Any(p => p == namesp);
-            }
-            else
-            {
-                addClass = true;
-            }
+                // Add edge for base class
+                AddExtension(classProvider, graph, classInfo);
 
-            addClass &= !Config.Namespaces.Blacklist.Any(p => p == namesp);
-
-            return addClass;
+                // Add edges for interfaces implemented by the class
+                AddImplementations(classProvider, graph, classInfo);
+            }
         }
+
+        private void AddImplementations(IClassProvider classProvider, IGraph graph, CodeInfo.ClassInfo classInfo)
+        {
+            foreach (var implInterface in classInfo.ImplementedInterfaces)
+            {
+                var implementedInterface = classProvider.Classes.FirstOrDefault(p => implInterface == p.Namespace + "." + p.Name);
+
+                if (implementedInterface != null)
+                {
+                    ClassNodeGenerator.CreateImplementation(graph, implementedInterface, classInfo);
+                }
+            }
+        }
+
     }
 }
