@@ -4,9 +4,39 @@ namespace Awiz.Core
 {
     public class ClassFilter : IClassFilter
     {
+        private readonly List<string> _allowedFiles = new();
+        
+        private readonly DynamicDeserializerYaml _dynamicDeserializer = new();
+
         private class ClassProvider : IClassProvider
         {
             public List<ClassInfo> Classes { get; } = new();
+        }
+
+        public ClassFilter() { }
+
+        public ClassFilter(string pathToRepo, string viewName)
+        {
+            IEnumerable<string> wizFiles = GetAllWizYamlFiles(pathToRepo);
+
+            foreach (var file in wizFiles)
+            {
+                using (var stream = new FileStream(file, FileMode.Open, FileAccess.Read))
+                {
+                    var result = _dynamicDeserializer.Deserialize(stream);
+
+                    foreach (var project in result.Views)
+                    {
+                        if (project["Name"] == viewName)
+                        {
+                            foreach (var included in project["Include"])
+                            {
+                                _allowedFiles.Add(Path.Combine(Path.GetDirectoryName(file), included));
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -14,15 +44,13 @@ namespace Awiz.Core
         /// </summary>
         public bool EnableAssociations { get; set; }
 
-        public AllowedLists Namespaces { get; set; } = new AllowedLists();
-
         public IClassProvider Filter(IClassProvider classProvider)
         {
             var filteredClasses = new ClassProvider();
 
             foreach (var classInfo in classProvider.Classes)
             {
-                if (IsClassAdded(classInfo.Namespace))
+                if (IsClassAdded(classInfo))
                 {
                     filteredClasses.Classes.Add(classInfo);
                 }
@@ -31,25 +59,23 @@ namespace Awiz.Core
             return filteredClasses;
         }
 
-        private bool IsClassAdded(string namesp)
+        static IEnumerable<string> GetAllWizYamlFiles(string rootDirectory)
         {
-            bool addClass = true;
-
-            if (Namespaces.Whitelist.Any())
+            if (!Directory.Exists(rootDirectory))
             {
-                addClass = Namespaces.Whitelist.Any(p => p == namesp);
+                throw new DirectoryNotFoundException($"The directory '{rootDirectory}' does not exist.");
             }
 
-            addClass &= !Namespaces.Blacklist.Any(p => p == namesp);
-
-            return addClass;
+            return Directory.EnumerateFiles(rootDirectory, "wiz.yaml", SearchOption.AllDirectories);
         }
-    }
 
-    public class AllowedLists
-    {
-        public List<string> Blacklist { get; set; } = new List<string>();
+        private bool IsClassAdded(ClassInfo classInfo)
+        {
+            var fileNameWithoutExt = Path.Combine(
+                Path.GetDirectoryName(classInfo.Directory) ?? string.Empty,
+                Path.GetFileNameWithoutExtension(classInfo.Directory));
 
-        public List<string> Whitelist { get; set; } = new List<string>();
+            return _allowedFiles.Contains(fileNameWithoutExt);
+        }
     }
 }

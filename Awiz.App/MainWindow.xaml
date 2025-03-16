@@ -10,6 +10,11 @@
     mc:Ignorable="d"
     Title="Awiz">
     <Grid>
-        <uicontrol:GraphUiControl x:Name="_uiControl" Nodes="{Binding Nodes}" Edges="{Binding Edges}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <MenuBar x:Name="_menuBar" />
+        <uicontrol:GraphUiControl Grid.Row="1" x:Name="_uiControl" Nodes="{Binding Nodes}" Edges="{Binding Edges}" />
     </Grid>
 </Window>

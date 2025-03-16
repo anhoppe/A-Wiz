@@ -1,0 +1,4 @@
+﻿Views:
+    - Name: include_by_name
+      Include:
+        - Class3

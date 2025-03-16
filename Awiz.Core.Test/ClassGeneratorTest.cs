@@ -8,7 +8,7 @@ namespace Awiz.Core.Test
     [TestFixture]
     public class ClassGeneratorTest
     {
-        private ClassFilter _config = new();
+        private AnnotationOptions _annotationOptions = new();
         private Mock<IClassNodeGenerator> _classNodeGeneratorMock = new();
         private Mock<IClassProvider> _classProviderMock = new();
 
@@ -19,17 +19,21 @@ namespace Awiz.Core.Test
         [SetUp]
         public void SetUp()
         {
-            _config = new();
+            _annotationOptions = new();
 
             _classNodeGeneratorMock = new Mock<IClassNodeGenerator>();
             _classProviderMock = new Mock<IClassProvider>();
 
             _graphMock = new Mock<IGraph>();
 
+            var classFilterMock = new Mock<IClassFilter>();
+            classFilterMock.Setup(m => m.Filter(It.IsAny<IClassProvider>())).Returns((IClassProvider cp) => cp);
+
             _sut = new ClassGenerator()
             {
+                AnnotationOptions = _annotationOptions,
+                ClassFilter = classFilterMock.Object,
                 ClassNodeGenerator = _classNodeGeneratorMock.Object,
-                ClassFilter = _config,
             };
         }
 
@@ -37,7 +41,7 @@ namespace Awiz.Core.Test
         public void Associations_WhenAssociationsEnabledAndClassHasPropertyOfOtherClass_ThenEdgeIsInsertedBetweenClasses()
         {
             // Arrange
-            _config.EnableAssociations = true;
+            _annotationOptions.EnableAssociations = true;
 
             var classInfo1 = new ClassInfo()
             {
@@ -76,10 +80,10 @@ namespace Awiz.Core.Test
 
             // Assert
             _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, classInfo1, classInfo2), 
-                "Expected to have an association from classInfo1 to claaInfo2 because classInfo1 has a property with the type of classInfo2");
+                "Expected association from classInfo1 to claaInfo2 because classInfo1 has a property with the type of classInfo2");
             
             _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, classInfo2, classInfo1), 
-                "Expected to have an association from classInfo2 to claaInfo1 because classInfo2 has a property with the type of classInfo1");
+                "Expected association from classInfo2 to claaInfo1 because classInfo2 has a property with the type of classInfo1");
         }
 
         [Test]
@@ -113,42 +117,6 @@ namespace Awiz.Core.Test
             
             // Assert
             _classNodeGeneratorMock.Verify(m => m.CreateImplementation(_graphMock.Object, classInfo2, classInfo1),
-                "Expected that classInfo1 implements the interface classInfo2");
-        }
-
-
-        [Test]
-        public void Implements_WhenClassImplementsInterfaceButInterfaceIsNotInWhitelist_ThenEdgeIsNotInsertedBetweenClassAndInterface()
-        {
-            // Arrange
-            _config.Namespaces.Whitelist.AddRange(new[] { "My.W1" });
-            var classInfo1 = new ClassInfo()
-            {
-                Name = "foo",
-                Namespace = "My.W1",
-                Type = ClassType.Class,
-            };
-
-            classInfo1.ImplementedInterfaces.Add("My.W2.IBar");
-
-            var classInfo2 = new ClassInfo()
-            {
-                Name = "IBar",
-                Namespace = "My.W2",
-                Type = ClassType.Interface,
-            };
-            _classProviderMock.Setup(p => p.Classes).Returns(new[]
-            {
-                classInfo1,
-                classInfo2,
-            }.ToList());
-
-            // Act
-            _sut.Generate(_classProviderMock.Object, _graphMock.Object);
-
-            // Assert
-            _classNodeGeneratorMock.Verify(m => m.CreateImplementation(_graphMock.Object, classInfo2, classInfo1), 
-                Times.Never,
                 "Expected that classInfo1 implements the interface classInfo2");
         }
 

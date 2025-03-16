@@ -12,9 +12,16 @@
     <Compile Remove="Assets\ExtendsImplements\Class2.cs" />
     <Compile Remove="Assets\ExtendsImplements\Interface1.cs" />
     <Compile Remove="Assets\ExtendsImplements\Interface2.cs" />
+    <Compile Remove="Assets\ExtendsImplements\Subdir\Class3.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="Assets\ExtendsImplements\.wiz\views\annotation_options.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\ExtendsImplements\.wiz\views\include_by_name.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Assets\ExtendsImplements\Class1.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -25,6 +32,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Assets\ExtendsImplements\Interface2.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\ExtendsImplements\Subdir\Class3.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
@@ -45,6 +55,15 @@
     <Compile Update="ClassFilterTest.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\ExtendsImplements\Subdir\wiz.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Assets\ExtendsImplements\wiz.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

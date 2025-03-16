@@ -27,7 +27,15 @@ namespace Awiz
         {
             this.InitializeComponent();
 
-            _uiControl.DataContext = new MainWindowViewModel("c:/repo/G-Wiz/");
+            var viewModel = new MainWindowViewModel();
+
+            _uiControl.DataContext = viewModel;
+
+            // Populate the menu dynamically
+            foreach (var menuItem in viewModel.MenuItems)
+            {
+                _menuBar.Items.Add(menuItem);
+            }
         }
     }
 }

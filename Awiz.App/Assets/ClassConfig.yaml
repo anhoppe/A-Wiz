@@ -1,6 +1,0 @@
-﻿EnableAssociations: true
-Namespaces:
-  Whitelist:
-    - Gwiz.Core
-    - Gwiz.Core.Contract
-    - Awiz.Core.Test.Assets.ExtendsImplements

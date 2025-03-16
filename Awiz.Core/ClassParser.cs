@@ -7,18 +7,13 @@ namespace Awiz.Core
 {
     public class ClassParser : IClassProvider
     {
-        public ClassParser(string repoPath)
-        {
-            Classes = ParseClasses(repoPath);
-        }
-
         public List<ClassInfo> Classes { get; private set; } = new();
 
-        public List<ClassInfo> ParseClasses(string repoPath)
+        public void ParseClasses(string repoPath)
         {
             var classInfos = new List<ClassInfo>();
 
-            List<SyntaxTree> syntaxTrees = GenerateSyntaxTrees(repoPath);
+            var syntaxTrees = GenerateSyntaxTrees(repoPath);
 
             var references = new List<MetadataReference>
             {
@@ -29,27 +24,27 @@ namespace Awiz.Core
 
             var compilation = CSharpCompilation.Create(
                 "MyAnalysis",
-                syntaxTrees,
+                syntaxTrees.Select(p => p.Item2),
                 references,
                 new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary)
             );
 
             foreach (var syntaxTree in syntaxTrees)
             {
-                var model = compilation.GetSemanticModel(syntaxTree);
-                var root = syntaxTree.GetRoot();
+                var model = compilation.GetSemanticModel(syntaxTree.Item2);
+                var root = syntaxTree.Item2.GetRoot();
 
                 var classDeclarations = root.DescendantNodes().OfType<ClassDeclarationSyntax>();
-                AddClassDefinitions(classInfos, model, classDeclarations);
+                AddClassDefinitions(classInfos, model, classDeclarations, syntaxTree.Item1);
 
                 var interfaceDeclarations = root.DescendantNodes().OfType<InterfaceDeclarationSyntax>();
-                AddInterfaceDefinitions(classInfos, model, interfaceDeclarations);
+                AddInterfaceDefinitions(classInfos, model, interfaceDeclarations, syntaxTree.Item1);
             }
 
-            return classInfos;
+            Classes = classInfos;
         }
 
-        private static void AddClassDefinitions(List<ClassInfo> classInfos, SemanticModel model, IEnumerable<ClassDeclarationSyntax> classDeclarations)
+        private static void AddClassDefinitions(List<ClassInfo> classInfos, SemanticModel model, IEnumerable<ClassDeclarationSyntax> classDeclarations, string directory)
         {
             foreach (var classDeclaration in classDeclarations)
             {
@@ -58,6 +53,7 @@ namespace Awiz.Core
 
                 var classInfo = new ClassInfo
                 {
+                    Directory = directory,
                     Name = className,
                     Namespace = namespaceName,
                     Type = ClassType.Class,
@@ -85,7 +81,7 @@ namespace Awiz.Core
             }
         }
 
-        private static void AddInterfaceDefinitions(List<ClassInfo> classInfos, SemanticModel model, IEnumerable<InterfaceDeclarationSyntax> interfaceDeclarations)
+        private static void AddInterfaceDefinitions(List<ClassInfo> classInfos, SemanticModel model, IEnumerable<InterfaceDeclarationSyntax> interfaceDeclarations, string directory)
         {
             foreach (var interfaceDeclaration in interfaceDeclarations)
             {
@@ -94,6 +90,7 @@ namespace Awiz.Core
 
                 var classInfo = new ClassInfo
                 {
+                    Directory = directory,
                     Name = className,
                     Namespace = namespaceName,
                     Type = ClassType.Interface,
@@ -113,11 +110,11 @@ namespace Awiz.Core
             }
         }
 
-        private static List<SyntaxTree> GenerateSyntaxTrees(string repoPath)
+        private static List<(string, SyntaxTree)> GenerateSyntaxTrees(string repoPath)
         {
             var files = Directory.GetFiles(repoPath, "*.cs", SearchOption.AllDirectories);
 
-            var syntaxTrees = new List<SyntaxTree>();
+            var syntaxTrees = new List<(string, SyntaxTree)>();
             var options = CSharpParseOptions.Default.WithLanguageVersion(LanguageVersion.CSharp10);
 
             foreach (var file in files)
@@ -125,7 +122,7 @@ namespace Awiz.Core
                 try
                 {
                     SyntaxTree tree = CSharpSyntaxTree.ParseText(File.ReadAllText(file));
-                    syntaxTrees.Add(tree);
+                    syntaxTrees.Add((file, tree));
                 }
                 catch (Exception ex)
                 {

@@ -1,12 +1,17 @@
 ﻿using System;
-using YamlDotNet.Serialization;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using YamlDotNet.Serialization.NamingConventions;
+using YamlDotNet.Serialization;
+using System.Dynamic;
 
 namespace Awiz.Core
 {
-    public class YamlConfigSerializer
+    internal class DynamicDeserializerYaml
     {
-        public ClassFilter Deserialize(Stream stream)
+        public dynamic Deserialize(Stream stream)
         {
             var deserializer = new DeserializerBuilder()
                 .WithNamingConvention(PascalCaseNamingConvention.Instance)
@@ -15,8 +20,9 @@ namespace Awiz.Core
             using (var reader = new StreamReader(stream))
             {
                 var yaml = reader.ReadToEnd();
-                return deserializer.Deserialize<ClassFilter>(yaml);
+                return deserializer.Deserialize<ExpandoObject>(yaml);
             }
         }
+
     }
 }

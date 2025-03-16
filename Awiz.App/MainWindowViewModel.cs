@@ -5,60 +5,77 @@ using System.Collections.Generic;
 using Awiz.Core;
 using System.Reflection;
 using Gwiz.Core.Contract;
+using Microsoft.UI.Xaml.Controls;
+using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Awiz
 {
     internal class MainWindowViewModel : Prism.Mvvm.BindableBase
     {
-        public MainWindowViewModel(string path)
+        private readonly ViewReader _viewReader = new();
+
+        private List<IEdge> _edges = new();
+
+        private List<INode> _nodes = new();
+
+        public MainWindowViewModel()
         {
-            using (var stream = GetEmbeddedUmlYaml())
+            _viewReader.Read("C:\\repo\\A-Wiz\\Awiz.Core.Test\\Assets\\ExtendsImplements\\");
+            //_viewReader.Read("C:\\repo\\G-Wiz\\");
+
+            var menuItem = new MenuBarItem
             {
-                var gwizDeserializer = new YamlSerializer();
+                Title = "Views",
+            };
+            MenuItems.Add(menuItem);
 
-                var graph = gwizDeserializer.Deserialize(stream);
-
-                // Load config
-                using (var configStream = File.OpenRead("C:\\repo\\A-Wiz\\Awiz.App\\Assets\\ClassConfig.yaml"))
+            foreach (var viewName in _viewReader.Views) 
+            {
+                var item = new MenuFlyoutItem()
                 {
-                    var awizDeserializer = new YamlConfigSerializer();
-                    var config = awizDeserializer.Deserialize(configStream);
+                    Text = viewName,
+                };
 
-                    var classGenerator = new ClassGenerator()
+                item.Click += (s, e) => {
+                    var viewGraph = _viewReader.GetViewByName(viewName);
+                    if (viewGraph != null)
                     {
-                        ClassFilter = config,
-                    };
+                        Nodes = viewGraph.Nodes;
+                        Edges = viewGraph.Edges;
+                    }
+                };
 
-                    var classParser = new ClassParser("C:\\repo\\G-Wiz\\");
-                    //var classParser = new ClassParser("C:\\repo\\A-Wiz\\Awiz.Core.Test\\Assets\\ExtendsImplements\\");
-
-                    classGenerator.Generate(classParser, graph);
-                }
-
-                Nodes = graph.Nodes;
-                Edges = graph.Edges;
-
+                menuItem.Items.Add(item);
             }
         }
 
-        public List<IEdge> Edges { get; set; } = new();
-
-        public List<INode> Nodes { get; set; } = new();
-
-        private static Stream GetEmbeddedUmlYaml()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-
-            string resourceName = "Awiz.Assets.Uml.yaml";
-
-            Stream? stream = assembly.GetManifestResourceStream(resourceName);
-
-            if (stream == null)
+        public List<IEdge> Edges 
+        { 
+            get 
             {
-                throw new FileNotFoundException($"Resource {resourceName} not found in assembly {assembly.FullName}");
+                return _edges;
+            } 
+            
+            set 
+            { 
+                SetProperty(ref _edges, value);
+            } 
+        }
+
+        public List<MenuBarItem> MenuItems { get; } = new();
+
+        public List<INode> Nodes 
+        { 
+            get
+            {
+                return _nodes;
             }
 
-            return stream;
+            set
+            {
+                SetProperty(ref _nodes, value);
+            }
         }
     }
 }

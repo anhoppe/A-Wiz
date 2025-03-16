@@ -1,0 +1,9 @@
+﻿Views:
+    - Name: include_by_name
+      Include:
+        - Class1
+        - Class2
+    - Name: annotation_options
+      Include:
+        - Class2
+        - Interface2

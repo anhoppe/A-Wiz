@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Assets\Uml.yaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="ClassParser.cs" />
   </ItemGroup>
 
@@ -23,6 +27,7 @@
 
 <ItemGroup>
   <ProjectReference Include="..\..\G-Wiz\Gwiz.Core.Contract\Gwiz.Core.Contract.csproj" />
+  <ProjectReference Include="..\..\G-Wiz\Gwiz.Core\Gwiz.Core.csproj" />
 </ItemGroup>
 
 </Project>

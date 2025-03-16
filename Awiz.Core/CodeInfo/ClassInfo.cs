@@ -14,7 +14,16 @@ namespace Awiz.Core.CodeInfo
 
     public class ClassInfo
     {
+        /// <summary>
+        /// Name of the base class, only set for Type == Class
+        /// May be empty when not derived from any class
+        /// </summary>
         public string BaseClass { get; set; } = string.Empty;
+
+        /// <summary>
+        /// The directory the class is extracted from
+        /// </summary>
+        public string Directory { get; set; } = string.Empty;
 
         public List<FieldInfo> Fields { get; set; } = new List<FieldInfo>();
 

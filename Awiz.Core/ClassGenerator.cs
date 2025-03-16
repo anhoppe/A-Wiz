@@ -8,7 +8,9 @@ namespace Awiz.Core
     /// </summary>
     public class ClassGenerator
     {
-        public ClassFilter ClassFilter { get; set; } = new ClassFilter();
+        public AnnotationOptions AnnotationOptions { get; set; } = new();
+
+        public IClassFilter ClassFilter { get; set; } = new ClassFilter();
 
         internal IClassNodeGenerator ClassNodeGenerator { get; set; } = new ClassNodeGenerator();
 
@@ -18,7 +20,7 @@ namespace Awiz.Core
 
             AddClassesToGraph(filteredClassProvider, graph);
 
-            if (ClassFilter.EnableAssociations)
+            if (AnnotationOptions.EnableAssociations)
             {
                 AddAssociationsToGraph(filteredClassProvider, graph);
             }

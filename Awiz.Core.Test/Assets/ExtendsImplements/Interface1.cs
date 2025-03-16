@@ -9,5 +9,7 @@ namespace Awiz.Core.Test.Assets.ExtendsImplements
     public interface Interface1
     {
         int Test { get; }
+
+        Interface2 Association { get; }
     }
 }
