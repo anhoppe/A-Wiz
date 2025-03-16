@@ -28,10 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Assets\Uml.yaml" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Manifest Include="$(ApplicationManifest)" />
   </ItemGroup>
 
