@@ -1,4 +1,5 @@
 ﻿using Awiz.Core.CodeInfo;
+using Awiz.Core.Storage;
 using Gwiz.Core.Contract;
 using Moq;
 using NUnit.Framework;
@@ -8,11 +9,22 @@ namespace Awiz.Core.Test
     [TestFixture]
     public class ClassNodeGeneratorTest
     {
+        private Mock<IGraph> _graphMock = new();
+
+        private Mock<IViewPersistence> _nodePersistenceMock = new();
+
         private ClassNodeGenerator _sut = new ClassNodeGenerator();
+
         [SetUp]
         public void SetUp()
         { 
-            _sut = new ClassNodeGenerator();
+            _graphMock = new();
+            _nodePersistenceMock = new();
+
+            _sut = new ClassNodeGenerator()
+            {
+                NodePersistence = _nodePersistenceMock.Object,
+            };
         }
 
         [Test]
@@ -32,22 +44,38 @@ namespace Awiz.Core.Test
                 Name = "bar"
             };
 
-            var graphMock = new Mock<IGraph>();
-
             node1Mock.Setup(p => p.Grid).Returns(MockGrid());
             node2Mock.Setup(p => p.Grid).Returns(MockGrid());
 
-            graphMock.Setup(p => p.AddNode("Class")).Returns(node1Mock.Object);
-            _sut.CreateClassNode(graphMock.Object, classInfo1);
+            _graphMock.Setup(p => p.AddNode("Class")).Returns(node1Mock.Object);
+            _sut.CreateClassNode(_graphMock.Object, classInfo1);
 
-            graphMock.Setup(p => p.AddNode("Class")).Returns(node2Mock.Object);
-            _sut.CreateClassNode(graphMock.Object, classInfo2);
+            _graphMock.Setup(p => p.AddNode("Class")).Returns(node2Mock.Object);
+            _sut.CreateClassNode(_graphMock.Object, classInfo2);
 
             // Act
-            _sut.CreateAssociation(graphMock.Object, classInfo1, classInfo2);
+            _sut.CreateAssociation(_graphMock.Object, classInfo1, classInfo2);
 
             // Assert
-            graphMock.Verify(m => m.AddEdge(node1Mock.Object, node2Mock.Object));
+            _graphMock.Verify(m => m.AddEdge(node1Mock.Object, node2Mock.Object));
+        }
+
+        [Test]
+        public void CreateClassNode_WhenAClassNodeIsCreatedThenItIsAddedToPersistence()
+        {
+            // Arrange
+            var nodeMock = new Mock<INode>();
+            nodeMock.Setup(p => p.Grid).Returns(MockGrid());
+
+            var classInfo = new ClassInfo();
+
+            _graphMock.Setup(m => m.AddNode("Class")).Returns(nodeMock.Object);
+
+            // Act
+            _sut.CreateClassNode(_graphMock.Object, classInfo);
+
+            // Assert
+            _nodePersistenceMock.Verify(m => m.AddNode(nodeMock.Object, classInfo));
         }
 
         [Test]
@@ -69,22 +97,20 @@ namespace Awiz.Core.Test
                 Type = ClassType.Class,
             };
 
-            var graphMock = new Mock<IGraph>();
-
             node1Mock.Setup(p => p.Grid).Returns(MockGrid());
             node2Mock.Setup(p => p.Grid).Returns(MockGrid());
 
-            graphMock.Setup(p => p.AddNode("Class")).Returns(node1Mock.Object);
-            _sut.CreateClassNode(graphMock.Object, classInfo1);
+            _graphMock.Setup(p => p.AddNode("Class")).Returns(node1Mock.Object);
+            _sut.CreateClassNode(_graphMock.Object, classInfo1);
 
-            graphMock.Setup(p => p.AddNode("Class")).Returns(node2Mock.Object);
-            _sut.CreateClassNode(graphMock.Object, classInfo2);
+            _graphMock.Setup(p => p.AddNode("Class")).Returns(node2Mock.Object);
+            _sut.CreateClassNode(_graphMock.Object, classInfo2);
 
             // Act
-            _sut.CreateImplementation(graphMock.Object, classInfo1, classInfo2);
+            _sut.CreateImplementation(_graphMock.Object, classInfo1, classInfo2);
 
             // Assert
-            graphMock.Verify(m => m.AddEdge(node2Mock.Object, node1Mock.Object, Ending.ClosedArrow, Style.Dashed));
+            _graphMock.Verify(m => m.AddEdge(node2Mock.Object, node1Mock.Object, Ending.ClosedArrow, Style.Dashed));
         }
 
         [Test]
@@ -106,22 +132,20 @@ namespace Awiz.Core.Test
                 Type = ClassType.Class,
             };
 
-            var graphMock = new Mock<IGraph>();
-
             node1Mock.Setup(p => p.Grid).Returns(MockGrid());
             node2Mock.Setup(p => p.Grid).Returns(MockGrid());
 
-            graphMock.Setup(p => p.AddNode("Class")).Returns(node1Mock.Object);
-            _sut.CreateClassNode(graphMock.Object, classInfo1);
+            _graphMock.Setup(p => p.AddNode("Class")).Returns(node1Mock.Object);
+            _sut.CreateClassNode(_graphMock.Object, classInfo1);
 
-            graphMock.Setup(p => p.AddNode("Class")).Returns(node2Mock.Object);
-            _sut.CreateClassNode(graphMock.Object, classInfo2);
+            _graphMock.Setup(p => p.AddNode("Class")).Returns(node2Mock.Object);
+            _sut.CreateClassNode(_graphMock.Object, classInfo2);
 
             // Act
-            _sut.CreateExtension(graphMock.Object, classInfo1, classInfo2);
+            _sut.CreateExtension(_graphMock.Object, classInfo1, classInfo2);
 
             // Assert
-            graphMock.Verify(m => m.AddEdge(node2Mock.Object, node1Mock.Object, Ending.ClosedArrow, Style.None));
+            _graphMock.Verify(m => m.AddEdge(node2Mock.Object, node1Mock.Object, Ending.ClosedArrow, Style.None));
         }
 
         private IGrid MockGrid()

@@ -28,6 +28,7 @@
 <ItemGroup>
   <ProjectReference Include="..\..\G-Wiz\Gwiz.Core.Contract\Gwiz.Core.Contract.csproj" />
   <ProjectReference Include="..\..\G-Wiz\Gwiz.Core\Gwiz.Core.csproj" />
+  <ProjectReference Include="..\Wiz.Infrastructure.IO\Wiz.Infrastructure.IO.csproj" />
 </ItemGroup>
 
 </Project>

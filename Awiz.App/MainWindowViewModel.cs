@@ -21,14 +21,29 @@ namespace Awiz
 
         public MainWindowViewModel()
         {
-            _viewReader.Read("C:\\repo\\A-Wiz\\Awiz.Core.Test\\Assets\\ExtendsImplements\\");
-            //_viewReader.Read("C:\\repo\\G-Wiz\\");
+            //_viewReader.Read("C:\\repo\\A-Wiz\\Awiz.Core.Test\\Assets\\ExtendsImplements\\");
+            _viewReader.Read("C:\\repo\\G-Wiz\\");
 
-            var menuItem = new MenuBarItem
+            var fileMenuItem = new MenuBarItem
+            {
+                Title = "File",
+            };
+            MenuItems.Add(fileMenuItem);
+            var saveItem = new MenuFlyoutItem()
+            {
+                Text = "Save",
+            };
+
+            saveItem.Click += (s, e) => {
+                _viewReader.Save();
+            };
+            fileMenuItem.Items.Add(saveItem);
+
+            var viewsMenuItem = new MenuBarItem
             {
                 Title = "Views",
             };
-            MenuItems.Add(menuItem);
+            MenuItems.Add(viewsMenuItem);
 
             foreach (var viewName in _viewReader.Views) 
             {
@@ -46,7 +61,7 @@ namespace Awiz
                     }
                 };
 
-                menuItem.Items.Add(item);
+                viewsMenuItem.Items.Add(item);
             }
         }
 

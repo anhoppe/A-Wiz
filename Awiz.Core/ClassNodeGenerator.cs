@@ -1,4 +1,5 @@
 ﻿using Awiz.Core.CodeInfo;
+using Awiz.Core.Storage;
 using Gwiz.Core.Contract;
 
 namespace Awiz.Core
@@ -6,6 +7,8 @@ namespace Awiz.Core
     internal class ClassNodeGenerator : IClassNodeGenerator
     {
         private Dictionary<string, INode> _nodeMap = new();
+
+        public IViewPersistence NodePersistence { get; set; }
 
         public void CreateAssociation(IGraph graph, ClassInfo from, ClassInfo to)
         {
@@ -18,6 +21,8 @@ namespace Awiz.Core
         public void CreateClassNode(IGraph graph, ClassInfo classInfo)
         {
             var node = graph.AddNode("Class");
+
+            NodePersistence.AddNode(node, classInfo);
 
             _nodeMap[classInfo.Id] = node;
 

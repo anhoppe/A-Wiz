@@ -1,13 +1,18 @@
-﻿using Gwiz.Core;
+﻿using Awiz.Core.Storage;
 using Gwiz.Core.Contract;
 using Gwiz.Core.Serializer;
 using System.Reflection;
+using Wiz.Infrastructure.IO;
 
 namespace Awiz.Core
 {
     public class ViewReader : IViewProvider
     {
-        private ClassGenerator _classGenerator = new ClassGenerator();
+        private ClassGenerator _classGenerator = new();
+
+        private ClassNodeGenerator _classNodeGenerator = new();
+
+        private ViewPersistence _nodePersistence = new ViewPersistence();
         
         private string _pathToRepo = string.Empty;
 
@@ -29,11 +34,23 @@ namespace Awiz.Core
 
                 using (var fileStream = new FileStream(_viewNameToViewPath[viewName], FileMode.Open))
                 {
-                    annotationOptions ??= AnnotationOptions.Deserialize(fileStream);
-                }                
+                    annotationOptions = AnnotationOptions.Deserialize(fileStream) ?? annotationOptions;
+                }
 
+                _nodePersistence = new ViewPersistence()
+                {
+                    FileSystem = new FileSystem(),
+                    PathToRepo = _pathToRepo,
+                    StorageAccess = new StorageAccess(),
+                    ViewName = viewName,
+                };
+
+                _classNodeGenerator.NodePersistence = _nodePersistence;
+                
                 _classGenerator.AnnotationOptions = annotationOptions;
                 _classGenerator.ClassFilter = new ClassFilter(_pathToRepo, viewName);
+                _classGenerator.ClassNodeGenerator = _classNodeGenerator;
+
                 _classGenerator.Generate(_classParser, graph);
 
                 return graph;
@@ -50,6 +67,11 @@ namespace Awiz.Core
 
                 ReadViews(pathToRepo);
             }
+        }
+
+        public void Save()
+        {
+            _nodePersistence.Save();
         }
 
         private static Stream GetEmbeddedUmlYaml()

@@ -16,6 +16,11 @@ namespace Awiz.Core
         /// <param name="to">The 'to' class, the instance that is hold be 'from'</param>
         void CreateAssociation(IGraph graph, ClassInfo from, ClassInfo to);
 
+        /// <summary>
+        /// Creates a node to represent a class
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="classInfo"></param>
         void CreateClassNode(IGraph graph, ClassInfo classInfo);
 
         /// <summary>
