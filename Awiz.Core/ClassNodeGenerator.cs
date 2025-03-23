@@ -6,9 +6,11 @@ namespace Awiz.Core
 {
     internal class ClassNodeGenerator : IClassNodeGenerator
     {
+        private static readonly float FromToLabelOffsetPerCent = 5.0f;
+
         private Dictionary<string, INode> _nodeMap = new();
 
-        public IViewPersistence NodePersistence { get; set; }
+        public IViewPersistence NodePersistence { get; set; } = new ViewPersistence();
 
         public void CreateAssociation(IGraph graph, ClassInfo from, ClassInfo to)
         {
@@ -16,6 +18,14 @@ namespace Awiz.Core
             var node2 = _nodeMap[to.Id];
 
             graph.AddEdge(node1, node2);
+        }
+
+        public void CreateAssociation(IGraph graph, ClassInfo from, ClassInfo to, string fromMultiplicity, string toMultiplicity)
+        {
+            var node1 = _nodeMap[from.Id];
+            var node2 = _nodeMap[to.Id];
+
+            graph.AddEdge(node1, node2, fromMultiplicity, toMultiplicity, FromToLabelOffsetPerCent);
         }
 
         public void CreateClassNode(IGraph graph, ClassInfo classInfo)

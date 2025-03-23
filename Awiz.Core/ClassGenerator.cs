@@ -26,6 +26,8 @@ namespace Awiz.Core
             }
 
             AddExtensionsAndImplementationsToGraph(filteredClassProvider, graph);
+
+            graph.Update();
         }
 
         private void AddAssociationsToGraph(IClassProvider classProvider, IGraph graph)
@@ -36,13 +38,37 @@ namespace Awiz.Core
                 {
                     if (!object.ReferenceEquals(classInfo, classInfo2))
                     {
+                        int referenceCount = 0;
+                        bool isOneToN = false;
+
                         foreach (var prop in classInfo.Properties)
                         {
                             if (prop.Type == classInfo2.Name)
                             {
-                                ClassNodeGenerator.CreateAssociation(graph, classInfo, classInfo2);
+                                referenceCount++;
+                            }
+                            else if (prop.IsEnumerable && prop.GenericType.Id == classInfo2.Id)
+                            {
+                                isOneToN = true;
+                                break;
                             }
                         }
+
+                        if (isOneToN)
+                        {
+                            ClassNodeGenerator.CreateAssociation(graph, classInfo, classInfo2, "1", "*");
+                        }
+                        else
+                        {                        
+                            if (referenceCount == 1)
+                            {
+                                ClassNodeGenerator.CreateAssociation(graph, classInfo, classInfo2);
+                            }
+                            else if (referenceCount > 1)
+                            {
+                                ClassNodeGenerator.CreateAssociation(graph, classInfo, classInfo2, "1", referenceCount.ToString());
+                            }
+                        }                       
                     }
                 }
             }

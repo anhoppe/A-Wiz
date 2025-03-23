@@ -214,11 +214,41 @@ namespace Awiz.Core
         private static List<PropertyInfo> GetProperties(SyntaxNode classDeclaration, SemanticModel model)
         {
             return classDeclaration.DescendantNodes().OfType<PropertyDeclarationSyntax>()
-                .Select(property => new PropertyInfo
-                {
-                    Name = property.Identifier.ToString(),
-                    Type = property.Type?.ToString() ?? "",
-                    AccessModifier = GetAccessModifier(property)
+                .Select(property => {
+                    var typeSyntax = property.Type;
+
+                    var propertyInfo = new PropertyInfo
+                    {
+                        Name = property.Identifier.ToString(),
+                        Type = typeSyntax?.ToString() ?? "",
+                        AccessModifier = GetAccessModifier(property)
+                    };
+
+                    if (typeSyntax != null)
+                    {
+                        var typeSymbol = model.GetTypeInfo(typeSyntax).Type; // Get the type symbol
+
+                        if (typeSymbol is INamedTypeSymbol namedTypeSymbol) // Check if it's a named type (e.g., List<T>)
+                        {
+                            // Check if it implements IEnumerable<T>
+                            var enumerableInterface = namedTypeSymbol.AllInterfaces
+                                .FirstOrDefault(i => 
+                                {
+                                    return i.OriginalDefinition.ToString() == "System.Collections.Generic.IEnumerable<T>";
+                                });
+
+                            if (enumerableInterface != null)
+                            {
+                                var genericArgument = enumerableInterface.TypeArguments.First(); // Extract T
+
+                                propertyInfo.IsEnumerable = true;
+                                propertyInfo.GenericType.Name = genericArgument?.Name ?? string.Empty;
+                                propertyInfo.GenericType.Namespace = genericArgument?.ContainingNamespace.ToString() ?? string.Empty;
+                            }
+                        }
+                    }
+                    
+                    return propertyInfo;
                 }).ToList();
         }
     }

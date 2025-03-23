@@ -17,6 +17,16 @@ namespace Awiz.Core
         void CreateAssociation(IGraph graph, ClassInfo from, ClassInfo to);
 
         /// <summary>
+        /// Generates an association between two classes with multiplicities
+        /// </summary>
+        /// <param name="graph"></param>
+        /// <param name="from">The class that is owner of the instance to the 'to' class</param>
+        /// <param name="to">The 'to' class, the instance that is hold be 'from'</param>
+        /// <param name="fromMultiplicity">Multiplicity label on 'from' side</param>
+        /// <param name="toMultiplicity">Multiplicity label on 'to' side</param>
+        void CreateAssociation(IGraph graph, ClassInfo from, ClassInfo to, string fromMultiplicity, string toMultiplicity);
+
+        /// <summary>
         /// Creates a node to represent a class
         /// </summary>
         /// <param name="graph"></param>

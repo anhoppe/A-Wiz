@@ -13,6 +13,8 @@
     <Compile Remove="Assets\ExtendsImplements\Interface1.cs" />
     <Compile Remove="Assets\ExtendsImplements\Interface2.cs" />
     <Compile Remove="Assets\ExtendsImplements\Subdir\Class3.cs" />
+    <Compile Remove="Assets\GenericSupport\Class1.cs" />
+    <Compile Remove="Assets\GenericSupport\Class2.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -35,6 +37,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Assets\ExtendsImplements\Subdir\Class3.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\GenericSupport\Class1.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\GenericSupport\Class2.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

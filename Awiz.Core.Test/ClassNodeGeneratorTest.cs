@@ -60,6 +60,41 @@ namespace Awiz.Core.Test
             _graphMock.Verify(m => m.AddEdge(node1Mock.Object, node2Mock.Object));
         }
 
+
+        [Test]
+        public void CreateAssociationWithMultiplicity_WhenAssociationWithMultiplicityIsAdded_ThenEdgeWithFromToLabelsAreAdded()
+        {
+            // Arrange
+            var node1Mock = new Mock<INode>();
+            var node2Mock = new Mock<INode>();
+
+            var classInfo1 = new ClassInfo()
+            {
+                Name = "foo",
+            };
+
+            var classInfo2 = new ClassInfo()
+            {
+                Name = "bar"
+            };
+
+            node1Mock.Setup(p => p.Grid).Returns(MockGrid());
+            node2Mock.Setup(p => p.Grid).Returns(MockGrid());
+
+            _graphMock.Setup(p => p.AddNode("Class")).Returns(node1Mock.Object);
+            _sut.CreateClassNode(_graphMock.Object, classInfo1);
+
+            _graphMock.Setup(p => p.AddNode("Class")).Returns(node2Mock.Object);
+            _sut.CreateClassNode(_graphMock.Object, classInfo2);
+
+            // Act
+            _sut.CreateAssociation(_graphMock.Object, classInfo1, classInfo2, "foo", "bar");
+
+            // Assert
+            _graphMock.Verify(m => m.AddEdge(node1Mock.Object, node2Mock.Object, "foo", "bar", It.IsAny<float>()));
+        }
+
+
         [Test]
         public void CreateClassNode_WhenAClassNodeIsCreatedThenItIsAddedToPersistence()
         {

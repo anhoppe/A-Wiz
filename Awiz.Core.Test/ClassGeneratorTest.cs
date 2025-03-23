@@ -38,6 +38,43 @@ namespace Awiz.Core.Test
         }
 
         [Test]
+        public void Associations_WhenAssociationsEnabledButClassAreNotAssicoated_ThenNoAssociationIsInserted()
+        {
+            // Arrange
+            _annotationOptions.EnableAssociations = true;
+
+            var classInfo1 = new ClassInfo()
+            {
+                Name = "foo",
+                Namespace = "My.W1",
+            };
+
+            var classInfo2 = new ClassInfo()
+            {
+                Name = "bar",
+                Namespace = "My.W2",
+            };
+
+            _classProviderMock.Setup(p => p.Classes).Returns(new[]
+            {
+                classInfo1,
+                classInfo2,
+            }.ToList());
+
+            // Act
+            _sut.Generate(_classProviderMock.Object, _graphMock.Object);
+
+            // Assert
+            _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, It.IsAny<ClassInfo>(), It.IsAny<ClassInfo>()),
+                Times.Never,
+                "There should be no association between the classes since there are no properties of the other type defined");
+
+            _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, It.IsAny<ClassInfo>(), It.IsAny<ClassInfo>(), It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never,
+                "There should be no association between the classes since there are no properties of the other type defined");
+        }
+        
+        [Test]
         public void Associations_WhenAssociationsEnabledAndClassHasPropertyOfOtherClass_ThenEdgeIsInsertedBetweenClasses()
         {
             // Arrange
@@ -84,6 +121,93 @@ namespace Awiz.Core.Test
             
             _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, classInfo2, classInfo1), 
                 "Expected association from classInfo2 to claaInfo1 because classInfo2 has a property with the type of classInfo1");
+        }
+
+        [Test]
+        public void Associations_WhenClassHasMultiplePropertiesToOtherClass_ThenMultiplicityIsInsertedCorrectly()
+        {
+            // Arrange
+            _annotationOptions.EnableAssociations = true;
+
+            var classInfo1 = new ClassInfo()
+            {
+                Name = "foo",
+                Namespace = "My.W1",
+                Properties =
+                [
+                    new PropertyInfo()
+                    {
+                        Type = "bar"
+                    },
+                    new PropertyInfo()
+                    {
+                        Type = "bar"
+                    }
+                ],
+            };
+
+            var classInfo2 = new ClassInfo()
+            {
+                Name = "bar",
+                Namespace = "My.W2",
+            };
+
+            _classProviderMock.Setup(p => p.Classes).Returns(new[]
+            {
+                classInfo1,
+                classInfo2,
+            }.ToList());
+
+            // Act
+            _sut.Generate(_classProviderMock.Object, _graphMock.Object);
+
+            // Assert
+            _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, classInfo1, classInfo2, "1", "2"),
+                "Expected association with correct multiplicity since classInfo1 has two property with the type of classInfo2");
+        }
+
+        [Test]
+        public void Association_WhenClassHasGenericListOfOtherClass_Then1TonMultiplicityIsSet()
+        {
+            // Arrange
+            _annotationOptions.EnableAssociations = true;
+            var classInfo1 = new ClassInfo()
+            {
+                Name = "foo",
+                Namespace = "My.W1",
+                Properties =
+                [
+                    new PropertyInfo()
+                    {
+                        Type = "List<bar>",
+                        IsEnumerable = true,
+                        GenericType = new ClassInfo()
+                        {
+                            Name = "bar",
+                            Namespace = "My.W2",
+                        },
+                    },
+                ],
+            };
+
+            var classInfo2 = new ClassInfo()
+            {
+                Name = "bar",
+                Namespace = "My.W2",
+            };
+
+            _classProviderMock.Setup(p => p.Classes).Returns(new[]
+            {
+                classInfo1,
+                classInfo2,
+            }.ToList());
+
+            // Act
+            _sut.Generate(_classProviderMock.Object, _graphMock.Object);
+
+            // Assert
+            _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, classInfo1, classInfo2, "1", "*"),
+                "Expected association with correct multiplicity since classInfo1 has List<> property with the type of classInfo2");
         }
 
         [Test]
