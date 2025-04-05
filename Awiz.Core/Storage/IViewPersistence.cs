@@ -12,6 +12,8 @@ namespace Awiz.Core.Storage
     {
         /// <summary>
         /// Adds a node to the persistence mechanism
+        /// When a node is added and there is already persistence information
+        /// then the data is loaded and applied to the node
         /// </summary>
         /// <param name="node">Node to be persisted</param>
         /// <param name="classInfo">Class info associated with the node</param>

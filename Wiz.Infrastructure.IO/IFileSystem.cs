@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,6 +9,13 @@ namespace Wiz.Infrastructure.IO
 {
     public interface IFileSystem
     {
+        /// <summary>
+        /// Copies a folder with content and sub-folders to a temporary path
+        /// </summary>
+        /// <param name="path">Path to the directory to be copied</param>
+        /// <returns>Path to the temp folder</returns>
+        string CopyToTempPath(string path);
+
         /// <summary>
         /// Checks if a file exists
         /// </summary>

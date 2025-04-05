@@ -8,11 +8,11 @@ namespace Awiz.Core.Storage
     {
         private Dictionary<INode, (string, View)> _nodeToPaths = new();
 
-        internal IFileSystem FileSystem { private get; set; } = new();
+        internal IFileSystem FileSystem { private get; set; } = new FileSystem();
 
         internal string PathToRepo { private get; set; } = string.Empty;
 
-        internal IStorageAccess StorageAccess { private get; set; } = new();
+        internal IStorageAccess StorageAccess { private get; set; } = new StorageAccess();
 
         internal string ViewName { private get; set; } = string.Empty;
 

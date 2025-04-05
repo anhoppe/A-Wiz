@@ -1,5 +1,6 @@
 ﻿Templates:
   - Name: Class
+    Alignment: CenterLeft
     BackgroundColor: 255, 255, 255, 255
     LineColor: 255, 0, 0, 0
     Resize: Both
@@ -8,3 +9,18 @@
         - 2
         - 5
         - 5
+  - Name: Boundary
+    Alignment: TopCenter
+    BackgroundColor: 0, 255, 255, 255
+    LineColor: 255, 0, 0, 0
+    Resize: Both
+  - Name: UseCase
+    Shape: Ellipse
+    BackgroundColor: 100, 180, 60, 20
+    LineColor: 255, 0, 0, 0
+    Resize: HorzVert
+  - Name: Actor
+    Alignment: BottomCenter
+    BackgroundColor: 255, 255, 255, 255
+    LineColor: 255, 0, 0, 0
+

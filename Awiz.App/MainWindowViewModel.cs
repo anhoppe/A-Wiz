@@ -21,8 +21,8 @@ namespace Awiz
 
         public MainWindowViewModel()
         {
-            //_viewReader.Read("C:\\repo\\A-Wiz\\Awiz.Core.Test\\Assets\\ExtendsImplements\\");
-            _viewReader.Read("C:\\repo\\G-Wiz\\");
+            _viewReader.ReadProject("C:\\repo\\A-Wiz\\Awiz.Core.Test\\Assets\\ExtendsImplements\\");
+            //_viewReader.Read("C:\\repo\\G-Wiz\\");
 
             var fileMenuItem = new MenuBarItem
             {
@@ -35,10 +35,37 @@ namespace Awiz
             };
 
             saveItem.Click += (s, e) => {
-                _viewReader.Save();
+                _viewReader.SaveView();
             };
             fileMenuItem.Items.Add(saveItem);
 
+            // Use Cases
+            var useCasesMenuItem = new MenuBarItem
+            {
+                Title = "Use-Cases",
+            };
+            MenuItems.Add(useCasesMenuItem);
+
+            foreach (var useCase in _viewReader.UseCases)
+            {
+                var item = new MenuFlyoutItem()
+                {
+                    Text = useCase,
+                };
+
+                item.Click += (s, e) => {
+                    var useCaseGraph = _viewReader.GetUseCaseByName(useCase);
+                    if (useCaseGraph != null)
+                    {
+                        Nodes = useCaseGraph.Nodes;
+                        Edges = useCaseGraph.Edges;
+                    }
+                };
+
+                useCasesMenuItem.Items.Add(item);
+            }
+
+            // Views
             var viewsMenuItem = new MenuBarItem
             {
                 Title = "Views",
