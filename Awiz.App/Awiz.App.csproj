@@ -16,6 +16,10 @@
     <Content Remove="Assets\ClassConfig.yaml" />
     <Content Remove="Assets\Uml.yaml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="ClassPanelView.xaml" />
+    <None Remove="UseCasePanelView.xaml" />
+  </ItemGroup>
 
   <ItemGroup>
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -49,6 +53,16 @@
     <ProjectReference Include="..\..\G-Wiz\Gwiz.Core\Gwiz.Core.csproj" />
     <ProjectReference Include="..\..\G-Wiz\Gwiz.UiControl.WinUi3\Gwiz.UiControl.WinUi3.csproj" />
     <ProjectReference Include="..\Awiz.Core\Awiz.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="ClassPanelView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="UseCasePanelView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!--

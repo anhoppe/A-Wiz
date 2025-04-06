@@ -1,21 +1,21 @@
-﻿using Gwiz.Core.Serializer;
-using System.Drawing;
-using System.IO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using Awiz.Core;
-using System.Reflection;
 using Gwiz.Core.Contract;
 using Microsoft.UI.Xaml.Controls;
-using System.Collections.ObjectModel;
-using System.Linq;
+using Prism.Mvvm;
 
 namespace Awiz
 {
-    internal class MainWindowViewModel : Prism.Mvvm.BindableBase
+    internal class MainWindowViewModel : BindableBase
     {
         private readonly ViewReader _viewReader = new();
 
+        object? _currentPanelViewModel = null;
+        
         private List<IEdge> _edges = new();
+
+        private LoadedView _loadedView = LoadedView.None;
 
         private List<INode> _nodes = new();
 
@@ -60,6 +60,7 @@ namespace Awiz
                         Nodes = useCaseGraph.Nodes;
                         Edges = useCaseGraph.Edges;
                     }
+                    LoadedView = LoadedView.UseCase;
                 };
 
                 useCasesMenuItem.Items.Add(item);
@@ -86,9 +87,24 @@ namespace Awiz
                         Nodes = viewGraph.Nodes;
                         Edges = viewGraph.Edges;
                     }
+                    LoadedView = LoadedView.Class;
                 };
 
                 viewsMenuItem.Items.Add(item);
+            }
+        }
+
+
+
+        //public ObservableCollection<object> CurrentPanelViewModels { get; set; } = new ObservableCollection<object>();
+
+        public object? CurrentPanelViewModel
+        {
+            get => _currentPanelViewModel;
+
+            set
+            {
+                SetProperty(ref _currentPanelViewModel, value);
             }
         }
 
@@ -103,6 +119,26 @@ namespace Awiz
             { 
                 SetProperty(ref _edges, value);
             } 
+        }
+
+        public LoadedView LoadedView
+        {
+            get => _loadedView;
+            set
+            {
+                _loadedView = value;
+                object? currentPanelViewModel = value switch
+                {
+                    LoadedView.UseCase => new UseCasePanelViewModel(),
+                    LoadedView.Class => new ClassPanelViewModel(),
+                    _ => null,
+                };
+                CurrentPanelViewModels.Clear();
+                if (currentPanelViewModel != null)
+                {
+                    CurrentPanelViewModels.Add(currentPanelViewModel);
+                }
+            }
         }
 
         public List<MenuBarItem> MenuItems { get; } = new();
