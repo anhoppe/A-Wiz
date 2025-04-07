@@ -13,8 +13,7 @@
             <RowDefinition Height="auto" />
             <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
-        <MenuBar x:Name="_menuBar" />
-        <Button>Add Use Case</Button>
-        <Button>Add Actor</Button>
+        <Button Grid.Row="0" Command="{Binding AddUseCaseCommand}">Add Use Case</Button>
+        <Button Grid.Row="1" Command="{Binding AddActorCommand}">Add Actor</Button>
     </Grid>
 </UserControl>

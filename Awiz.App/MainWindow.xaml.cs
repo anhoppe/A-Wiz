@@ -29,7 +29,7 @@ namespace Awiz
 
             var viewModel = new MainWindowViewModel();
 
-            _uiControl.DataContext = viewModel;
+            _mainGrid.DataContext = viewModel;
 
             // Populate the menu dynamically
             foreach (var menuItem in viewModel.MenuItems)

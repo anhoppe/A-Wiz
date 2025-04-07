@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using Awiz.Core;
 using Gwiz.Core.Contract;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Prism.Mvvm;
 
@@ -11,8 +11,6 @@ namespace Awiz
     {
         private readonly ViewReader _viewReader = new();
 
-        object? _currentPanelViewModel = null;
-        
         private List<IEdge> _edges = new();
 
         private LoadedView _loadedView = LoadedView.None;
@@ -61,6 +59,7 @@ namespace Awiz
                         Edges = useCaseGraph.Edges;
                     }
                     LoadedView = LoadedView.UseCase;
+                    UseCasePanelViewModel.Graph = useCaseGraph;
                 };
 
                 useCasesMenuItem.Items.Add(item);
@@ -94,19 +93,7 @@ namespace Awiz
             }
         }
 
-
-
-        //public ObservableCollection<object> CurrentPanelViewModels { get; set; } = new ObservableCollection<object>();
-
-        public object? CurrentPanelViewModel
-        {
-            get => _currentPanelViewModel;
-
-            set
-            {
-                SetProperty(ref _currentPanelViewModel, value);
-            }
-        }
+        public ClassPanelViewModel ClassPanelViewModel { get; } = new();
 
         public List<IEdge> Edges 
         { 
@@ -127,16 +114,21 @@ namespace Awiz
             set
             {
                 _loadedView = value;
-                object? currentPanelViewModel = value switch
+
+                switch (_loadedView)
                 {
-                    LoadedView.UseCase => new UseCasePanelViewModel(),
-                    LoadedView.Class => new ClassPanelViewModel(),
-                    _ => null,
-                };
-                CurrentPanelViewModels.Clear();
-                if (currentPanelViewModel != null)
-                {
-                    CurrentPanelViewModels.Add(currentPanelViewModel);
+                    case LoadedView.None:
+                        UseCasePanelViewModel.Visibility = Visibility.Collapsed;
+                        ClassPanelViewModel.Visibility = Visibility.Collapsed;
+                        break;
+                    case LoadedView.UseCase:
+                        UseCasePanelViewModel.Visibility = Visibility.Visible;
+                        ClassPanelViewModel.Visibility = Visibility.Collapsed;
+                        break;
+                    case LoadedView.Class:
+                        UseCasePanelViewModel.Visibility = Visibility.Collapsed;
+                        ClassPanelViewModel.Visibility = Visibility.Visible;
+                        break;
                 }
             }
         }
@@ -155,5 +147,7 @@ namespace Awiz
                 SetProperty(ref _nodes, value);
             }
         }
+
+        public UseCasePanelViewModel UseCasePanelViewModel { get; } = new();
     }
 }
