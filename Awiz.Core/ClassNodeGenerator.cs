@@ -36,10 +36,10 @@ namespace Awiz.Core
 
             _nodeMap[classInfo.Id] = node;
 
-            node.Grid.FieldText[0][0] = classInfo.Name;
+            node.Grid.Cells[0][0].Text = classInfo.Name;
 
-            node.Grid.FieldText[0][1] = classInfo.Properties.Aggregate("", (current, prop) => current + $"{prop}\n");
-            node.Grid.FieldText[0][2] = classInfo.Methods.Aggregate("", (current, method) => current + $"{method}\n");
+            node.Grid.Cells[0][1].Text = classInfo.Properties.Aggregate("", (current, prop) => current + $"{prop}\n");
+            node.Grid.Cells[0][2].Text = classInfo.Methods.Aggregate("", (current, method) => current + $"{method}\n");
 
             node.Width = 120;
             node.Height = 160;

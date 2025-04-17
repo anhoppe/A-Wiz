@@ -21,18 +21,18 @@ def is_wiz_folder_present():
 def create_wiz_folders():
     current_dir = os.getcwd()
     wiz_folder = os.path.join(current_dir, ".wiz")
-    views_folder = os.path.join(wiz_folder, "views")
 
     # Create .wiz folder if it doesn't exist
+    views_folder = os.path.join(wiz_folder, "views")
     os.makedirs(views_folder, exist_ok=True)
 
+    req_folder = os.path.join(wiz_folder, "reqs")
+    os.makedirs(req_folder, exist_ok=True)
 
 # Main
 if len(sys.argv) == 2 and sys.argv[1] == "init":
     if not is_git_root():
         print("'" + os.getcwd() + "' is not the root of a git repo")
-    elif is_wiz_folder_present():
-        print("A-Wiz is already initialized")
     else:
         create_wiz_folders()
 

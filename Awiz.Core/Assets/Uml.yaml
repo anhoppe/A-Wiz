@@ -14,13 +14,40 @@
     BackgroundColor: 0, 255, 255, 255
     LineColor: 255, 0, 0, 0
     Resize: Both
+    Grid:
+      Editable: 
+        - all
   - Name: UseCase
     Shape: Ellipse
     BackgroundColor: 100, 180, 60, 20
     LineColor: 255, 0, 0, 0
     Resize: HorzVert
+    Grid:
+      Editable: 
+        - all
   - Name: Actor
     Alignment: BottomCenter
     BackgroundColor: 255, 255, 255, 255
     LineColor: 255, 0, 0, 0
+    Grid:
+      Editable: 
+        - all
 
+EdgeTemplates:
+  - Source: Actor
+    Target: UseCase
+    Ending: OpenArrow
+    Icon: U
+    Style: Dotted
+  - Source: UseCase
+    Target: UseCase
+    Ending: OpenArrow
+    Text: <<extends>>
+    Icon: E
+    Style: Dotted
+  - Source: UseCase
+    Target: UseCase
+    Ending: OpenArrow
+    Text: <<includes>>
+    Icon: I
+    Style: Dotted

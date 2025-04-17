@@ -188,10 +188,13 @@ namespace Awiz.Core.Test
             var gridMock = new Mock<IGrid>();
 
             // This is the expected field size for a class node (1 column with 3 rows for title, props and methods)
-            var fieldText = new string[1][];
-            fieldText[0] = new string[3];
+            var cell = new IGridCell[1][];
+            cell[0] = new IGridCell[3];
 
-            gridMock.Setup(p => p.FieldText).Returns(fieldText);
+            cell[0][0] = Mock.Of<IGridCell>();
+            cell[0][1] = Mock.Of<IGridCell>();
+            cell[0][2] = Mock.Of<IGridCell>();
+            gridMock.Setup(p => p.Cells).Returns(cell);
 
             return gridMock.Object;
         }

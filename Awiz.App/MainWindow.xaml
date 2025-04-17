@@ -21,13 +21,18 @@
                 <ColumnDefinition Width="auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <local:UseCasePanelView Grid.Column="0" Visibility="{Binding Visibility}" DataContext="{Binding UseCasePanelViewModel}" />
-            <local:ClassPanelView Grid.Column="0" Visibility="{Binding Visibility}" DataContext="{Binding ClassPanelViewModel}" />
+            <local:UseCasePanelView 
+                Grid.Column="0" 
+                Visibility="{Binding Visibility}" 
+                DataContext="{Binding UseCasePanelViewModel}" />
+            <local:ClassPanelView 
+                Grid.Column="0" 
+                Visibility="{Binding Visibility}" 
+                DataContext="{Binding ClassPanelViewModel}" />
             <uicontrol:GraphUiControl 
                 Grid.Column="1" 
                 x:Name="_uiControl" 
-                Nodes="{Binding Nodes}" 
-                Edges="{Binding Edges}" />
+                Graph="{Binding Graph}" />
         </Grid>
     </Grid>
 </Window>

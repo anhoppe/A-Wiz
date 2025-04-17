@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Awiz.Core;
+using Gwiz.Core;
 using Gwiz.Core.Contract;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -11,22 +12,21 @@ namespace Awiz
     {
         private readonly ViewReader _viewReader = new();
 
-        private List<IEdge> _edges = new();
+        private IGraph? _graph;
 
         private LoadedView _loadedView = LoadedView.None;
 
-        private List<INode> _nodes = new();
-
         public MainWindowViewModel()
         {
-            _viewReader.ReadProject("C:\\repo\\A-Wiz\\Awiz.Core.Test\\Assets\\ExtendsImplements\\");
-            //_viewReader.Read("C:\\repo\\G-Wiz\\");
+            //_viewReader.ReadProject("C:\\repo\\A-Wiz\\Awiz.Core.Test\\Assets\\ExtendsImplements\\");
+            _viewReader.ReadProject("C:\\repo\\G-Wiz\\");
 
             var fileMenuItem = new MenuBarItem
             {
                 Title = "File",
             };
             MenuItems.Add(fileMenuItem);
+
             var saveItem = new MenuFlyoutItem()
             {
                 Text = "Save",
@@ -55,8 +55,7 @@ namespace Awiz
                     var useCaseGraph = _viewReader.GetUseCaseByName(useCase);
                     if (useCaseGraph != null)
                     {
-                        Nodes = useCaseGraph.Nodes;
-                        Edges = useCaseGraph.Edges;
+                        Graph = useCaseGraph;
                     }
                     LoadedView = LoadedView.UseCase;
                     UseCasePanelViewModel.Graph = useCaseGraph;
@@ -83,8 +82,7 @@ namespace Awiz
                     var viewGraph = _viewReader.GetViewByName(viewName);
                     if (viewGraph != null)
                     {
-                        Nodes = viewGraph.Nodes;
-                        Edges = viewGraph.Edges;
+                        Graph = viewGraph;
                     }
                     LoadedView = LoadedView.Class;
                 };
@@ -95,17 +93,14 @@ namespace Awiz
 
         public ClassPanelViewModel ClassPanelViewModel { get; } = new();
 
-        public List<IEdge> Edges 
-        { 
-            get 
+        public IGraph Graph
+        {
+            get => _graph;
+
+            set
             {
-                return _edges;
-            } 
-            
-            set 
-            { 
-                SetProperty(ref _edges, value);
-            } 
+                SetProperty(ref _graph, value);
+            }
         }
 
         public LoadedView LoadedView
@@ -134,19 +129,6 @@ namespace Awiz
         }
 
         public List<MenuBarItem> MenuItems { get; } = new();
-
-        public List<INode> Nodes 
-        { 
-            get
-            {
-                return _nodes;
-            }
-
-            set
-            {
-                SetProperty(ref _nodes, value);
-            }
-        }
 
         public UseCasePanelViewModel UseCasePanelViewModel { get; } = new();
     }

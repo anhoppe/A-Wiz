@@ -19,10 +19,13 @@ namespace Awiz
         public UseCasePanelViewModel()
         {
             AddActorCommand = new DelegateCommand(AddActor);
+            AddBoundaryCommand = new DelegateCommand(AddBoundary);
             AddUseCaseCommand = new DelegateCommand(AddUseCase);
         }
 
         public ICommand AddActorCommand { get; }
+        
+        public ICommand AddBoundaryCommand { get; }
         
         public ICommand AddUseCaseCommand { get; }
 
@@ -52,6 +55,21 @@ namespace Awiz
             node.Y = 100;
         }
 
+        private void AddBoundary()
+        {
+            if (Graph == null)
+            {
+                return;
+            }
+
+            var node = Graph.AddNode("Boundary");
+            node.Width = 300;
+            node.Height = 300;
+
+            node.X = 100;
+            node.Y = 100;
+        }
+
         private void AddUseCase()
         {
             if (Graph == null)
@@ -60,11 +78,11 @@ namespace Awiz
             }
 
             var node = Graph.AddNode("UseCase");
-            node.Width = 100;
-            node.Height = 80;
+            node.Width = 180;
+            node.Height = 120;
 
-            node.X = 100;
-            node.Y = 100;
+            node.X = 120;
+            node.Y = 120;
         }
     }
 }
