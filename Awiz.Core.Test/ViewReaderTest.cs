@@ -1,7 +1,5 @@
-﻿using Gwiz.Core.Serializer;
-using Newtonsoft.Json.Bson;
+﻿using Moq;
 using NUnit.Framework;
-using System.Linq;
 using Wiz.Infrastructure.IO;
 
 namespace Awiz.Core.Test
@@ -9,52 +7,59 @@ namespace Awiz.Core.Test
     [TestFixture]
     public class ViewReaderTest
     {
-        private ViewReader sut = new();
+        private Mock<ILoadableGitRepo> _loadableGitAccessMock = new();
+
+        private ViewReader _sut = new();
 
         [SetUp]
         public void SetUp()
         {
-            sut = new ViewReader();
+            _loadableGitAccessMock = new();
+
+            _sut = new ViewReader()
+            {
+                LoadableGitAccess = _loadableGitAccessMock.Object,
+            };
         }
 
         [Test]
-        public void AnnotationOptions_WhenReadingViewWithAnnotationOptions_ThenOptionsAreDetected()
+        public void AnnotationOptions_WhenReadingClassDiagramWithAnnotationOptions_ThenOptionsAreDetected()
         {
             // Arrange
-            sut.ReadProject("Assets\\ExtendsImplements\\");
+            _sut.ReadProject("Assets\\ExtendsImplements\\");
 
             // Act
-            var graph = sut.GetViewByName("annotation_options");
+            var view = _sut.LoadClassDiagram("annotation_options");
 
             // Assert
-            Assert.That(0, Is.EqualTo(graph.Edges.Count), "Expected all edges defined for the view in the graph");
+            Assert.That(0, Is.EqualTo(view.Graph?.Edges.Count), "Expected all edges defined for the view in the graph");
         }
 
         [Test]
-        public void GetUseCaseByName_WhenReadingExtendsImplementsProject_ThenTheUseCaseGrapgIsAvailable()
+        public void LoadUseCase_WhenReadingExtendsImplementsProject_ThenTheUseCaseGrapgIsAvailable()
         {
-            sut.ReadProject("Assets\\ExtendsImplements\\");
+            _sut.ReadProject("Assets\\ExtendsImplements\\");
 
             // Act
-            var graph = sut.GetUseCaseByName("base");
+            var view = _sut.LoadUseCase("base");
 
             // Assert
-            Assert.That(graph.Nodes.Count, Is.EqualTo(4), "Expected all nodes defined for the use case in the graph");
-            Assert.That(graph.Edges.Count, Is.EqualTo(2), "Expected all edges defined for the use case in the graph");
+            Assert.That(view.Graph?.Nodes.Count, Is.EqualTo(4), "Expected all nodes defined for the use case in the graph");
+            Assert.That(view.Graph?.Edges.Count, Is.EqualTo(2), "Expected all edges defined for the use case in the graph");
         }
 
         [Test]
-        public void GetViewByName_WhenReadingExtendsImplementsProject_ThenTheGraphsForTheViewsAreAvailable()
+        public void LoadClassDiagram_WhenReadingExtendsImplementsProject_ThenTheGraphsForTheViewsAreAvailable()
         {
             // Arrange
-            sut.ReadProject("Assets\\ExtendsImplements\\");
+            _sut.ReadProject("Assets\\ExtendsImplements\\");
 
             // Act
-            var graph = sut.GetViewByName("include_by_name");
+            var view = _sut.LoadClassDiagram("include_by_name");
 
             // Assert
-            Assert.That(3, Is.EqualTo(graph.Nodes.Count), "Expected all nodes defined for the view in the graph");
-            Assert.That(2, Is.EqualTo(graph.Edges.Count), "Expected all edges defined for the view in the graph");
+            Assert.That(3, Is.EqualTo(view.Graph?.Nodes.Count), "Expected all nodes defined for the view in the graph");
+            Assert.That(2, Is.EqualTo(view.Graph?.Edges.Count), "Expected all edges defined for the view in the graph");
         }
 
         [Test]
@@ -64,29 +69,31 @@ namespace Awiz.Core.Test
             FileSystem fs = new();
             var tempPath = fs.CopyToTempPath("Assets\\ExtendsImplements\\");
             
-            sut.ReadProject(tempPath);
+            _sut.ReadProject(tempPath);
 
-            var graph = sut.GetUseCaseByName("base");
+            var view = _sut.LoadUseCase("base");
 
-            graph.Nodes[0].X = 23;
+
+            if (view.Graph == null)
+            {
+                throw new NullReferenceException("Graph is null");
+            }
+            view.Graph.Nodes[0].X = 23;
 
             // Act
-            sut.SaveView();
+            view.Save();
 
             // Assert
-            var pathToUseCase = Path.Combine(tempPath, ".wiz");
-            pathToUseCase = Path.Combine(pathToUseCase, "reqs");
-            pathToUseCase = Path.Combine(pathToUseCase, "base.yaml");
 
-            // Open the serialized file and check the content
-            using (var stream = File.Open(pathToUseCase, FileMode.Open))
+            // Create a new view reader to read the project again
+            var viewReader = new ViewReader()
             {
-                YamlSerializer serializer = new YamlSerializer();
+                LoadableGitAccess = _loadableGitAccessMock.Object,
+            };
 
-                var adaptedGraph = serializer.Deserialize(stream);
-
-                Assert.That(23, Is.EqualTo(adaptedGraph.Nodes[0].X), "Expected that the X value which was set in the test above is written to the files");
-            }
+            viewReader.ReadProject(tempPath);
+            var adaptedView = _sut.LoadUseCase("base");
+            Assert.That(adaptedView.Graph?.Nodes[0].X, Is.EqualTo(23), "Expected that the X value which was set in the test above is written to the files");
 
             Directory.Delete(tempPath, true);
         }
@@ -95,10 +102,10 @@ namespace Awiz.Core.Test
         public void UseCases_WhenReadingExtendsImplementsProject_ThenUseCasesAreDetected()
         {
             // Arrange
-            sut.ReadProject("Assets\\ExtendsImplements\\");
+            _sut.ReadProject("Assets\\ExtendsImplements\\");
 
             // Act
-            var useCases = sut.UseCases;
+            var useCases = _sut.UseCases;
 
             // Assert
             Assert.That(useCases.Count, Is.EqualTo(1));
@@ -106,13 +113,13 @@ namespace Awiz.Core.Test
         }
 
         [Test]
-        public void Views_WhenReadingExtendsImplementsProject_ThenProjectsInViewsAreDetected()
+        public void ClassDiagrams_WhenReadingExtendsImplementsProject_ThenProjectsInViewsAreDetected()
         {
             // Arrange
-            sut.ReadProject("Assets\\ExtendsImplements\\");
+            _sut.ReadProject("Assets\\ExtendsImplements\\");
 
             // Act
-            var views = sut.Views;
+            var views = _sut.ClassDiagrams;
 
             // Assert
             Assert.That(views.Count, Is.EqualTo(2));

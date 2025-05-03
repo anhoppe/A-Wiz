@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Window
+    x:Class="Awiz.View.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Awiz.View"
+    xmlns:uicontrol="using:Gwiz.UiControl.WinUi3"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Awiz">
+
+    <Grid x:Name="_mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <MenuBar Grid.Row="0" x:Name="_menuBar" />
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <local:UseCasePanelView 
+                Grid.Column="0" 
+                Visibility="{Binding Visibility}" 
+                DataContext="{Binding UseCasePanelViewModel}" />
+            <local:ClassPanelView 
+                Grid.Column="0" 
+                Visibility="{Binding Visibility}" 
+                DataContext="{Binding ClassPanelViewModel}" />
+            <uicontrol:GraphUiControl 
+                Grid.Column="1" 
+                x:Name="_uiControl" 
+                Graph="{Binding Graph}" />
+            <local:CommitInfoPanelView
+                Grid.Column="2" 
+                Visibility="{Binding Visibility}" 
+                DataContext="{Binding CommitInfoPanelViewModel}" />
+        </Grid>
+    </Grid>
+</Window>

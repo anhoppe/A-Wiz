@@ -1,0 +1,51 @@
+Nodes:
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Show name of loaded view
+  Height: 120
+  Id: 47a67584-331d-4312-9662-5fa3e2037fb8
+  Template: UseCase
+  Width: 324
+  X: -990
+  Y: -234
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ''
+  Height: 120
+  Id: c38a7c83-58f9-498a-90fd-17821e87273b
+  Template: UseCase
+  Width: 180
+  X: 120
+  Y: 120
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Support Tabs for multiple open views
+  Height: 120
+  Id: ef83c4e7-5257-45f4-9ee2-321fcda0eab4
+  Template: UseCase
+  Width: 343
+  X: -1001
+  Y: -447
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ''
+  Height: 80
+  Id: 880d1c35-a0d3-4513-a966-f3c7da4b581a
+  Template: Actor
+  Width: 80
+  X: -1382
+  Y: -442
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Auto-save when document is closed
+  Height: 120
+  Id: c81c8550-3d06-4108-b184-01c6b47fa7c9
+  Template: UseCase
+  Width: 362
+  X: -1016
+  Y: -658

@@ -1,0 +1,10 @@
+Views:
+    - Name: persistence
+      Include:
+        - ViewReader
+        - ArchitectureView
+        - ArchitectureClassView
+        - ArchitectureUseCaseView
+        - GitNodeInfo
+        - GitRepo
+        - ILoadableGitAccess

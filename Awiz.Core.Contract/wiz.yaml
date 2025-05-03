@@ -1,0 +1,8 @@
+Views:
+    - Name: persistence
+      Include:
+        - IArchitectureWiz
+        - IArchitectureView
+        - IGitRepo
+        - IGitNodeInfo
+        

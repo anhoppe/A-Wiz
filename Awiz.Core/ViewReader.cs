@@ -1,13 +1,12 @@
 ﻿using Awiz.Core.Storage;
-using Gwiz.Core.Contract;
-using Gwiz.Core.Serializer;
-using System.Reflection;
-using Wiz.Infrastructure.IO;
-using System.Text;
+using Awiz.Core.Contract;
+using Awiz.Core.CSharpClassGenerator;
+using Awiz.Core.Contract.Git;
+using Awiz.Core.Git;
 
 namespace Awiz.Core
 {
-    public class ViewReader : IViewProvider
+    public class ViewReader : IArchitectureWiz
     {
         private ClassGenerator _classGenerator = new();
 
@@ -15,94 +14,78 @@ namespace Awiz.Core
 
         private ClassParser _classParser = new();
 
-        private ViewPersistence _nodePersistence = new ViewPersistence();
-
         private string _pathToRepo = string.Empty;
 
         private string _pathToWiz = string.Empty;
-
-        private IGraph? _useCaseDiagram = null;
-
-        private string _useCaseName = string.Empty;
 
         private Dictionary<string, string> _useCaseNameToViewPath = new Dictionary<string, string>();
 
         private Dictionary<string, string> _viewNameToViewPath = new Dictionary<string, string>();
 
-        public LoadedView LoadedView { get; private set; } = LoadedView.None;
+        public List<string> ClassDiagrams { get; } = new List<string>();
+
+        public IGitRepo GitAccess => LoadableGitAccess;
+
+        public ArchitectureViewType LoadedView { get; private set; } = ArchitectureViewType.None;
 
         public List<string> UseCases { get; } = new List<string>();
         
-        public List<string> Views { get; } = new List<string>();
+        internal ILoadableGitRepo LoadableGitAccess { get; set; } = new GitRepo();
 
-        public IGraph GetUseCaseByName(string useCaseName)
+        internal IStorageAccess StorageAccess { get; set; } = new YamlStorageAccess();
+
+        public IArchitectureView LoadUseCase(string useCaseName)
         {
-            using (var templateDefinitions = GetEmbeddedUmlYaml())
+            var graph = StorageAccess.LoadUseCaseGraph(useCaseName, _useCaseNameToViewPath[useCaseName]);
+
+            var useCase = new ArchitectureUseCaseView()
             {
-                using (var nodeDefinitinos = File.Open(_useCaseNameToViewPath[useCaseName], FileMode.Open))
-                {
-                    var templatesAsText = new StreamReader(templateDefinitions, Encoding.UTF8).ReadToEnd();
-                    var graphAsText = new StreamReader(nodeDefinitinos, Encoding.UTF8).ReadToEnd();
+                Graph = graph,
+                Name = useCaseName,
+                RepoPath = _pathToRepo,
+                StorageAccess = StorageAccess,
+                UseCasePath = _useCaseNameToViewPath[useCaseName],
+            };
 
-                    var combined = templatesAsText.TrimEnd() + "\n" + graphAsText.TrimStart();
+            useCase.Load();
 
-                    using (MemoryStream combinedStream = new MemoryStream(Encoding.UTF8.GetBytes(combined)))
-                    {
-                        using (var reader = new StreamReader(combinedStream))
-                        {
-                            var gwizDeserializer = new YamlSerializer();
-                            var graph = gwizDeserializer.Deserialize(combinedStream);
-
-                            LoadedView = LoadedView.UseCase;
-                            _useCaseName = useCaseName;
-                            _useCaseDiagram = graph;
-                            return graph;
-                        }
-                    }
-                }
-            }
+            return useCase;
         }
 
-        public IGraph GetViewByName(string viewName)
+        public IArchitectureView LoadClassDiagram(string viewName)
         {
-            using (var stream = GetEmbeddedUmlYaml())
+            var graph = StorageAccess.LoadClassGraph();
+
+            var annotationOptions = new AnnotationOptions();
+
+            using (var fileStream = new FileStream(_viewNameToViewPath[viewName], FileMode.Open))
             {
-                var gwizDeserializer = new YamlSerializer();
+                annotationOptions = AnnotationOptions.Deserialize(fileStream) ?? annotationOptions;
+            }
 
-                var graph = gwizDeserializer.Deserialize(stream);
+            var architectureView = new ArchitectureClassView()
+            {
+                Graph = graph,
+                Name = viewName,
+                RepoPath = _pathToRepo,
+                StorageAccess = StorageAccess,
+            };
 
-                var annotationOptions = new AnnotationOptions();
-
-                using (var fileStream = new FileStream(_viewNameToViewPath[viewName], FileMode.Open))
-                {
-                    annotationOptions = AnnotationOptions.Deserialize(fileStream) ?? annotationOptions;
-                }
-
-                _nodePersistence = new ViewPersistence()
-                {
-                    FileSystem = new FileSystem(),
-                    PathToRepo = _pathToRepo,
-                    StorageAccess = new StorageAccess(),
-                    ViewName = viewName,
-                };
-
-                _classNodeGenerator.NodePersistence = _nodePersistence;
+            _classNodeGenerator.ArchitectureView = architectureView;
                 
-                _classGenerator.AnnotationOptions = annotationOptions;
-                _classGenerator.ClassFilter = new ClassFilter(_pathToRepo, viewName);
-                _classGenerator.ClassNodeGenerator = _classNodeGenerator;
+            _classGenerator.AnnotationOptions = annotationOptions;
+            _classGenerator.ClassFilter = new ClassFilter(_pathToRepo, viewName);
+            _classGenerator.ClassNodeGenerator = _classNodeGenerator;
 
-                _classGenerator.Generate(_classParser, graph);
+            _classGenerator.Generate(_classParser, graph);
 
-                LoadedView = LoadedView.Class;
-
-                return graph;
-            }
+            return architectureView;
         }
 
-        public void ReadProject(string pathToRepo)
+        public IGitRepo ReadProject(string pathToRepo)
         {
             _pathToRepo = pathToRepo;
+            LoadableGitAccess.LoadRepo(pathToRepo);
             _pathToWiz = Path.Combine(_pathToRepo, ".wiz");
 
             if (!Directory.Exists(_pathToWiz))
@@ -115,48 +98,9 @@ namespace Awiz.Core
 
             // Parse the wiz information from the repo
             ReadUseCases();
-            ReadViews();
-        }
+            ReadClassDiagrams();
 
-        public void SaveView()
-        {
-            switch (LoadedView)
-            {
-                case LoadedView.UseCase:
-                    YamlSerializer serializer = new YamlSerializer();
-
-                    if (_useCaseDiagram == null)
-                    {
-                        throw new InvalidOperationException("No use case loaded");
-                    }
-
-                    using (var fileStream = new FileStream(_useCaseNameToViewPath[_useCaseName], FileMode.Create))
-                    {
-                        serializer.Serialize(fileStream, _useCaseDiagram);
-                    }
-                    break;
-                case LoadedView.Class:
-                    _nodePersistence.Save();
-                    break;
-                default:
-                    throw new InvalidOperationException("No view loaded");
-            }
-        }
-
-        private static Stream GetEmbeddedUmlYaml()
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-
-            string resourceName = "Awiz.Core.Assets.Uml.yaml";
-
-            Stream? stream = assembly.GetManifestResourceStream(resourceName);
-
-            if (stream == null)
-            {
-                throw new FileNotFoundException($"Resource {resourceName} not found in assembly {assembly.FullName}");
-            }
-
-            return stream;
+            return LoadableGitAccess;
         }
 
         private void ReadUseCases()
@@ -171,10 +115,9 @@ namespace Awiz.Core
                 UseCases.Add(useCaseName);
                 _useCaseNameToViewPath[useCaseName] = file;
             }
-
         }
 
-        private void ReadViews()
+        private void ReadClassDiagrams()
         {
             var path = Path.Combine(_pathToWiz, "views");
 
@@ -183,8 +126,8 @@ namespace Awiz.Core
             foreach (var file in files)
             {
                 var viewName = Path.GetFileNameWithoutExtension(file);
-                Views.Add(viewName);
                 _viewNameToViewPath[viewName] = file;
+                ClassDiagrams.Add(viewName);
             }
         }
     }

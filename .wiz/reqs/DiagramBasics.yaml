@@ -1,0 +1,186 @@
+Nodes:
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ''
+  Height: 120
+  Id: ba61f779-d6cc-40d2-9b12-5d24e15c5d01
+  Template: UseCase
+  Width: 180
+  X: 120
+  Y: 120
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Comment Views
+  Height: 120
+  Id: 00202ce7-1823-40da-aba2-e99354f961ca
+  Template: UseCase
+  Width: 180
+  X: -821
+  Y: -170
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Add Comment
+  Height: 120
+  Id: 55e6621d-b2a5-44b5-a385-367e02c1ddf1
+  Template: UseCase
+  Width: 202
+  X: -337
+  Y: -354
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Resolve Comment
+  Height: 120
+  Id: 514ad65e-68b3-4278-8d29-58b3e8c16107
+  Template: UseCase
+  Width: 204
+  X: -335
+  Y: -184
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Associate Comment with user name
+  Height: 120
+  Id: 4c67f5b8-d884-4840-8865-3cc64eaf7ced
+  Template: UseCase
+  Width: 347
+  X: -401
+  Y: -11
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Abstraction levels of diagrams
+  Height: 100
+  Id: 5ad08ee3-eb23-4f2e-81a1-eeab217618e0
+  Template: UseCase
+  Width: 325
+  X: -924
+  Y: 459
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Define abstraction level for diagram parts
+  Height: 120
+  Id: de1fd271-3eb4-4cf4-ae43-3f77b04898af
+  Template: UseCase
+  Width: 371
+  X: -394
+  Y: 201
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Limit visibility to selectable abstraction level
+  Height: 120
+  Id: e7c3a70f-a284-4038-b2f0-e70f0343c5c4
+  Template: UseCase
+  Width: 386
+  X: -384
+  Y: 444
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Associate Elements with Commit
+  Height: 120
+  Id: f68f4911-74bf-4c9c-a8dd-43c3d8cc2402
+  Template: UseCase
+  Width: 332
+  X: -771
+  Y: 788
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Define Commit Relation
+  Height: 120
+  Id: 60457d31-c880-4cba-aa70-d69d4ebd97b3
+  Template: UseCase
+  Width: 333
+  X: -275
+  Y: 786
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Navigate into other diagram
+  Height: 111
+  Id: ec384827-f21f-4b50-8b08-ae64a1b80565
+  Template: UseCase
+  Width: 350
+  X: 68
+  Y: 630
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Associate diagrams
+  Height: 87
+  Id: 63177b3f-2364-4fee-a328-4a3beb9f8549
+  Template: UseCase
+  Width: 280
+  X: -315
+  Y: 649
+Edges:
+- Ending: OpenArrow
+  From: 55e6621d-b2a5-44b5-a385-367e02c1ddf1
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 00202ce7-1823-40da-aba2-e99354f961ca
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 514ad65e-68b3-4278-8d29-58b3e8c16107
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 00202ce7-1823-40da-aba2-e99354f961ca
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 4c67f5b8-d884-4840-8865-3cc64eaf7ced
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 00202ce7-1823-40da-aba2-e99354f961ca
+  ToLabel: ''
+- Ending: OpenArrow
+  From: de1fd271-3eb4-4cf4-ae43-3f77b04898af
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 5ad08ee3-eb23-4f2e-81a1-eeab217618e0
+  ToLabel: ''
+- Ending: OpenArrow
+  From: e7c3a70f-a284-4038-b2f0-e70f0343c5c4
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 5ad08ee3-eb23-4f2e-81a1-eeab217618e0
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 60457d31-c880-4cba-aa70-d69d4ebd97b3
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: f68f4911-74bf-4c9c-a8dd-43c3d8cc2402
+  ToLabel: ''
+- Ending: OpenArrow
+  From: ec384827-f21f-4b50-8b08-ae64a1b80565
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 63177b3f-2364-4fee-a328-4a3beb9f8549
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 63177b3f-2364-4fee-a328-4a3beb9f8549
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 5ad08ee3-eb23-4f2e-81a1-eeab217618e0
+  ToLabel: ''

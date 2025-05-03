@@ -1,0 +1,50 @@
+Nodes:
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ''
+  Height: 300
+  Id: ba509f92-0917-45d7-87c7-2a5d3fe70a62
+  Template: Boundary
+  Width: 300
+  X: 100
+  Y: 100
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ''
+  Height: 80
+  Id: ed9d2494-88ff-459b-8f77-3d807729d8ee
+  Template: Actor
+  Width: 80
+  X: -777
+  Y: -81
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Create Sequence Diagram from code
+  Height: 92
+  Id: 24f21c7a-1295-4476-a7c0-c72fbfc2a46f
+  Template: UseCase
+  Width: 329
+  X: -571
+  Y: -111
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Show source code tree
+  Height: 120
+  Id: df88f0b0-cff3-4ab0-8ca5-6e7122defc48
+  Template: UseCase
+  Width: 180
+  X: 27
+  Y: -135
+Edges:
+- Ending: OpenArrow
+  From: 24f21c7a-1295-4476-a7c0-c72fbfc2a46f
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<includes>>
+  To: df88f0b0-cff3-4ab0-8ca5-6e7122defc48
+  ToLabel: ''

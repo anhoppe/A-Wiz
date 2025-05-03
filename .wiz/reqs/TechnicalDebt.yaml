@@ -1,0 +1,96 @@
+Nodes:
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ''
+  Height: 120
+  Id: be35577b-5853-4223-976f-a41f8eb80117
+  Template: UseCase
+  Width: 180
+  X: 120
+  Y: 120
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ''
+  Height: 80
+  Id: c78a8011-fd89-4bfa-b88f-d391f7cf4c8c
+  Template: Actor
+  Width: 80
+  X: -1294
+  Y: -417
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Add technical debt folder in .wiz
+  Height: 120
+  Id: d2a3ff13-fb84-4160-88c3-9845537f02a8
+  Template: UseCase
+  Width: 320
+  X: -678
+  Y: -536
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Document Technical debt
+  Height: 120
+  Id: 26642135-07f3-46d3-8d54-6088157bd80c
+  Template: UseCase
+  Width: 309
+  X: -1098
+  Y: -410
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Trace technical debt
+  Height: 120
+  Id: 19a39c6c-6543-4f49-adfd-a1c8199164c9
+  Template: UseCase
+  Width: 244
+  X: -1086
+  Y: -132
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Associate technical debt with architecture view
+  Height: 120
+  Id: 75fe1fd2-0b2e-472d-8420-00c6f0d7e346
+  Template: UseCase
+  Width: 428
+  X: -691
+  Y: -235
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Associate technical debt with commits
+  Height: 120
+  Id: 6687d9c8-601f-4b4e-8d79-529497b6726d
+  Template: UseCase
+  Width: 381
+  X: -667
+  Y: 8
+Edges:
+- Ending: OpenArrow
+  From: 26642135-07f3-46d3-8d54-6088157bd80c
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<includes>>
+  To: d2a3ff13-fb84-4160-88c3-9845537f02a8
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 75fe1fd2-0b2e-472d-8420-00c6f0d7e346
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 19a39c6c-6543-4f49-adfd-a1c8199164c9
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 6687d9c8-601f-4b4e-8d79-529497b6726d
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 19a39c6c-6543-4f49-adfd-a1c8199164c9
+  ToLabel: ''

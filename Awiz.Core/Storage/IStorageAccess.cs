@@ -1,9 +1,5 @@
-﻿using Gwiz.Core.Contract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Awiz.Core.Contract.Git;
+using Gwiz.Core.Contract;
 
 namespace Awiz.Core.Storage
 {
@@ -12,6 +8,16 @@ namespace Awiz.Core.Storage
     /// </summary>
     internal interface IStorageAccess
     {
+        IGraph LoadClassGraph();
+        
+        IGraph LoadUseCaseGraph(string useCaseName, string path);
+
+        /// <summary>
+        /// Loads the GIT information for a node from a stream
+        /// </summary>
+        /// <param name="stream">The stream the git info is loaded from</param>
+        public Dictionary<string, IGitNodeInfo> LoadGitInfo(Stream stream);
+
         /// <summary>
         /// Loads persisted information for a node from a view
         /// </summary>
@@ -20,6 +26,13 @@ namespace Awiz.Core.Storage
         /// <param name="stream">The stream that contains the persisted information</param>
         /// <returns>The complete view collection which is used to safe the information</returns>
         View LoadNode(INode targetNode, string viewName, Stream stream);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gitInfo"></param>
+        /// <param name="stream"></param>
+        void SaveGitInfo(Dictionary<string, IGitNodeInfo> gitInfo, Stream stream);
 
         /// <summary>
         /// Saves a node to the persistence storage

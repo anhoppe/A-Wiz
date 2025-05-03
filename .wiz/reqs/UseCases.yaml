@@ -1,0 +1,94 @@
+Nodes:
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ''
+  Height: 80
+  Id: 5cd7833d-92ef-447d-add9-fc76aa0461d4
+  Template: Actor
+  Width: 80
+  X: -1163
+  Y: -341
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ''
+  Height: 120
+  Id: 38bbe267-307a-40db-a50b-071d3cf98d48
+  Template: UseCase
+  Width: 180
+  X: 120
+  Y: 120
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Create Use Case Diagrams
+  Height: 120
+  Id: adb561b8-88b3-4cab-960c-c172eb11fa7c
+  Template: UseCase
+  Width: 272
+  X: -881
+  Y: -529
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Priority of Use-Case
+  Height: 109
+  Id: c2f930e3-8112-436f-81a5-93d3c7687e8d
+  Template: UseCase
+  Width: 264
+  X: -513
+  Y: -379
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Rate Use-Cases
+  Height: 120
+  Id: c9da9bef-4e7a-4eae-bfa9-14d84bf7775c
+  Template: UseCase
+  Width: 180
+  X: -843
+  Y: -213
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Complexity of Use-Case
+  Height: 120
+  Id: 14121f44-c145-4e0f-9c09-953e39e4c05c
+  Template: UseCase
+  Width: 298
+  X: -530
+  Y: -32
+Edges:
+- Ending: OpenArrow
+  From: c2f930e3-8112-436f-81a5-93d3c7687e8d
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: c9da9bef-4e7a-4eae-bfa9-14d84bf7775c
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 14121f44-c145-4e0f-9c09-953e39e4c05c
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: c9da9bef-4e7a-4eae-bfa9-14d84bf7775c
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 5cd7833d-92ef-447d-add9-fc76aa0461d4
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: ''
+  To: c9da9bef-4e7a-4eae-bfa9-14d84bf7775c
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 5cd7833d-92ef-447d-add9-fc76aa0461d4
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: ''
+  To: adb561b8-88b3-4cab-960c-c172eb11fa7c
+  ToLabel: ''

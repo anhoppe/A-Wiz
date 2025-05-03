@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Awiz.Core.Test", "Awiz.Core
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wiz.Infrastructure.IO", "Wiz.Infrastructure.IO\Wiz.Infrastructure.IO.csproj", "{7802CE45-2B44-4F8B-9524-51B4CA12A982}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Awiz.Core.Contract", "Awiz.Core.Contract\Awiz.Core.Contract.csproj", "{846F685F-B974-47CA-93DE-06B42CA31F0A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -53,6 +55,10 @@ Global
 		{7802CE45-2B44-4F8B-9524-51B4CA12A982}.Debug|x64.Build.0 = Debug|x64
 		{7802CE45-2B44-4F8B-9524-51B4CA12A982}.Release|x64.ActiveCfg = Release|x64
 		{7802CE45-2B44-4F8B-9524-51B4CA12A982}.Release|x64.Build.0 = Release|x64
+		{846F685F-B974-47CA-93DE-06B42CA31F0A}.Debug|x64.ActiveCfg = Debug|x64
+		{846F685F-B974-47CA-93DE-06B42CA31F0A}.Debug|x64.Build.0 = Debug|x64
+		{846F685F-B974-47CA-93DE-06B42CA31F0A}.Release|x64.ActiveCfg = Release|x64
+		{846F685F-B974-47CA-93DE-06B42CA31F0A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,14 @@
+adb561b8-88b3-4cab-960c-c172eb11fa7c:
+  AssociatedCommits:
+  - Author: anhoppe
+    Message: A-Wiz-16 Allow to save use case diagrams; allow to add noes/edges/boundaries to use cases
+    Sha: 6870b66f4bf453adca156aa0bc16e0d0748f3df4
+  - Author: anhoppe
+    Message: A-Wiz-15 use can inteactively add use cases and actors to a use case diagram
+    Sha: 604f114b52e9f7c887ff6d68558e3b72787606a4
+  - Author: anhoppe
+    Message: A-Wiz-15 tried to introduce control panels for diagrams in application
+    Sha: 82494ea7d2db788ac29dd16b7561697f68df958f
+  - Author: anhoppe
+    Message: A-Wiz-15 allow to load and save use cases
+    Sha: 650f4319cba9afc4df7973c8ac4a92d565ea9e52
