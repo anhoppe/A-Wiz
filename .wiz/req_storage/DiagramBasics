@@ -1,0 +1,5 @@
+f68f4911-74bf-4c9c-a8dd-43c3d8cc2402:
+  AssociatedCommits:
+  - Author: anhoppe
+    Message: A-Wiz-17 allow to associated commits with use-cases. includes UI / backend / serialization. Adapted persistence mechanism
+    Sha: e7108fbcfb60a033b082f5bed0ab484bcd7c2ec0

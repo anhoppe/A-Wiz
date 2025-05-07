@@ -1,0 +1,192 @@
+Nodes:
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Architect
+  Height: 80
+  Id: c84fa886-d0fd-43aa-bb1e-f4b8b201fe79
+  Template: Actor
+  Width: 80
+  X: -1145
+  Y: -79
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Detect deletion of props/methods
+  Height: 120
+  Id: 964262ac-f125-4de4-b34b-0349a464174d
+  Template: UseCase
+  Width: 307
+  X: -287
+  Y: 498
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Create Class Diagram from source
+  Height: 120
+  Id: 55a68732-02d6-4958-90db-7b9fa16ae8e9
+  Template: UseCase
+  Width: 342
+  X: -779
+  Y: -446
+- Content:
+  - Col: 0
+    Row: 0
+    Text: View classes in tree
+  Height: 120
+  Id: 76b2244a-2ca7-407d-a7e5-4180f4316172
+  Template: UseCase
+  Width: 230
+  X: -235
+  Y: -719
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Drag'n'Drop classes to diagram
+  Height: 120
+  Id: c6f0c1a0-4538-4d5d-a70a-1dba07d12f63
+  Template: UseCase
+  Width: 325
+  X: -278
+  Y: -444
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Monitor consistence of class diagram
+  Height: 120
+  Id: 56ec4a86-4f31-4e15-bf0d-c9056b2f9ab9
+  Template: UseCase
+  Width: 351
+  X: -797
+  Y: 295
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Properties / methods from class can be activated
+  Height: 120
+  Id: 1baf8276-fbf5-4d7a-a73e-af9e1463fcab
+  Template: UseCase
+  Width: 428
+  X: 165
+  Y: -331
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Detect deletion of class
+  Height: 120
+  Id: 14d8c238-a1f9-4b49-9b56-69c0a3b3eb15
+  Template: UseCase
+  Width: 314
+  X: -288
+  Y: 288
+- Content:
+  - Col: 0
+    Row: 0
+    Text: 'Automatically resolve dependencies '
+  Height: 120
+  Id: 7b581e7e-e130-46d8-ab4f-f76d8b077703
+  Template: UseCase
+  Width: 385
+  X: -313
+  Y: -182
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Detect when classes are added
+  Height: 120
+  Id: 9152654d-5162-4778-aff5-0633d26d828d
+  Template: UseCase
+  Width: 291
+  X: -278
+  Y: 77
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Adjacent Interfaces / clases can be added with correct relation
+  Height: 120
+  Id: 05a6928a-2a5a-4e8c-9bc1-4b72e6ee74b3
+  Template: UseCase
+  Width: 506
+  X: 130
+  Y: -31
+Edges:
+- Ending: OpenArrow
+  From: 55a68732-02d6-4958-90db-7b9fa16ae8e9
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<includes>>
+  To: c6f0c1a0-4538-4d5d-a70a-1dba07d12f63
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 55a68732-02d6-4958-90db-7b9fa16ae8e9
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<includes>>
+  To: 76b2244a-2ca7-407d-a7e5-4180f4316172
+  ToLabel: ''
+- Ending: OpenArrow
+  From: c84fa886-d0fd-43aa-bb1e-f4b8b201fe79
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: ''
+  To: 55a68732-02d6-4958-90db-7b9fa16ae8e9
+  ToLabel: ''
+- Ending: OpenArrow
+  From: c84fa886-d0fd-43aa-bb1e-f4b8b201fe79
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: ''
+  To: 56ec4a86-4f31-4e15-bf0d-c9056b2f9ab9
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 55a68732-02d6-4958-90db-7b9fa16ae8e9
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<includes>>
+  To: 7b581e7e-e130-46d8-ab4f-f76d8b077703
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 1baf8276-fbf5-4d7a-a73e-af9e1463fcab
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 7b581e7e-e130-46d8-ab4f-f76d8b077703
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 56ec4a86-4f31-4e15-bf0d-c9056b2f9ab9
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<includes>>
+  To: 9152654d-5162-4778-aff5-0633d26d828d
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 56ec4a86-4f31-4e15-bf0d-c9056b2f9ab9
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<includes>>
+  To: 14d8c238-a1f9-4b49-9b56-69c0a3b3eb15
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 56ec4a86-4f31-4e15-bf0d-c9056b2f9ab9
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<includes>>
+  To: 964262ac-f125-4de4-b34b-0349a464174d
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 05a6928a-2a5a-4e8c-9bc1-4b72e6ee74b3
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 7b581e7e-e130-46d8-ab4f-f76d8b077703
+  ToLabel: ''

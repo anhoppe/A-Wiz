@@ -21,9 +21,13 @@ namespace Awiz.Core
 
         internal IStorageAccess StorageAccess { get; set; } = new YamlStorageAccess();
 
+        public event EventHandler<ClassInfo>? ClassSelected;
+
         public event EventHandler<INode>? NodeAdded;
 
-        public abstract void AddClassNode(INode node, ClassInfo classInfo);
+        public abstract void AddBaseClassNode(ClassInfo derivedClassInfo);
+
+        public abstract void AddClassNode(ClassInfo classInfo);
 
         public abstract void AddUseCaseNode(INode node);
 
@@ -41,7 +45,12 @@ namespace Awiz.Core
         
         public abstract void Save();
 
-        internal void RaiseNodeAdded(INode node)
+        protected void RaiseClassSelected(ClassInfo selectedClass)
+        {
+            ClassSelected?.Invoke(this, selectedClass);
+        }
+
+        protected void RaiseNodeAdded(INode node)
         {
             NodeAdded?.Invoke(this, node);
         }

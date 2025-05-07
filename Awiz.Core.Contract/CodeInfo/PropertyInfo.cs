@@ -12,9 +12,25 @@
         public bool IsEnumerable { get; set; } = false;
 
         public string Name { get; set; } = string.Empty;
+
+        public string TypeId
+        {
+            get
+            {
+                var id = $"{TypeNamespace}.{TypeName}";
+                if (!string.IsNullOrEmpty(id) && id[^1] == '?')
+                {
+                    id = id[..^1];
+                }
+
+                return id;
+            }
+        }
+
+        public string TypeNamespace { get; set; } = string.Empty;
+
+        public string TypeName { get; set; } = string.Empty;
         
-        public string Type { get; set; } = string.Empty;
-        
-        public override string ToString() => $"{AccessModifier} {Type} {Name}";
+        public override string ToString() => $"{AccessModifier} {TypeName} {Name}";
     }
 }

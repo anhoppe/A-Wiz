@@ -27,6 +27,7 @@ namespace Awiz.Core.Test.CSharpClassGenerator
             var class1 = classInfos.First(c => c.Name == "Class1");
             Assert.That(class1.ImplementedInterfaces.Count, Is.EqualTo(1));
             Assert.That(class1.ImplementedInterfaces[0], Is.EqualTo("Awiz.Core.Test.Assets.ExtendsImplements.Interface1"));
+            Assert.That(class1.Id, Is.EqualTo("Awiz.Core.Test.Assets.ExtendsImplements.Class1"));
 
             var class2 = classInfos.First(c => c.Name == "Class2");
             Assert.That(class2.BaseClass, Is.EqualTo("Awiz.Core.Test.Assets.ExtendsImplements.Class1"));
@@ -34,6 +35,7 @@ namespace Awiz.Core.Test.CSharpClassGenerator
             var interface2 = classInfos.First(c => c.Name == "Interface2");
             Assert.That(interface2.ImplementedInterfaces.Count, Is.EqualTo(1));
             Assert.That(interface2.ImplementedInterfaces[0], Is.EqualTo("Awiz.Core.Test.Assets.ExtendsImplements.Interface1"));
+            Assert.That(interface2.Id, Is.EqualTo("Awiz.Core.Test.Assets.ExtendsImplements.Interface2"));
         }
 
         [Test]

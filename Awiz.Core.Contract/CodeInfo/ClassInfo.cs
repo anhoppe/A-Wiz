@@ -1,4 +1,6 @@
-﻿namespace Awiz.Core.Contract.CodeInfo
+﻿using System.Xml.Linq;
+
+namespace Awiz.Core.Contract.CodeInfo
 {
     public enum ClassType
     {
@@ -21,7 +23,19 @@
 
         public List<FieldInfo> Fields { get; set; } = new List<FieldInfo>();
 
-        public string Id => $"{Namespace}.{Name}";
+        public string Id
+        {
+            get
+            {
+                var id = $"{Namespace}.{Name}";
+                if (!string.IsNullOrEmpty(id) && id[^1] == '?')
+                {
+                    id = id[..^1];
+                }
+
+                return id;
+            }
+        }
 
         public List<string> ImplementedInterfaces { get; } = new List<string>();
         
@@ -36,15 +50,6 @@
 
         public ClassType Type { get; set; } = ClassType.Class;
 
-
-        public override string ToString()
-        {
-            return $"{Namespace}.{Name}\n" +
-                   $"  Methods: {string.Join(", ", Methods.Select(m => m.ToString()))}\n" +
-                   $"  Properties: {string.Join(", ", Properties.Select(p => p.ToString()))}\n" +
-                   $"  Fields: {string.Join(", ", Fields.Select(f => f.ToString()))}";
-        }
-
+        public override string ToString() => Name;      
     }
-
 }

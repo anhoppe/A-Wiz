@@ -220,7 +220,7 @@ namespace Awiz.Core.CSharpClassGenerator
                     var propertyInfo = new PropertyInfo
                     {
                         Name = property.Identifier.ToString(),
-                        Type = typeSyntax?.ToString() ?? "",
+                        TypeName = typeSyntax?.ToString() ?? "",
                         AccessModifier = GetAccessModifier(property)
                     };
 
@@ -230,6 +230,8 @@ namespace Awiz.Core.CSharpClassGenerator
 
                         if (typeSymbol is INamedTypeSymbol namedTypeSymbol) // Check if it's a named type (e.g., List<T>)
                         {
+                            propertyInfo.TypeNamespace = typeSymbol.ContainingNamespace.ToDisplayString();
+
                             // Check if it implements IEnumerable<T>
                             var enumerableInterface = namedTypeSymbol.AllInterfaces
                                 .FirstOrDefault(i => 

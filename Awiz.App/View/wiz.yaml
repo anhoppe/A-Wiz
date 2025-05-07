@@ -1,0 +1,7 @@
+Views:
+    - Name: awiz_app
+      Include:
+        - ClassPanelView
+        - CommitInfoPanelView
+        - MainWindow
+        - UseCasePanelView

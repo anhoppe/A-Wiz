@@ -10,6 +10,11 @@ namespace Awiz.Core.Contract
     public interface IArchitectureView
     {
         /// <summary>
+        /// Event is raised when a class is selected
+        /// </summary>
+        event EventHandler<ClassInfo>? ClassSelected;
+
+        /// <summary>
         /// Event is raised when a node is added
         /// </summary>
         event EventHandler<INode>? NodeAdded;
@@ -30,11 +35,17 @@ namespace Awiz.Core.Contract
         ArchitectureViewType Type { get; }
 
         /// <summary>
+        /// Adds the base class of the passed class to the diagram.
+        /// 
+        /// </summary>
+        /// <param name="derivedClassInfo">The derived class the base class is inserted for</param>
+        void AddBaseClassNode(ClassInfo derivedClassInfo);
+
+        /// <summary>
         /// Adds a node to the graph, only possible when the loaded view is a class diagram
         /// </summary>
-        /// <param name="node"></param>
         /// <param name="classInfo"></param>
-        void AddClassNode(INode node, ClassInfo classInfo);
+        void AddClassNode(ClassInfo classInfo);
 
         /// <summary>
         /// Adds a node to the graph, only possible when the loaded view is a use case diagram

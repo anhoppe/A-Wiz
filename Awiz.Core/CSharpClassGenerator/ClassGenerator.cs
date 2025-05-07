@@ -44,7 +44,7 @@ namespace Awiz.Core.CSharpClassGenerator
 
                         foreach (var prop in classInfo.Properties)
                         {
-                            if (prop.Type == classInfo2.Name)
+                            if (prop.TypeName == classInfo2.Name)
                             {
                                 referenceCount++;
                             }

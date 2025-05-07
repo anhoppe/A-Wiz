@@ -1,0 +1,8 @@
+Views:
+    - Name: awiz_app
+      Include:
+        - ClassPanelViewModel
+        - CommitInfoPanelViewModel
+        - CommitViewModel
+        - MainWindowViewModel
+        - UseCasePanelViewModel

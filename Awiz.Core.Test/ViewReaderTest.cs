@@ -1,5 +1,10 @@
-﻿using Moq;
+﻿using Awiz.Core.CodeTree;
+using Awiz.Core.Contract.CodeInfo;
+using Awiz.Core.Contract.CodeTree;
+using Moq;
 using NUnit.Framework;
+using System.Linq;
+using System.Security.Cryptography;
 using Wiz.Infrastructure.IO;
 
 namespace Awiz.Core.Test
@@ -9,6 +14,8 @@ namespace Awiz.Core.Test
     {
         private Mock<ILoadableGitRepo> _loadableGitAccessMock = new();
 
+        private Mock<INamespaceBuilder> _namespaceBuilderMock = new();
+
         private ViewReader _sut = new();
 
         [SetUp]
@@ -16,9 +23,11 @@ namespace Awiz.Core.Test
         {
             _loadableGitAccessMock = new();
 
+            _namespaceBuilderMock.Setup(m => m.Build(It.IsAny<List<ClassInfo>>())).Returns(new List<ClassNamespaceNode>());
             _sut = new ViewReader()
             {
                 LoadableGitAccess = _loadableGitAccessMock.Object,
+                NamespaceBuilder = _namespaceBuilderMock.Object,
             };
         }
 
@@ -38,6 +47,7 @@ namespace Awiz.Core.Test
         [Test]
         public void LoadUseCase_WhenReadingExtendsImplementsProject_ThenTheUseCaseGrapgIsAvailable()
         {
+            // Arrange
             _sut.ReadProject("Assets\\ExtendsImplements\\");
 
             // Act
@@ -58,8 +68,70 @@ namespace Awiz.Core.Test
             var view = _sut.LoadClassDiagram("include_by_name");
 
             // Assert
-            Assert.That(3, Is.EqualTo(view.Graph?.Nodes.Count), "Expected all nodes defined for the view in the graph");
-            Assert.That(2, Is.EqualTo(view.Graph?.Edges.Count), "Expected all edges defined for the view in the graph");
+            Assert.That(view.Graph?.Nodes.Count, Is.EqualTo(3), "Expected all nodes defined for the view in the graph");
+            Assert.That(view.Graph?.Edges.Count, Is.EqualTo(3), "Expected all edges defined for the view in the graph");
+        }
+
+        [Test]
+        public void ClassNamespaceNodes_WhenRepoIsRead_ThenClassNamespacesNodesAreSet()
+        {
+            // Arrange
+            var classNamespaces = new List<ClassNamespaceNode>()
+            {
+                new ClassNamespaceNode(),
+                new ClassNamespaceNode(),
+            };
+
+            _namespaceBuilderMock.Setup(x => x.Build(It.IsAny<IList<ClassInfo>>()))
+                .Returns(classNamespaces);
+
+            // Act
+            _sut.ReadProject("Assets\\ExtendsImplements\\");
+
+            // Assert
+            Assert.That(_sut.ClassNamespaceNodes.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public void ClassInfos_WhenRepoIsRead_ThenClassInfosAreAvailable()
+        {
+            // Arrange
+            _sut.ReadProject("Assets\\ExtendsImplements\\");
+
+            // Act
+            var classInfos = _sut.ClassInfos;
+
+            // Assert
+            Assert.That(classInfos.Count, Is.EqualTo(5));
+        }
+
+        [Test]
+        public void ClassInfo_WhenRepoWithInterfacesIsRead_ThenTheIntefacesInClassObjectContainFullId()
+        {
+            // Arrange
+            _sut.ReadProject("Assets\\ExtendsImplements\\");
+
+            // Act
+            var classInfos = _sut.ClassInfos;
+
+            // Assert
+            var class1 = classInfos.First(p => p.Name == "Class1");
+            Assert.That(class1.ImplementedInterfaces.Count, Is.EqualTo(1));
+            Assert.That(class1.ImplementedInterfaces[0], Is.EqualTo("Awiz.Core.Test.Assets.ExtendsImplements.Interface1"));
+        }
+
+        [Test]
+        public void PropertyInfo_WhenClassHasPropertyToOtherClass_ThenThePropertyIdHasFullyQualifiedNameToClass()
+        {
+            // Arrange
+            _sut.ReadProject("Assets\\ExtendsImplements\\");
+            var classInfo = _sut.ClassInfos.First(p => p.Name == "Class1");
+
+            // Act
+            var propertyInfo = classInfo.Properties.First(p => p.Name == "Class2Prop");
+
+            // Assert
+            Assert.That(propertyInfo.TypeId, Is.EqualTo("Awiz.Core.Test.Assets.ExtendsImplements.Class2"));
         }
 
         [Test]

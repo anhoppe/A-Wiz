@@ -1,17 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Navigation;
+using Awiz.ViewModel;
+using Awiz.Core.Contract.CodeTree;
+using Awiz.Core.Contract.CodeInfo;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -23,6 +16,75 @@ namespace Awiz.View
         public ClassPanelView()
         {
             this.InitializeComponent();
+        }
+
+        private void ClassPanelView_Loaded(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as ClassPanelViewModel;
+            if (viewModel != null)
+            {
+                PopulateTree(viewModel.ClassNamespaceNodes);
+            }
+        }
+
+        public void PopulateTree(List<ClassNamespaceNode> classNamespaceNodes)
+        {
+            foreach (var rootNode in classNamespaceNodes)
+            {
+                var node = CreateTreeViewNode(rootNode);
+                _classNodeTree.RootNodes.Add(node);
+            }
+            _classNodeTree.SelectionChanged += (sender, args) =>
+            {
+                if (args.AddedItems.Count > 0)
+                {
+                    var item = args.AddedItems.First();
+                    var treeNodeItem = item as TreeViewNode;
+
+                    if (treeNodeItem != null)
+                    {
+                        var classInfo = treeNodeItem.Content as ClassInfo;
+                        if (classInfo == null)
+                        {
+                            return;
+                        }
+
+                        var dataContext = DataContext as ClassPanelViewModel;
+                        if (dataContext == null)
+                        {
+                            return;
+                        }
+
+                        dataContext.AddClassNode(classInfo);
+                    }
+                }
+            };
+
+        }
+
+        private TreeViewNode CreateTreeViewNode(ClassNamespaceNode node)
+        {
+            var treeNode = new TreeViewNode 
+            { 
+                Content = node, 
+                IsExpanded = true 
+            };
+
+            foreach (var child in node.Children)
+            {
+                treeNode.Children.Add(CreateTreeViewNode(child));
+            }
+
+            foreach (var childClass in node.Classes)
+            {
+                var treeViewNode = new TreeViewNode()
+                {
+                    Content = childClass,
+                };
+                treeNode.Children.Add(treeViewNode);
+            }
+
+            return treeNode;
         }
     }
 }

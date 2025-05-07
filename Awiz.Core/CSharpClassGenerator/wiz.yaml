@@ -1,0 +1,10 @@
+Views:
+    - Name: awiz_app
+      Include:
+        - ClassFilter
+        - ClassGenerator
+        - ClassNodeGenerator
+        - ClassParser
+        - IClassFilter
+        - IClassNodeGenerator
+        - IClassProvider

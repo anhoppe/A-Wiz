@@ -1,6 +1,9 @@
 ﻿using Gwiz.Core.Contract;
 using Awiz.Core.Contract.CodeInfo;
 using Awiz.Core.Contract;
+using Awiz.Core.Storage;
+using Gwiz.Core;
+using System.Xml.Linq;
 
 namespace Awiz.Core.CSharpClassGenerator
 {
@@ -9,8 +12,6 @@ namespace Awiz.Core.CSharpClassGenerator
         private static readonly float FromToLabelOffsetPerCent = 5.0f;
 
         private Dictionary<string, INode> _nodeMap = new();
-
-        public IArchitectureView ArchitectureView { get; set; } = new ArchitectureClassView();
 
         public void CreateAssociation(IGraph graph, ClassInfo from, ClassInfo to)
         {
@@ -28,14 +29,9 @@ namespace Awiz.Core.CSharpClassGenerator
             graph.AddEdge(node1, node2, fromMultiplicity, toMultiplicity, FromToLabelOffsetPerCent);
         }
 
-        public void CreateClassNode(IGraph graph, ClassInfo classInfo)
+        public INode CreateClassNode(IGraph graph, ClassInfo classInfo)
         {
             var node = graph.AddNode("Class");
-
-            ArchitectureView.AddClassNode(node, classInfo);
-
-            _nodeMap[classInfo.Id] = node;
-
             node.Grid.Cells[0][0].Text = classInfo.Name;
 
             node.Grid.Cells[0][1].Text = classInfo.Properties.Aggregate("", (current, prop) => current + $"{prop}\n");
@@ -43,6 +39,10 @@ namespace Awiz.Core.CSharpClassGenerator
 
             node.Width = 120;
             node.Height = 160;
+
+            _nodeMap[classInfo.Id] = node;
+
+            return node;
         }
 
         public void CreateExtension(IGraph graph, ClassInfo baseClass, ClassInfo derivedClass)

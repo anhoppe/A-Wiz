@@ -17,7 +17,12 @@ namespace Awiz.Core
 
         internal ISerializer Serializer { get; set; } = new YamlSerializer();
 
-        public override void AddClassNode(INode node, ClassInfo classInfo)
+        public override void AddBaseClassNode(ClassInfo derivedClassInfo)
+        {
+            throw new NotSupportedException("Use case diagram cannot add base class");
+        }
+
+        public override void AddClassNode(ClassInfo classInfo)
         {
             throw new NotSupportedException("Cannot add a class node to a Use Case diagram");
         }

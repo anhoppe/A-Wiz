@@ -1,4 +1,7 @@
 Views:
   persistence:
-    X: -1011
-    Y: 109
+    X: -717
+    Y: 235
+  awiz_app:
+    X: 91
+    Y: -1419

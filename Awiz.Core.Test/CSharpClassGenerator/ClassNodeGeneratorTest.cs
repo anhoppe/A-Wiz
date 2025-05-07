@@ -13,20 +13,14 @@ namespace Awiz.Core.Test.CSharpClassGenerator
     {
         private Mock<IGraph> _graphMock = new();
 
-        private Mock<IArchitectureView> _architectureViewMock = new();
-
         private ClassNodeGenerator _sut = new ClassNodeGenerator();
 
         [SetUp]
         public void SetUp()
         { 
             _graphMock = new();
-            _architectureViewMock = new();
 
-            _sut = new ClassNodeGenerator()
-            {
-                ArchitectureView = _architectureViewMock.Object,
-            };
+            _sut = new ClassNodeGenerator();
         }
 
         [Test]
@@ -93,25 +87,6 @@ namespace Awiz.Core.Test.CSharpClassGenerator
 
             // Assert
             _graphMock.Verify(m => m.AddEdge(node1Mock.Object, node2Mock.Object, "foo", "bar", It.IsAny<float>()));
-        }
-
-
-        [Test]
-        public void CreateClassNode_WhenAClassNodeIsCreatedThenItIsAddedToPersistence()
-        {
-            // Arrange
-            var nodeMock = new Mock<INode>();
-            nodeMock.Setup(p => p.Grid).Returns(MockGrid());
-
-            var classInfo = new ClassInfo();
-
-            _graphMock.Setup(m => m.AddNode("Class")).Returns(nodeMock.Object);
-
-            // Act
-            _sut.CreateClassNode(_graphMock.Object, classInfo);
-
-            // Assert
-            _architectureViewMock.Verify(m => m.AddClassNode(nodeMock.Object, classInfo));
         }
 
         [Test]

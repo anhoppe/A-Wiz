@@ -3,6 +3,9 @@ using Awiz.Core.Contract;
 using Awiz.Core.CSharpClassGenerator;
 using Awiz.Core.Contract.Git;
 using Awiz.Core.Git;
+using Awiz.Core.Contract.CodeInfo;
+using Awiz.Core.CodeTree;
+using Awiz.Core.Contract.CodeTree;
 
 namespace Awiz.Core
 {
@@ -18,11 +21,17 @@ namespace Awiz.Core
 
         private string _pathToWiz = string.Empty;
 
+        private RelationBuilder _relationBuilder = new();
+
         private Dictionary<string, string> _useCaseNameToViewPath = new Dictionary<string, string>();
 
         private Dictionary<string, string> _viewNameToViewPath = new Dictionary<string, string>();
 
-        public List<string> ClassDiagrams { get; } = new List<string>();
+        public List<string> ClassDiagrams { get; } = new();
+
+        public List<ClassInfo> ClassInfos { get; private set; } = new();
+
+        public List<ClassNamespaceNode> ClassNamespaceNodes { get; } = new();
 
         public IGitRepo GitAccess => LoadableGitAccess;
 
@@ -32,7 +41,49 @@ namespace Awiz.Core
         
         internal ILoadableGitRepo LoadableGitAccess { get; set; } = new GitRepo();
 
+        internal INamespaceBuilder NamespaceBuilder { get; set; } = new NamespaceBuilder();
+
         internal IStorageAccess StorageAccess { get; set; } = new YamlStorageAccess();
+
+        public ViewReader()
+        {
+            _relationBuilder.ClassNodeGenerator = _classNodeGenerator;
+        }
+
+        public ClassInfo GetClassInfoById(string id)
+        {
+            return ClassInfos.FirstOrDefault(p => p.Id == id) ?? throw new ArgumentException($"No such class: {id}");
+        }
+
+        public IArchitectureView LoadClassDiagram(string viewName)
+        {
+            var graph = StorageAccess.LoadClassGraph();
+            var architectureView = new ArchitectureClassView(_classParser.Classes)
+            {
+                ClassNodeGenerator = _classNodeGenerator,
+                Graph = graph,
+                Name = viewName,
+                RelationBuilder = _relationBuilder,
+                RepoPath = _pathToRepo,
+                StorageAccess = StorageAccess,
+            };
+
+            var annotationOptions = new AnnotationOptions();
+
+            using (var fileStream = new FileStream(_viewNameToViewPath[viewName], FileMode.Open))
+            {
+                annotationOptions = AnnotationOptions.Deserialize(fileStream) ?? annotationOptions;
+            }
+
+
+            _classGenerator.AnnotationOptions = annotationOptions;
+            _classGenerator.ClassFilter = new ClassFilter(_pathToRepo, viewName);
+            _classGenerator.ClassNodeGenerator = _classNodeGenerator;
+
+            _classGenerator.Generate(_classParser, graph);
+
+            return architectureView;
+        }
 
         public IArchitectureView LoadUseCase(string useCaseName)
         {
@@ -51,37 +102,6 @@ namespace Awiz.Core
 
             return useCase;
         }
-
-        public IArchitectureView LoadClassDiagram(string viewName)
-        {
-            var graph = StorageAccess.LoadClassGraph();
-
-            var annotationOptions = new AnnotationOptions();
-
-            using (var fileStream = new FileStream(_viewNameToViewPath[viewName], FileMode.Open))
-            {
-                annotationOptions = AnnotationOptions.Deserialize(fileStream) ?? annotationOptions;
-            }
-
-            var architectureView = new ArchitectureClassView()
-            {
-                Graph = graph,
-                Name = viewName,
-                RepoPath = _pathToRepo,
-                StorageAccess = StorageAccess,
-            };
-
-            _classNodeGenerator.ArchitectureView = architectureView;
-                
-            _classGenerator.AnnotationOptions = annotationOptions;
-            _classGenerator.ClassFilter = new ClassFilter(_pathToRepo, viewName);
-            _classGenerator.ClassNodeGenerator = _classNodeGenerator;
-
-            _classGenerator.Generate(_classParser, graph);
-
-            return architectureView;
-        }
-
         public IGitRepo ReadProject(string pathToRepo)
         {
             _pathToRepo = pathToRepo;
@@ -95,26 +115,13 @@ namespace Awiz.Core
 
             // Parse the source code information from the repo
             _classParser.ParseClasses(_pathToRepo);
-
+            ClassInfos = _classParser.Classes;
+            ClassNamespaceNodes.AddRange(NamespaceBuilder.Build(_classParser.Classes));
             // Parse the wiz information from the repo
             ReadUseCases();
             ReadClassDiagrams();
 
             return LoadableGitAccess;
-        }
-
-        private void ReadUseCases()
-        {
-            var path = Path.Combine(_pathToWiz, "reqs");
-
-            var files = Directory.GetFiles(path, "*.yaml", SearchOption.TopDirectoryOnly);
-
-            foreach (var file in files)
-            {
-                var useCaseName = Path.GetFileNameWithoutExtension(file);
-                UseCases.Add(useCaseName);
-                _useCaseNameToViewPath[useCaseName] = file;
-            }
         }
 
         private void ReadClassDiagrams()
@@ -128,6 +135,20 @@ namespace Awiz.Core
                 var viewName = Path.GetFileNameWithoutExtension(file);
                 _viewNameToViewPath[viewName] = file;
                 ClassDiagrams.Add(viewName);
+            }
+        }
+
+        private void ReadUseCases()
+        {
+            var path = Path.Combine(_pathToWiz, "reqs");
+
+            var files = Directory.GetFiles(path, "*.yaml", SearchOption.TopDirectoryOnly);
+
+            foreach (var file in files)
+            {
+                var useCaseName = Path.GetFileNameWithoutExtension(file);
+                UseCases.Add(useCaseName);
+                _useCaseNameToViewPath[useCaseName] = file;
             }
         }
     }

@@ -29,7 +29,7 @@ namespace Awiz.ViewModel
 
             UseCasePanelViewModel.Visibility = Visibility.Collapsed;
             ClassPanelViewModel.Visibility = Visibility.Collapsed;
-
+            ClassPanelViewModel.SetClassTree(_viewReader.ClassNamespaceNodes);
             CreateMenu();
         }
 
@@ -122,6 +122,9 @@ namespace Awiz.ViewModel
                 {
                     _architectureView = _viewReader.LoadClassDiagram(viewName);
                     Graph = _architectureView.Graph ?? new Graph();
+                    ClassPanelViewModel.Graph = Graph;
+                    ClassPanelViewModel.ArchitectureWiz = _viewReader;
+                    ClassPanelViewModel.ArchitectureView = _architectureView;                   
 
                     UseCasePanelViewModel.Visibility = Visibility.Collapsed;
                     ClassPanelViewModel.Visibility = Visibility.Visible;

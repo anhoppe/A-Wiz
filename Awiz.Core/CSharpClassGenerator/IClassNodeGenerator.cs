@@ -31,7 +31,7 @@ namespace Awiz.Core.CSharpClassGenerator
         /// </summary>
         /// <param name="graph"></param>
         /// <param name="classInfo"></param>
-        void CreateClassNode(IGraph graph, ClassInfo classInfo);
+        INode CreateClassNode(IGraph graph, ClassInfo classInfo);
 
         /// <summary>
         /// Generates an extension between baseClass and derivedClass

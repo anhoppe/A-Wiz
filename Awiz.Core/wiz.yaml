@@ -8,3 +8,9 @@ Views:
         - GitNodeInfo
         - GitRepo
         - ILoadableGitAccess
+    - Name: awiz_app
+      Include:
+        - ViewReader
+        - ArchitectureView
+        - ArchitectureClassView
+        - ArchitectureUseCaseView

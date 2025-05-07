@@ -2,13 +2,13 @@ Nodes:
 - Content:
   - Col: 0
     Row: 0
-    Text: ''
+    Text: Add technical debt to diagram
   Height: 120
   Id: be35577b-5853-4223-976f-a41f8eb80117
   Template: UseCase
-  Width: 180
-  X: 120
-  Y: 120
+  Width: 339
+  X: -670
+  Y: -531
 - Content:
   - Col: 0
     Row: 0
@@ -17,8 +17,8 @@ Nodes:
   Id: c78a8011-fd89-4bfa-b88f-d391f7cf4c8c
   Template: Actor
   Width: 80
-  X: -1294
-  Y: -417
+  X: -1411
+  Y: -167
 - Content:
   - Col: 0
     Row: 0
@@ -27,8 +27,8 @@ Nodes:
   Id: d2a3ff13-fb84-4160-88c3-9845537f02a8
   Template: UseCase
   Width: 320
-  X: -678
-  Y: -536
+  X: -668
+  Y: -767
 - Content:
   - Col: 0
     Row: 0
@@ -37,8 +37,8 @@ Nodes:
   Id: 26642135-07f3-46d3-8d54-6088157bd80c
   Template: UseCase
   Width: 309
-  X: -1098
-  Y: -410
+  X: -1121
+  Y: -529
 - Content:
   - Col: 0
     Row: 0
@@ -47,8 +47,8 @@ Nodes:
   Id: 19a39c6c-6543-4f49-adfd-a1c8199164c9
   Template: UseCase
   Width: 244
-  X: -1086
-  Y: -132
+  X: -1098
+  Y: 130
 - Content:
   - Col: 0
     Row: 0
@@ -57,8 +57,8 @@ Nodes:
   Id: 75fe1fd2-0b2e-472d-8420-00c6f0d7e346
   Template: UseCase
   Width: 428
-  X: -691
-  Y: -235
+  X: -749
+  Y: -139
 - Content:
   - Col: 0
     Row: 0
@@ -67,8 +67,58 @@ Nodes:
   Id: 6687d9c8-601f-4b4e-8d79-529497b6726d
   Template: UseCase
   Width: 381
-  X: -667
-  Y: 8
+  X: -721
+  Y: 67
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ''
+  Height: 120
+  Id: e61a46c5-82bd-48f9-a1d0-0736ac393fd6
+  Template: UseCase
+  Width: 180
+  X: 120
+  Y: 120
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Comment technical debt
+  Height: 120
+  Id: 16c3ac1a-7ba7-4e2a-857f-db48d81f139b
+  Template: UseCase
+  Width: 344
+  X: -694
+  Y: 295
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Resolve technical debt
+  Height: 120
+  Id: 5a86f63e-5a59-4554-94ba-c9ae38c0664c
+  Template: UseCase
+  Width: 369
+  X: -710
+  Y: 558
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Associated technical debt with source code
+  Height: 120
+  Id: 750fcb33-0b87-4e1c-9009-3ae91f52350e
+  Template: UseCase
+  Width: 384
+  X: -688
+  Y: -329
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Access source code of a commit
+  Height: 120
+  Id: 79da6ec1-2882-4454-8f2d-a8ca79efd49f
+  Template: UseCase
+  Width: 371
+  X: -139
+  Y: -326
 Edges:
 - Ending: OpenArrow
   From: 26642135-07f3-46d3-8d54-6088157bd80c
@@ -92,5 +142,61 @@ Edges:
   LabelOffsetPerCent: 0
   Style: Dotted
   Text: <<extends>>
+  To: 19a39c6c-6543-4f49-adfd-a1c8199164c9
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 26642135-07f3-46d3-8d54-6088157bd80c
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<includes>>
+  To: be35577b-5853-4223-976f-a41f8eb80117
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 16c3ac1a-7ba7-4e2a-857f-db48d81f139b
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 19a39c6c-6543-4f49-adfd-a1c8199164c9
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 26642135-07f3-46d3-8d54-6088157bd80c
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<includes>>
+  To: 750fcb33-0b87-4e1c-9009-3ae91f52350e
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 750fcb33-0b87-4e1c-9009-3ae91f52350e
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<includes>>
+  To: 79da6ec1-2882-4454-8f2d-a8ca79efd49f
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 5a86f63e-5a59-4554-94ba-c9ae38c0664c
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 19a39c6c-6543-4f49-adfd-a1c8199164c9
+  ToLabel: ''
+- Ending: OpenArrow
+  From: c78a8011-fd89-4bfa-b88f-d391f7cf4c8c
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: ''
+  To: 26642135-07f3-46d3-8d54-6088157bd80c
+  ToLabel: ''
+- Ending: OpenArrow
+  From: c78a8011-fd89-4bfa-b88f-d391f7cf4c8c
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: ''
   To: 19a39c6c-6543-4f49-adfd-a1c8199164c9
   ToLabel: ''

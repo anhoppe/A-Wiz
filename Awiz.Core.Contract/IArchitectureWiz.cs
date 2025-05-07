@@ -1,4 +1,7 @@
-﻿using Awiz.Core.Contract.Git;
+﻿using Awiz.Core.Contract.CodeInfo;
+using Awiz.Core.Contract.CodeTree;
+using Awiz.Core.Contract.Git;
+using Gwiz.Core.Contract;
 
 namespace Awiz.Core.Contract
 {
@@ -10,12 +13,29 @@ namespace Awiz.Core.Contract
         /// <summary>
         /// List of all class diagrams available in the project
         /// </summary>
-        public List<string> ClassDiagrams { get; }
+        List<string> ClassDiagrams { get; }
+
+        /// <summary>
+        /// Contains class infos of all classes / interfaces after repo was loaded
+        /// </summary>
+        List<ClassInfo> ClassInfos { get; }
+
+        /// <summary>
+        /// List of all classes in the repo
+        /// </summary>
+        List<ClassNamespaceNode> ClassNamespaceNodes { get; }
 
         /// <summary>
         /// List of all use cases available in a project
         /// </summary>
-        public List<string> UseCases { get; }
+        List<string> UseCases { get; }
+
+        /// <summary>
+        /// Retrieves the class info of a class by its id
+        /// </summary>
+        /// <param name="id">ID of the class to be found</param>
+        /// <returns>Reference to the class info</returns>
+        ClassInfo GetClassInfoById(string id);
 
         /// <summary>
         /// Loads a class diagram by name (all names from ClassDiagrams property are valid)

@@ -89,7 +89,7 @@ namespace Awiz.Core.Test.CSharpClassGenerator
                 [
                     new PropertyInfo()
                     {
-                        Type = "bar"
+                        TypeName = "bar"
                     }
                 ],
             };
@@ -102,7 +102,7 @@ namespace Awiz.Core.Test.CSharpClassGenerator
                 [
                     new PropertyInfo()
                     {
-                        Type = "foo"
+                        TypeName = "foo"
                     }
                 ],
             };
@@ -138,11 +138,11 @@ namespace Awiz.Core.Test.CSharpClassGenerator
                 [
                     new PropertyInfo()
                     {
-                        Type = "bar"
+                        TypeName = "bar"
                     },
                     new PropertyInfo()
                     {
-                        Type = "bar"
+                        TypeName = "bar"
                     }
                 ],
             };
@@ -180,7 +180,7 @@ namespace Awiz.Core.Test.CSharpClassGenerator
                 [
                     new PropertyInfo()
                     {
-                        Type = "List<bar>",
+                        TypeName = "List<bar>",
                         IsEnumerable = true,
                         GenericType = new ClassInfo()
                         {
