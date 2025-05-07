@@ -1,1 +1,217 @@
-EnableAssociations: true
+Nodes:
+- Content:
+  - Col: 0
+    Row: 0
+    Text: MainWindowViewModel
+  - Col: 0
+    Row: 1
+    Text: >
+      public ClassPanelViewModel ClassPanelViewModel
+
+      public CommitInfoPanelViewModel CommitInfoPanelViewModel
+
+      public IGraph Graph
+
+      public List<MenuBarItem> MenuItems
+
+      public UseCasePanelViewModel UseCasePanelViewModel
+  - Col: 0
+    Row: 2
+    Text: >
+      private void CreateMenu()
+  Height: 315
+  Id: 19f7b486-537b-482a-8440-b71b37d472e5
+  Template: Class
+  Width: 664
+  X: -1080
+  Y: -1011
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ViewReader
+  - Col: 0
+    Row: 1
+    Text: >
+      public List<string> ClassDiagrams
+
+      public List<ClassInfo> ClassInfos
+
+      public List<ClassNamespaceNode> ClassNamespaceNodes
+
+      public IGitRepo GitAccess
+
+      public ArchitectureViewType LoadedView
+
+      public List<string> UseCases
+
+      internal ILoadableGitRepo LoadableGitAccess
+
+      internal INamespaceBuilder NamespaceBuilder
+
+      internal IStorageAccess StorageAccess
+  - Col: 0
+    Row: 2
+    Text: >
+      public ClassInfo? GetClassInfoById(string id)
+
+      public IArchitectureView LoadClassDiagram(string viewName)
+
+      public IArchitectureView LoadUseCase(string useCaseName)
+
+      public IGitRepo ReadProject(string pathToRepo)
+
+      private void ReadClassDiagrams()
+
+      private void ReadUseCases()
+  Height: 290
+  Id: b092e8ea-652c-4d43-9a9b-a428f9219871
+  Template: Class
+  Width: 599
+  X: -1432
+  Y: 71
+- Content:
+  - Col: 0
+    Row: 0
+    Text: UseCasePanelViewModel
+  - Col: 0
+    Row: 1
+    Text: >
+      public ICommand AddActorCommand
+
+      public ICommand AddBoundaryCommand
+
+      public ICommand AddUseCaseCommand
+
+      public IGraph? Graph
+
+      public Visibility Visibility
+  - Col: 0
+    Row: 2
+    Text: >
+      private void AddActor()
+
+      private void AddBoundary()
+
+      private void AddUseCase()
+  Height: 359
+  Id: 26c8dffd-4ea1-40bf-8317-3e9bd521f325
+  Template: Class
+  Width: 377
+  X: -1666
+  Y: -460
+- Content:
+  - Col: 0
+    Row: 0
+    Text: CommitViewModel
+  - Col: 0
+    Row: 1
+    Text: >
+      public Commit Commit
+
+      public string Message
+
+      public string Sha
+  - Col: 0
+    Row: 2
+    Text: ''
+  Height: 193
+  Id: 4396e0d5-446e-488f-990a-fd37f00008a1
+  Template: Class
+  Width: 218
+  X: -352
+  Y: 196
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ClassPanelViewModel
+  - Col: 0
+    Row: 1
+    Text: >
+      public ICommand AddBaseClassCommand
+
+      public ICommand AddInterfaceCommand
+
+      public string BaseClassName
+
+      public IGraph? Graph
+
+      public ObservableCollection<ClassInfo> ImplementedIntefaces
+
+      public Visibility Visibility
+
+      internal List<ClassNamespaceNode> ClassNamespaceNodes
+
+      public IArchitectureView? ArchitectureView
+
+      public int SelectedInterfaceIndex
+
+      internal IArchitectureWiz? ArchitectureWiz
+  - Col: 0
+    Row: 2
+    Text: >
+      internal void AddClassNode(ClassInfo classInfo)
+
+      internal void SetClassTree(List<ClassNamespaceNode> classNamespaceNodes)
+  Height: 473
+  Id: 72c26f60-83cf-45e5-ae74-b0385251847e
+  Template: Class
+  Width: 475
+  X: -985
+  Y: -489
+- Content:
+  - Col: 0
+    Row: 0
+    Text: CommitInfoPanelViewModel
+  - Col: 0
+    Row: 1
+    Text: >
+      public ICommand AddCommitCommand
+
+      public ObservableCollection<CommitViewModel> AssociatedCommits
+
+      public ICommand RemoveCommitCommand
+
+      public ObservableCollection<CommitViewModel> RepositoryCommits
+
+      public int SelectedAssociatedCommitIndex
+
+      public int SelectedRepositoryCommitIndex
+
+      public Visibility Visibility
+  - Col: 0
+    Row: 2
+    Text: >
+      internal void SetupGitInfo(IGraph graph, IArchitectureView architectureView)
+
+      private void SetNode(bool isSelected, INode node)
+  Height: 336
+  Id: e13a6d18-84bc-444e-a117-d2d8f35d5188
+  Template: Class
+  Width: 537
+  X: 3
+  Y: -469
+Edges:
+- Ending: None
+  From: 26c8dffd-4ea1-40bf-8317-3e9bd521f325
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 19f7b486-537b-482a-8440-b71b37d472e5
+  ToLabel: ''
+- Ending: None
+  From: 72c26f60-83cf-45e5-ae74-b0385251847e
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 19f7b486-537b-482a-8440-b71b37d472e5
+  ToLabel: ''
+- Ending: None
+  From: e13a6d18-84bc-444e-a117-d2d8f35d5188
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 19f7b486-537b-482a-8440-b71b37d472e5
+  ToLabel: ''

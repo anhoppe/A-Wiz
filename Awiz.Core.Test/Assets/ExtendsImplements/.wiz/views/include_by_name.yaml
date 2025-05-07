@@ -1,1 +1,150 @@
-﻿
+Nodes:
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Class3
+  - Col: 0
+    Row: 1
+    Text: >
+      public string Foo
+  - Col: 0
+    Row: 2
+    Text: ''
+  Height: 160
+  Id: ae2586fc-5606-4e10-8b50-55178ca22c15
+  Template: Class
+  Width: 120
+  X: -1153
+  Y: -226
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Class1
+  - Col: 0
+    Row: 1
+    Text: >
+      public IList<int> Ints
+
+      public IList<floats> Floats
+
+      public Class2 Class2Prop
+  - Col: 0
+    Row: 2
+    Text: >
+      public void MyFunc(float param)
+
+      public bool MyBetterFunc(double param)
+  Height: 160
+  Id: 1384bbac-fd90-433b-9d08-4d9916b1f22a
+  Template: Class
+  Width: 120
+  X: -1157
+  Y: -791
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Class2
+  - Col: 0
+    Row: 1
+    Text: >
+      public Interface2 Interface2
+  - Col: 0
+    Row: 2
+    Text: ''
+  Height: 160
+  Id: 0dd867bd-1474-4a29-b002-4b6a04198df6
+  Template: Class
+  Width: 120
+  X: -1157
+  Y: -478
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Interface1
+  - Col: 0
+    Row: 1
+    Text: >2
+       int Test
+       Interface2 Association
+  - Col: 0
+    Row: 2
+    Text: ''
+  Height: 160
+  Id: ddce779d-6c1c-454d-8a9a-7420ca39d9f1
+  Template: Class
+  Width: 120
+  X: -1157
+  Y: -993
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Interface2
+  - Col: 0
+    Row: 1
+    Text: ''
+  - Col: 0
+    Row: 2
+    Text: ''
+  Height: 160
+  Id: 23833986-0445-4052-ba8f-85a47c3e255a
+  Template: Class
+  Width: 120
+  X: -681
+  Y: -689
+Edges:
+- Ending: ClosedArrow
+  From: ae2586fc-5606-4e10-8b50-55178ca22c15
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 0dd867bd-1474-4a29-b002-4b6a04198df6
+  ToLabel: ''
+- Ending: ClosedArrow
+  From: 0dd867bd-1474-4a29-b002-4b6a04198df6
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 1384bbac-fd90-433b-9d08-4d9916b1f22a
+  ToLabel: ''
+- Ending: None
+  From: 0dd867bd-1474-4a29-b002-4b6a04198df6
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 1384bbac-fd90-433b-9d08-4d9916b1f22a
+  ToLabel: ''
+- Ending: ClosedArrow
+  From: 1384bbac-fd90-433b-9d08-4d9916b1f22a
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dashed
+  Text: ''
+  To: ddce779d-6c1c-454d-8a9a-7420ca39d9f1
+  ToLabel: ''
+- Ending: None
+  From: 23833986-0445-4052-ba8f-85a47c3e255a
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 0dd867bd-1474-4a29-b002-4b6a04198df6
+  ToLabel: ''
+- Ending: ClosedArrow
+  From: 23833986-0445-4052-ba8f-85a47c3e255a
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dashed
+  Text: ''
+  To: ddce779d-6c1c-454d-8a9a-7420ca39d9f1
+  ToLabel: ''
+- Ending: None
+  From: 23833986-0445-4052-ba8f-85a47c3e255a
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: ddce779d-6c1c-454d-8a9a-7420ca39d9f1
+  ToLabel: ''

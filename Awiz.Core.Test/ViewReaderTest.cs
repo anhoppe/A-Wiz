@@ -68,8 +68,8 @@ namespace Awiz.Core.Test
             var view = _sut.LoadClassDiagram("include_by_name");
 
             // Assert
-            Assert.That(view.Graph?.Nodes.Count, Is.EqualTo(3), "Expected all nodes defined for the view in the graph");
-            Assert.That(view.Graph?.Edges.Count, Is.EqualTo(3), "Expected all edges defined for the view in the graph");
+            Assert.That(view.Graph?.Nodes.Count, Is.EqualTo(5), "Expected all nodes defined for the view in the graph");
+            Assert.That(view.Graph?.Edges.Count, Is.EqualTo(7), "Expected all edges defined for the view in the graph");
         }
 
         [Test]

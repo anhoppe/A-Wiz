@@ -50,14 +50,14 @@ namespace Awiz.Core
             _relationBuilder.ClassNodeGenerator = _classNodeGenerator;
         }
 
-        public ClassInfo GetClassInfoById(string id)
+        public ClassInfo? GetClassInfoById(string id)
         {
-            return ClassInfos.FirstOrDefault(p => p.Id == id) ?? throw new ArgumentException($"No such class: {id}");
+            return ClassInfos.FirstOrDefault(p => p.Id == id);
         }
 
         public IArchitectureView LoadClassDiagram(string viewName)
         {
-            var graph = StorageAccess.LoadClassGraph();
+            var graph = StorageAccess.LoadDiagramGraph(viewName, _viewNameToViewPath[viewName]);
             var architectureView = new ArchitectureClassView(_classParser.Classes)
             {
                 ClassNodeGenerator = _classNodeGenerator,
@@ -68,26 +68,12 @@ namespace Awiz.Core
                 StorageAccess = StorageAccess,
             };
 
-            var annotationOptions = new AnnotationOptions();
-
-            using (var fileStream = new FileStream(_viewNameToViewPath[viewName], FileMode.Open))
-            {
-                annotationOptions = AnnotationOptions.Deserialize(fileStream) ?? annotationOptions;
-            }
-
-
-            _classGenerator.AnnotationOptions = annotationOptions;
-            _classGenerator.ClassFilter = new ClassFilter(_pathToRepo, viewName);
-            _classGenerator.ClassNodeGenerator = _classNodeGenerator;
-
-            _classGenerator.Generate(_classParser, graph);
-
             return architectureView;
         }
 
         public IArchitectureView LoadUseCase(string useCaseName)
         {
-            var graph = StorageAccess.LoadUseCaseGraph(useCaseName, _useCaseNameToViewPath[useCaseName]);
+            var graph = StorageAccess.LoadDiagramGraph(useCaseName, _useCaseNameToViewPath[useCaseName]);
 
             var useCase = new ArchitectureUseCaseView()
             {
@@ -102,6 +88,7 @@ namespace Awiz.Core
 
             return useCase;
         }
+
         public IGitRepo ReadProject(string pathToRepo)
         {
             _pathToRepo = pathToRepo;

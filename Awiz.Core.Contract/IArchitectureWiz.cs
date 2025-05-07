@@ -35,7 +35,7 @@ namespace Awiz.Core.Contract
         /// </summary>
         /// <param name="id">ID of the class to be found</param>
         /// <returns>Reference to the class info</returns>
-        ClassInfo GetClassInfoById(string id);
+        ClassInfo? GetClassInfoById(string id);
 
         /// <summary>
         /// Loads a class diagram by name (all names from ClassDiagrams property are valid)

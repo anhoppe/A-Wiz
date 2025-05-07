@@ -3,6 +3,7 @@ using Awiz.Core.Contract.CodeInfo;
 using Awiz.Core.CSharpClassGenerator;
 using Awiz.Core.Storage;
 using Gwiz.Core.Contract;
+using Gwiz.Core.Serializer;
 using Wiz.Infrastructure.IO;
 
 namespace Awiz.Core
@@ -13,8 +14,6 @@ namespace Awiz.Core
 
         private Dictionary<INode, ClassInfo> _nodeToClassInfo = new();
         
-        private Dictionary<INode, (string, View)> _nodeToPaths = new();
-
         public ArchitectureClassView(IList<ClassInfo> classInfos)
         {
             _classInfos = classInfos;
@@ -27,6 +26,8 @@ namespace Awiz.Core
         internal IFileSystem FileSystem { get; set; } = new FileSystem();
 
         internal IRelationBuilder? RelationBuilder { private get; set; }
+        
+        internal ISerializer Serializer { get; set; } = new YamlSerializer();
 
         public override void AddBaseClassNode(ClassInfo derivedClassInfo)
         {
@@ -54,22 +55,9 @@ namespace Awiz.Core
 
             var node = ClassNodeGenerator.CreateClassNode(Graph, classInfo);
 
-            var storagePath = ConstructClassStoragePath(classInfo.Directory);
-
-            var view = new View();
-
-            if (FileSystem.Exists(storagePath))
-            {
-                using (var stream = FileSystem.OpenRead(storagePath))
-                {
-                    view = StorageAccess.LoadNode(node, Name, stream);
-                }
-            }
-
             RelationBuilder.Build(Graph, classInfo, _nodeToClassInfo.Select(p => p.Value).ToList());
             RegisterNodeForSelectionEvent(classInfo, node);
 
-            _nodeToPaths[node] = (storagePath, view);
             _nodeToClassInfo[node] = classInfo;
         }
 
@@ -95,23 +83,17 @@ namespace Awiz.Core
 
         public override void Save()
         {
-            foreach (var node in _nodeToPaths.Keys)
+            // Save the graph
+            if (Graph == null)
             {
-                var stream = FileSystem.Create(_nodeToPaths[node].Item1);
-                StorageAccess.SaveNode(node, _nodeToPaths[node].Item2, Name, stream);
+                throw new InvalidOperationException("No class diagram loaded");
             }
-        }
 
-        private string ConstructClassStoragePath(string pathToFile)
-        {
-            var directory = Path.GetDirectoryName(pathToFile) ?? string.Empty;
-            var fileName = Path.GetFileNameWithoutExtension(pathToFile);
-
-            var path = Path.Combine(RepoPath, ".wiz\\storage");
-            var relativePath = Path.GetRelativePath(RepoPath, directory);
-
-            path = Path.Combine(path, relativePath);
-            return Path.Combine(path, fileName);
+            var graphStoragePath = Path.Combine(RepoPath, $".wiz\\views\\{Name}.yaml");
+            using (var fileStream = FileSystem.Create(graphStoragePath))
+            {
+                Serializer.Serialize(fileStream, Graph);
+            }
         }
     }
 }

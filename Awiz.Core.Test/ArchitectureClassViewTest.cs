@@ -111,34 +111,6 @@ namespace Awiz.Core.Test
         }
 
         [Test]
-        public void AddClassNode_WhenNodeIsAddedAndPersistenceInformationIsFound_ThenPersistenceInformationIsAppliedToNodeFromView()
-        {
-            // Arrange
-            ClassInfo classInfo = new ClassInfo()
-            {
-                Directory = "c:\\dir\\foo\\repo\\foo\\foo.cs",
-            };
-
-            _sut.RepoPath = "c:\\dir\\foo\\repo";
-            _sut.Name = "foobar";
-
-            var nodeMock = new Mock<INode>();
-            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, classInfo)).Returns(nodeMock.Object);
-
-            Stream stream = new MemoryStream();
-            _fileSystemMock.Setup(m => m.Exists("c:\\dir\\foo\\repo\\.wiz\\storage\\foo\\foo")).Returns(true);
-            _fileSystemMock.Setup(m => m.OpenRead("c:\\dir\\foo\\repo\\.wiz\\storage\\foo\\foo")).Returns(stream);
-
-            // Act
-            _sut.AddClassNode(classInfo);
-
-            // Assert
-            _classNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, classInfo));
-            _storageAccessMock.Verify(m => m.LoadNode(nodeMock.Object, "foobar", stream));
-        }
-
-
-        [Test]
         public void AddClassNode_WhenClassIsAdded_ThenRelationBuilderIsCalledWithListOfAlreadyAddedClassInfos()
         {
             // Arrange
@@ -198,92 +170,5 @@ namespace Awiz.Core.Test
             // Assert
             _relationBuilderMock.Verify(m => m.Build(_graphMock.Object, baseClass, new List<ClassInfo>() { derivedClass1, derivedClass2 }));
         }
-
-        [Test]
-        public void AddClassNode_WhenNodeIsAddedAndPersistenceInformationIsNotFound_ThenPersistenceInformationIsNotAppliedToNode()
-        {
-            // Arrange
-            ClassInfo classInfo = new ClassInfo()
-            {
-                Directory = "c:/dir/foo/repo/foo/foo.cs",
-            };
-
-            _sut.RepoPath = "c:/dir/foo/repo";
-            var nodeMock = new Mock<INode>();
-            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, classInfo)).Returns(nodeMock.Object);
-
-            _fileSystemMock.Setup(m => m.Exists(It.IsAny<string>())).Returns(false);
-
-            // Act
-            _sut.AddClassNode(classInfo);
-
-            // Assert
-            _storageAccessMock.Verify(m => m.LoadNode(nodeMock.Object, It.IsAny<string>(), It.IsAny<Stream>()), Times.Never);
-        }
-
-        [Test]
-        public void Save_WhenNewNodesAreAddedAndSavedToNewFile_ThenAllNodesAreStoredInCorrectViewAndFile()
-        {
-            // Arrange
-            var classInfo1 = new ClassInfo()
-            {
-                Directory = "c:\\dir\\foo\\repo\\foo\\foo.cs",
-            };
-
-            var node1Mock = new Mock<INode>();
-            node1Mock.Setup(p => p.X).Returns(11);
-            node1Mock.Setup(p => p.Y).Returns(12);
-
-            var classInfo2 = new ClassInfo()
-            {
-                Directory = "c:\\dir\\foo\\repo\\bar\\buz.cs"
-            };
-
-            var node2Mock = new Mock<INode>();
-            node2Mock.Setup(p => p.X).Returns(13);
-            node2Mock.Setup(p => p.Y).Returns(14);
-            
-            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, classInfo1)).Returns(node1Mock.Object);
-            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, classInfo2)).Returns(node2Mock.Object);
-
-            _sut.RepoPath = "c:\\dir\\foo\\repo";
-            _sut.Name = "barbuz";
-
-            var stream1 = new MemoryStream();
-            var stream2 = new MemoryStream();
-
-            _fileSystemMock.Setup(m => m.Create("c:\\dir\\foo\\repo\\.wiz\\storage\\foo\\foo")).Returns(stream1);
-            _fileSystemMock.Setup(m => m.Create("c:\\dir\\foo\\repo\\.wiz\\storage\\bar\\buz")).Returns(stream2);
-
-            _sut.AddClassNode(classInfo1);
-            _sut.AddClassNode(classInfo2);
-
-            // We define that none of the files already existed (hence they are created)
-            _fileSystemMock.Setup(m => m.Exists(It.IsAny<string>())).Returns(false);
-
-            // Act
-            _sut.Save();
-
-            // Assert
-            _storageAccessMock.Verify(m => m.SaveNode(node1Mock.Object, It.IsAny<View>(), "barbuz", stream1));
-            _storageAccessMock.Verify(m => m.SaveNode(node2Mock.Object, It.IsAny<View>(), "barbuz", stream2));
-        }
-
-        private IGrid MockGrid()
-        {
-            var gridMock = new Mock<IGrid>();
-
-            // This is the expected field size for a class node (1 column with 3 rows for title, props and methods)
-            var cell = new IGridCell[1][];
-            cell[0] = new IGridCell[3];
-
-            cell[0][0] = Mock.Of<IGridCell>();
-            cell[0][1] = Mock.Of<IGridCell>();
-            cell[0][2] = Mock.Of<IGridCell>();
-            gridMock.Setup(p => p.Cells).Returns(cell);
-
-            return gridMock.Object;
-        }
-
     }
 }

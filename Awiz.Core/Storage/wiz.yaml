@@ -1,9 +1,0 @@
-Views:
-    - Name: persistence
-      Include:
-        - IStorageAccess
-        - Node
-        - View
-        - YamlStorageAccess
-
-        

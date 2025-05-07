@@ -14,8 +14,6 @@ namespace Awiz.ViewModel
 {
     public class ClassPanelViewModel : BindableBase
     {
-        public event EventHandler<List<ClassNamespaceNode>>? ClassTreeSet;
-
         private IArchitectureView? _architectureView;
 
         private string _baseClassName = string.Empty;
@@ -40,7 +38,12 @@ namespace Awiz.ViewModel
                     ArchitectureWiz != null &&
                     SelectedInterfaceIndex != -1)
                 {
-                    ArchitectureView.AddClassNode(ArchitectureWiz.GetClassInfoById(ImplementedIntefaces[SelectedInterfaceIndex].Id));
+                    var interfaceInfo = ArchitectureWiz.GetClassInfoById(ImplementedIntefaces[SelectedInterfaceIndex].Id);
+
+                    if (interfaceInfo != null)
+                    {
+                        ArchitectureView.AddClassNode(interfaceInfo);
+                    }
                 }
             });
         }
@@ -99,7 +102,12 @@ namespace Awiz.ViewModel
                         ImplementedIntefaces.Clear();
                         foreach (var implementedInterface in _selectedClassInfo.ImplementedInterfaces)
                         {
-                            ImplementedIntefaces.Add(ArchitectureWiz.GetClassInfoById(implementedInterface));  
+                            var interfaceInfo = ArchitectureWiz.GetClassInfoById(implementedInterface);
+
+                            if (interfaceInfo != null)
+                            {
+                                ImplementedIntefaces.Add(interfaceInfo);
+                            }
                         }
                     };
                 }
