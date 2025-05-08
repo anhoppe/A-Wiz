@@ -2,6 +2,105 @@ Nodes:
 - Content:
   - Col: 0
     Row: 0
+    Text: PropertyInfo
+  - Col: 0
+    Row: 1
+    Text: >
+      public string AccessModifier
+
+      public ClassInfo GenericType
+
+      public bool IsEnumerable
+
+      public string Name
+
+      public string TypeId
+
+      public string TypeNamespace
+
+      public string TypeName
+  - Col: 0
+    Row: 2
+    Text: >
+      public string ToString()
+  Height: 160
+  Id: 7f0cb88d-9a0e-4ec7-b16f-b311773796c4
+  Template: Class
+  Width: 120
+  X: 0
+  Y: 0
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ParameterInfo
+  - Col: 0
+    Row: 1
+    Text: >
+      public string Name
+
+      public string Type
+  - Col: 0
+    Row: 2
+    Text: >
+      public string ToString()
+  Height: 160
+  Id: cce66cc1-aea3-4909-9276-af96caed983a
+  Template: Class
+  Width: 120
+  X: -377
+  Y: -74
+- Content:
+  - Col: 0
+    Row: 0
+    Text: IArchitectureWiz
+  - Col: 0
+    Row: 1
+    Text: >2
+       List<string> ClassDiagrams
+       List<ClassInfo> ClassInfos
+       List<ClassNamespaceNode> ClassNamespaceNodes
+       List<string> UseCases
+  - Col: 0
+    Row: 2
+    Text: >2
+       ClassInfo? GetClassInfoById(string id)
+       IArchitectureView LoadClassDiagram(string classDiagramName)
+       IArchitectureView LoadUseCase(string useCaseName)
+       IGitRepo ReadProject(string pathToRepo)
+  Height: 160
+  Id: 669e43bd-df32-4235-b3cc-929c63f13518
+  Template: Class
+  Width: 120
+  X: 0
+  Y: 0
+- Content:
+  - Col: 0
+    Row: 0
+    Text: IArchitectureView
+  - Col: 0
+    Row: 1
+    Text: >2
+       IGraph? Graph
+       string Name
+       ArchitectureViewType Type
+  - Col: 0
+    Row: 2
+    Text: >2
+       void AddBaseClassNode(ClassInfo derivedClassInfo)
+       void AddClassNode(ClassInfo classInfo)
+       void AddUseCaseNode(INode node)
+       IGitNodeInfo GetAssociatedCommits(INode node)
+       void Load()
+       void Save()
+  Height: 160
+  Id: 217bd5e5-5079-42f2-a8f0-d7f1e2ec7b72
+  Template: Class
+  Width: 120
+  X: -1016
+  Y: -596
+- Content:
+  - Col: 0
+    Row: 0
     Text: ArchitectureClassView
   - Col: 0
     Row: 1
@@ -30,13 +129,13 @@ Nodes:
 
       public void Save()
 
-      private string ConstructClassStoragePath(string pathToFile)
+      protected void OnNodeRemoved(INode node)
   Height: 160
-  Id: 8af37773-ed22-41c3-91d2-5e6342bc2a9b
+  Id: caf22b38-a1f4-4162-838b-31d52a7b4a0d
   Template: Class
   Width: 120
-  X: -1101
-  Y: -19
+  X: -762
+  Y: 5
 - Content:
   - Col: 0
     Row: 0
@@ -63,12 +162,14 @@ Nodes:
       public void Load()
 
       public void Save()
+
+      protected void OnNodeRemoved(INode node)
   Height: 160
-  Id: 9f0241f3-a54c-4f50-af56-4ebf4c38152d
+  Id: 8f12c837-ce17-4367-84d2-bdbd0be5e9e0
   Template: Class
   Width: 120
-  X: -255
-  Y: 33
+  X: -1265
+  Y: 21
 - Content:
   - Col: 0
     Row: 0
@@ -100,86 +201,39 @@ Nodes:
 
       public void Save()
 
+      protected void OnNodeRemoved(INode node)
+
       protected void RaiseClassSelected(ClassInfo selectedClass)
 
       protected void RaiseNodeAdded(INode node)
   Height: 160
-  Id: 5baffa39-4fc1-487d-93bd-56608ea86642
+  Id: 0cfaff2d-9dc7-4815-a6ab-a2ce7176f3dc
   Template: Class
   Width: 120
-  X: -805
-  Y: -258
-- Content:
-  - Col: 0
-    Row: 0
-    Text: IArchitectureView
-  - Col: 0
-    Row: 1
-    Text: >2
-       IGraph? Graph
-       string Name
-       ArchitectureViewType Type
-  - Col: 0
-    Row: 2
-    Text: >2
-       void AddBaseClassNode(ClassInfo derivedClassInfo)
-       void AddClassNode(ClassInfo classInfo)
-       void AddUseCaseNode(INode node)
-       IGitNodeInfo GetAssociatedCommits(INode node)
-       void Load()
-       void Save()
-  Height: 160
-  Id: b2574714-0eb4-4c48-94f4-8902705af305
-  Template: Class
-  Width: 120
-  X: -809
-  Y: -527
-- Content:
-  - Col: 0
-    Row: 0
-    Text: IArchitectureWiz
-  - Col: 0
-    Row: 1
-    Text: >2
-       List<string> ClassDiagrams
-       List<ClassInfo> ClassInfos
-       List<ClassNamespaceNode> ClassNamespaceNodes
-       List<string> UseCases
-  - Col: 0
-    Row: 2
-    Text: >2
-       ClassInfo GetClassInfoById(string id)
-       IArchitectureView LoadClassDiagram(string classDiagramName)
-       IArchitectureView LoadUseCase(string useCaseName)
-       IGitRepo ReadProject(string pathToRepo)
-  Height: 287
-  Id: 5448c2cb-2264-4f73-ac1f-fdc0e954cbb4
-  Template: Class
-  Width: 492
-  X: -1490
-  Y: -471
+  X: -1033
+  Y: -210
 Edges:
 - Ending: ClosedArrow
-  From: 8af37773-ed22-41c3-91d2-5e6342bc2a9b
-  FromLabel: ''
-  LabelOffsetPerCent: 0
-  Style: None
-  Text: ''
-  To: 5baffa39-4fc1-487d-93bd-56608ea86642
-  ToLabel: ''
-- Ending: ClosedArrow
-  From: 9f0241f3-a54c-4f50-af56-4ebf4c38152d
-  FromLabel: ''
-  LabelOffsetPerCent: 0
-  Style: None
-  Text: ''
-  To: 5baffa39-4fc1-487d-93bd-56608ea86642
-  ToLabel: ''
-- Ending: ClosedArrow
-  From: 5baffa39-4fc1-487d-93bd-56608ea86642
+  From: 0cfaff2d-9dc7-4815-a6ab-a2ce7176f3dc
   FromLabel: ''
   LabelOffsetPerCent: 0
   Style: Dashed
   Text: ''
-  To: b2574714-0eb4-4c48-94f4-8902705af305
+  To: 217bd5e5-5079-42f2-a8f0-d7f1e2ec7b72
+  ToLabel: ''
+- Ending: ClosedArrow
+  From: caf22b38-a1f4-4162-838b-31d52a7b4a0d
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 0cfaff2d-9dc7-4815-a6ab-a2ce7176f3dc
+  ToLabel: ''
+- Ending: ClosedArrow
+  From: 8f12c837-ce17-4367-84d2-bdbd0be5e9e0
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 0cfaff2d-9dc7-4815-a6ab-a2ce7176f3dc
   ToLabel: ''

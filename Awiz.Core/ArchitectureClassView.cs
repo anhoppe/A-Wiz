@@ -1,7 +1,6 @@
 ﻿using Awiz.Core.Contract;
 using Awiz.Core.Contract.CodeInfo;
 using Awiz.Core.CSharpClassGenerator;
-using Awiz.Core.Storage;
 using Gwiz.Core.Contract;
 using Gwiz.Core.Serializer;
 using Wiz.Infrastructure.IO;
@@ -12,6 +11,8 @@ namespace Awiz.Core
     {
         private IList<ClassInfo> _classInfos;
 
+        private IClassNodeGenerator? _classNodeGenerator;
+
         private Dictionary<INode, ClassInfo> _nodeToClassInfo = new();
         
         public ArchitectureClassView(IList<ClassInfo> classInfos)
@@ -21,7 +22,18 @@ namespace Awiz.Core
 
         public override ArchitectureViewType Type => ArchitectureViewType.Class;
 
-        internal IClassNodeGenerator? ClassNodeGenerator { get; set; }
+        internal IClassNodeGenerator? ClassNodeGenerator 
+        {
+            get => _classNodeGenerator;
+            set
+            {
+                _classNodeGenerator = value;
+                if (_classNodeGenerator != null)
+                {
+                    _classNodeGenerator.NodeToClassInfoMapping = _nodeToClassInfo;
+                }
+            }
+        }
 
         internal IFileSystem FileSystem { get; set; } = new FileSystem();
 
@@ -38,6 +50,11 @@ namespace Awiz.Core
 
         public override void AddClassNode(ClassInfo classInfo)
         {
+            if (_nodeToClassInfo.ContainsValue(classInfo))
+            {
+                return;
+            }
+
             if (ClassNodeGenerator == null)
             {
                 throw new NullReferenceException("ClassNodeGenerator is not set");
@@ -54,11 +71,10 @@ namespace Awiz.Core
             }
 
             var node = ClassNodeGenerator.CreateClassNode(Graph, classInfo);
+            _nodeToClassInfo[node] = classInfo;
 
             RelationBuilder.Build(Graph, classInfo, _nodeToClassInfo.Select(p => p.Value).ToList());
             RegisterNodeForSelectionEvent(classInfo, node);
-
-            _nodeToClassInfo[node] = classInfo;
         }
 
         private void RegisterNodeForSelectionEvent(ClassInfo classInfo, INode node)
@@ -79,6 +95,31 @@ namespace Awiz.Core
 
         public override void Load()
         {
+            if (Graph == null)
+            {
+                throw new NullReferenceException("Graph is not set");
+            }
+
+            var storagePath = Path.Combine(RepoPath, $".wiz\\storage\\{Name}.yaml");
+
+            if (FileSystem.Exists(storagePath))
+            {
+                using (var stream = FileSystem.OpenRead(storagePath))
+                {
+                    var mapping = StorageAccess.LoadNodeIdToClassIdMapping(stream);
+
+                    foreach (var (nodeId, classId) in mapping)
+                    {
+                        var classInfo = _classInfos.FirstOrDefault(p => p.Id == classId);
+                        var node = Graph.Nodes.FirstOrDefault(p => p.Id == nodeId);
+                        if (classInfo != null && node != null)
+                        {
+                            _nodeToClassInfo[node] = classInfo;
+                            RegisterNodeForSelectionEvent(classInfo, node);
+                        }
+                    }
+                }
+            }
         }
 
         public override void Save()
@@ -93,6 +134,21 @@ namespace Awiz.Core
             using (var fileStream = FileSystem.Create(graphStoragePath))
             {
                 Serializer.Serialize(fileStream, Graph);
+            }
+
+            // Save the mapping to the classes
+            var storagePath = Path.Combine(RepoPath, $".wiz\\storage\\{Name}.yaml");
+            using (var fileStream = FileSystem.Create(storagePath))
+            {
+                StorageAccess.SaveNodeIdToClassIdMapping(_nodeToClassInfo.Select(p => (p.Key.Id, p.Value.Id)).ToDictionary(), fileStream);
+            }
+        }
+
+        protected override void OnNodeRemoved(INode node)
+        {
+            if (_nodeToClassInfo.ContainsKey(node))
+            {
+                _nodeToClassInfo.Remove(node);
             }
         }
     }

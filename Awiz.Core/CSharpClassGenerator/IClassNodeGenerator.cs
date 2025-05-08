@@ -9,6 +9,12 @@ namespace Awiz.Core.CSharpClassGenerator
     internal interface IClassNodeGenerator
     {
         /// <summary>
+        /// Mapping between nodes and class info, used to get the nodes for the classes 
+        /// when relations are created
+        /// </summary>
+        IDictionary<INode, ClassInfo>? NodeToClassInfoMapping { set; }
+
+        /// <summary>
         /// Generates an association between two classes
         /// </summary>
         /// <param name="graph"></param>

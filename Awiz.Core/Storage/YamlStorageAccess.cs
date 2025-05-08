@@ -6,6 +6,8 @@ using System.Text;
 using System.Reflection;
 using Awiz.Core.Git;
 using Awiz.Core.Contract.Git;
+using Awiz.Core.Contract.CodeInfo;
+using System.Runtime;
 
 namespace Awiz.Core.Storage
 {
@@ -53,6 +55,23 @@ namespace Awiz.Core.Storage
             return gitInfo;
         }
 
+        public IDictionary<string, string> LoadNodeIdToClassIdMapping(Stream stream)
+        {
+            Dictionary<string, string> nodeToClassMapping = new();
+
+            using (var reader = new StreamReader(stream))
+            {
+                string yaml = reader.ReadToEnd();
+                var serializer = new DeserializerBuilder()
+                .WithNamingConvention(PascalCaseNamingConvention.Instance)
+                .Build();
+
+                nodeToClassMapping = serializer.Deserialize<Dictionary<string, string>>(yaml) ?? new();
+            }
+
+            return nodeToClassMapping;
+        }
+
         public void SaveGitInfo(Dictionary<string, IGitNodeInfo> gitInfo, Stream stream)
         {
             var serializer = new SerializerBuilder()
@@ -60,6 +79,20 @@ namespace Awiz.Core.Storage
                 .Build();
 
             var yaml = serializer.Serialize(gitInfo);
+
+            using (var writer = new StreamWriter(stream))
+            {
+                writer.Write(yaml);
+            }
+        }
+
+        public void SaveNodeIdToClassIdMapping(IDictionary<string, string> nodeToClassMapping, Stream stream)
+        {
+            var serializer = new SerializerBuilder()
+                .WithNamingConvention(PascalCaseNamingConvention.Instance)
+            .Build();
+
+            var yaml = serializer.Serialize(nodeToClassMapping);
 
             using (var writer = new StreamWriter(stream))
             {

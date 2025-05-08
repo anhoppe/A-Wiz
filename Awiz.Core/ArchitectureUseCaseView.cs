@@ -69,5 +69,10 @@ namespace Awiz.Core
                 StorageAccess.SaveGitInfo(_gitNodeInfo, stream);
             }
         }
+
+        protected override void OnNodeRemoved(INode node)
+        {
+            
+        }
     }
 }

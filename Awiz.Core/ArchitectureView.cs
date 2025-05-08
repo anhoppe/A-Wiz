@@ -11,7 +11,21 @@ namespace Awiz.Core
     {
         protected Dictionary<string, IGitNodeInfo> _gitNodeInfo = new Dictionary<string, IGitNodeInfo>();
 
-        public IGraph? Graph { get; set; }
+        private IGraph? _graph;
+
+        public IGraph? Graph 
+        {
+            get => _graph;
+            set
+            {
+                _graph = value;
+
+                if (_graph != null)
+                {
+                    _graph.NodeRemoved += (sender, node) => OnNodeRemoved(node);
+                }
+            }
+        }
 
         public string Name { get; set; } = string.Empty;
 
@@ -44,6 +58,8 @@ namespace Awiz.Core
         public abstract void Load();
         
         public abstract void Save();
+
+        protected abstract void OnNodeRemoved(INode node);
 
         protected void RaiseClassSelected(ClassInfo selectedClass)
         {

@@ -1,4 +1,5 @@
-﻿using Awiz.Core.Contract.Git;
+﻿using Awiz.Core.Contract.CodeInfo;
+using Awiz.Core.Contract.Git;
 using Gwiz.Core.Contract;
 
 namespace Awiz.Core.Storage
@@ -24,10 +25,21 @@ namespace Awiz.Core.Storage
         Dictionary<string, IGitNodeInfo> LoadGitInfo(Stream stream);
 
         /// <summary>
+        /// Loads the mapping of node ids to class ids from a stream
+        /// </summary>
+        /// <param name="stream">Strean the mapping is loaded from</param>
+        /// <returns>Dictionary with the mapping</returns>
+        IDictionary<string, string> LoadNodeIdToClassIdMapping(Stream stream);
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="gitInfo"></param>
         /// <param name="stream"></param>
         void SaveGitInfo(Dictionary<string, IGitNodeInfo> gitInfo, Stream stream);
+
+        void SaveNodeIdToClassIdMapping(IDictionary<string, string> nodeToClassMapping, Stream stream);
+
+
     }
 }

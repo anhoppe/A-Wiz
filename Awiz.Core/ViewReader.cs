@@ -68,13 +68,14 @@ namespace Awiz.Core
                 StorageAccess = StorageAccess,
             };
 
+            architectureView.Load();
+
             return architectureView;
         }
 
         public IArchitectureView LoadUseCase(string useCaseName)
         {
             var graph = StorageAccess.LoadDiagramGraph(useCaseName, _useCaseNameToViewPath[useCaseName]);
-
             var useCase = new ArchitectureUseCaseView()
             {
                 Graph = graph,
