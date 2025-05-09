@@ -9,8 +9,17 @@ namespace Awiz.Core.CSharpClassGenerator
     {
         public List<ClassInfo> Classes { get; private set; } = new();
 
+        internal IProjectParser? ProjectParser { private get; set; }
+
         public void ParseClasses(string repoPath)
         {
+            if (ProjectParser == null)
+            {
+                throw new NullReferenceException("ProjectParser not set");
+            }
+
+            ProjectParser.ParseProject(repoPath);
+
             var classInfos = new List<ClassInfo>();
 
             var syntaxTrees = GenerateSyntaxTrees(repoPath);
@@ -44,8 +53,13 @@ namespace Awiz.Core.CSharpClassGenerator
             Classes = classInfos;
         }
 
-        private static void AddClassDefinitions(List<ClassInfo> classInfos, SemanticModel model, IEnumerable<ClassDeclarationSyntax> classDeclarations, string directory)
+        private void AddClassDefinitions(List<ClassInfo> classInfos, SemanticModel model, IEnumerable<ClassDeclarationSyntax> classDeclarations, string directory)
         {
+            if (ProjectParser == null)
+            {
+                throw new NullReferenceException("ProjectParser not set");
+            }
+
             foreach (var classDeclaration in classDeclarations)
             {
                 string namespaceName = GetNamespace(classDeclaration, model);
@@ -53,6 +67,7 @@ namespace Awiz.Core.CSharpClassGenerator
 
                 var classInfo = new ClassInfo
                 {
+                    Assembly = ProjectParser.GetProject(directory),
                     Directory = directory,
                     Name = className,
                     Namespace = namespaceName,
@@ -81,8 +96,13 @@ namespace Awiz.Core.CSharpClassGenerator
             }
         }
 
-        private static void AddInterfaceDefinitions(List<ClassInfo> classInfos, SemanticModel model, IEnumerable<InterfaceDeclarationSyntax> interfaceDeclarations, string directory)
+        private void AddInterfaceDefinitions(List<ClassInfo> classInfos, SemanticModel model, IEnumerable<InterfaceDeclarationSyntax> interfaceDeclarations, string directory)
         {
+            if (ProjectParser == null)
+            {
+                throw new NullReferenceException("ProjectParser not set");
+            }
+
             foreach (var interfaceDeclaration in interfaceDeclarations)
             {
                 string namespaceName = GetNamespace(interfaceDeclaration, model);
@@ -90,6 +110,7 @@ namespace Awiz.Core.CSharpClassGenerator
 
                 var classInfo = new ClassInfo
                 {
+                    Assembly = ProjectParser.GetProject(directory),
                     Directory = directory,
                     Name = className,
                     Namespace = namespaceName,

@@ -10,21 +10,19 @@ namespace Awiz.Core.CodeTree
     {
         public NamespaceBuilder() { }
 
-        public List<ClassNamespaceNode> Build(IList<ClassInfo> classInfos)
+        public IDictionary<string, ClassNamespaceNode> Build(IList<ClassInfo> classInfos)
         {
-            List<ClassNamespaceNode> roots = new();
+            var roots = new Dictionary<string, ClassNamespaceNode>();
 
             foreach (var classInfo in classInfos)
             {
-                var namespaces = classInfo.Namespace.Split('.');
-
-                var currentNode = roots.FirstOrDefault(n => n.Name == namespaces[0]);
-                if (currentNode == null)
+                if (!roots.ContainsKey(classInfo.Assembly))
                 {
-                    currentNode = new ClassNamespaceNode { Name = namespaces[0] };
-                    roots.Add(currentNode);
+                    roots[classInfo.Assembly] = new ClassNamespaceNode { Name = classInfo.Namespace };
                 }
-                
+                var currentNode = roots[classInfo.Assembly];
+
+                var namespaces = classInfo.Namespace.Split('.');
                 foreach (var namespaceName in namespaces.Skip(1))
                 {
                     var childNode = currentNode.Children.FirstOrDefault(n => n.Name == namespaceName);

@@ -27,13 +27,20 @@ namespace Awiz.View
             }
         }
 
-        public void PopulateTree(List<ClassNamespaceNode> classNamespaceNodes)
+        public void PopulateTree(IDictionary<string, ClassNamespaceNode> classNamespaceNodes)
         {
-            foreach (var rootNode in classNamespaceNodes)
+            foreach(var assemblyName in classNamespaceNodes.Keys)
             {
-                var node = CreateTreeViewNode(rootNode);
-                _classNodeTree.RootNodes.Add(node);
+                var assemblyNode = new TreeViewNode
+                {
+                    Content = assemblyName,
+                    IsExpanded = true
+                };
+                _classNodeTree.RootNodes.Add(assemblyNode);
+                var node = CreateTreeViewNode(classNamespaceNodes[assemblyName]);
+                assemblyNode.Children.Add(node);
             }
+
             _classNodeTree.SelectionChanged += (sender, args) =>
             {
                 if (args.AddedItems.Count > 0)

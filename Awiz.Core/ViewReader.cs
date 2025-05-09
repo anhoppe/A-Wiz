@@ -11,11 +11,12 @@ namespace Awiz.Core
 {
     public class ViewReader : IArchitectureWiz
     {
-        private ClassGenerator _classGenerator = new();
-
         private ClassNodeGenerator _classNodeGenerator = new();
 
-        private ClassParser _classParser = new();
+        private ClassParser _classParser = new()
+        {
+            ProjectParser = new ProjectParser(),
+        };
 
         private string _pathToRepo = string.Empty;
 
@@ -31,7 +32,7 @@ namespace Awiz.Core
 
         public List<ClassInfo> ClassInfos { get; private set; } = new();
 
-        public List<ClassNamespaceNode> ClassNamespaceNodes { get; } = new();
+        public IDictionary<string, ClassNamespaceNode> ClassNamespaceNodes { get; set; } = new Dictionary<string, ClassNamespaceNode>();
 
         public IGitRepo GitAccess => LoadableGitAccess;
 
@@ -104,7 +105,8 @@ namespace Awiz.Core
             // Parse the source code information from the repo
             _classParser.ParseClasses(_pathToRepo);
             ClassInfos = _classParser.Classes;
-            ClassNamespaceNodes.AddRange(NamespaceBuilder.Build(_classParser.Classes));
+            ClassNamespaceNodes = NamespaceBuilder.Build(_classParser.Classes);
+            
             // Parse the wiz information from the repo
             ReadUseCases();
             ReadClassDiagrams();

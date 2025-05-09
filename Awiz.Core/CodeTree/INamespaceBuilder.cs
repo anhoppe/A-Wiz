@@ -8,6 +8,11 @@ namespace Awiz.Core.CodeTree
     /// </summary>
     internal interface INamespaceBuilder
     {
-        List<ClassNamespaceNode> Build(IList<ClassInfo> classInfos);
+        /// <summary>
+        /// Builds the namespace tree from the given class information
+        /// </summary>
+        /// <param name="classInfos"></param>
+        /// <returns>Returns a dictinary with a namespace tree in each</returns>
+        IDictionary<string, ClassNamespaceNode> Build(IList<ClassInfo> classInfos);
     }
 }

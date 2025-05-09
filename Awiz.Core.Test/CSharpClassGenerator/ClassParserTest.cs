@@ -1,17 +1,39 @@
 ﻿using NUnit.Framework;
 using Awiz.Core.CSharpClassGenerator;
+using Moq;
 
 namespace Awiz.Core.Test.CSharpClassGenerator
 {
     [TestFixture]
     public class ClassParserTest
     {
+        Mock<IProjectParser> _projectParserMock = new();
+
         ClassParser _sut = new();
 
         [SetUp]
         public void SetUp()
         {
-            _sut = new ClassParser();
+            _projectParserMock = new();
+
+            _sut = new ClassParser()
+            {
+                ProjectParser = _projectParserMock.Object,
+            };
+        }
+
+        [Test]
+        public void AssemblyName_WhenProjectIsRead_ThenTheCorrectAssemblyNameIsAssigned()
+        {
+            // Arrange
+            _projectParserMock.Setup(m => m.GetProject("Assets\\ExtendsImplements\\Class1.cs")).Returns("foo");
+
+            // Act
+            _sut.ParseClasses("Assets\\ExtendsImplements\\");
+
+            // Assert
+            var class1 = _sut.Classes.First(p => p.Name == "Class1");
+            Assert.That(class1.Assembly, Is.EqualTo("foo"));
         }
 
         [Test]
@@ -36,6 +58,26 @@ namespace Awiz.Core.Test.CSharpClassGenerator
             Assert.That(interface2.ImplementedInterfaces.Count, Is.EqualTo(1));
             Assert.That(interface2.ImplementedInterfaces[0], Is.EqualTo("Awiz.Core.Test.Assets.ExtendsImplements.Interface1"));
             Assert.That(interface2.Id, Is.EqualTo("Awiz.Core.Test.Assets.ExtendsImplements.Interface2"));
+        }
+
+        [Test]
+        public void Integration_ClassParser_ProjectParser()
+        {
+            // Arrange
+            _sut = new ClassParser()
+            {
+                ProjectParser = new ProjectParser(),
+            };
+
+            // Act
+            _sut.ParseClasses("Assets");
+
+            // All classes should be in the same project
+            var class1 = _sut.Classes.First(c => c.Directory == "Assets\\ExtendsImplements\\Class1.cs");
+            var class2 = _sut.Classes.First(c => c.Directory == "Assets\\GenericSupport\\Class2.cs");
+
+            Assert.That(class1.Assembly, Is.EqualTo("ExtendsImplements"));
+            Assert.That(class2.Assembly, Is.EqualTo("GenericSupport"));
         }
 
         [Test]

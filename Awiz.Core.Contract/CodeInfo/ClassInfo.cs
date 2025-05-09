@@ -11,6 +11,11 @@ namespace Awiz.Core.Contract.CodeInfo
     public class ClassInfo
     {
         /// <summary>
+        /// Name of the assembly the class belongs to
+        /// </summary>
+        public string Assembly { get; set; } = string.Empty;
+
+        /// <summary>
         /// Name of the base class, only set for Type == Class
         /// May be empty when not derived from any class
         /// </summary>
@@ -44,7 +49,6 @@ namespace Awiz.Core.Contract.CodeInfo
         public string Name { get; set; } = string.Empty;
 
         public string Namespace { get; set; } = string.Empty;
-
 
         public List<PropertyInfo> Properties { get; set; } = new List<PropertyInfo>();
 

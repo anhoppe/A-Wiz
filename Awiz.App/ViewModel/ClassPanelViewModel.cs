@@ -5,8 +5,7 @@ using Gwiz.Core.Contract;
 using Microsoft.UI.Xaml;
 using Prism.Commands;
 using Prism.Mvvm;
-using System;
-using System.Collections.Generic;
+Ausing System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -74,7 +73,7 @@ namespace Awiz.ViewModel
             }
         }
 
-        internal List<ClassNamespaceNode> ClassNamespaceNodes { get; set; } = new();
+        internal IDictionary<string, ClassNamespaceNode> ClassNamespaceNodes { get; set; } = new Dictionary<string, ClassNamespaceNode>();
         
         public IArchitectureView? ArchitectureView 
         {
@@ -126,7 +125,7 @@ namespace Awiz.ViewModel
             }
         }
 
-        internal void SetClassTree(List<ClassNamespaceNode> classNamespaceNodes)
+        internal void SetClassTree(IDictionary<string, ClassNamespaceNode> classNamespaceNodes)
         {
             ClassNamespaceNodes = classNamespaceNodes;
         }

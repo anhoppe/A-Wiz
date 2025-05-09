@@ -23,7 +23,7 @@ namespace Awiz.Core.Contract
         /// <summary>
         /// List of all classes in the repo
         /// </summary>
-        List<ClassNamespaceNode> ClassNamespaceNodes { get; }
+        IDictionary<string, ClassNamespaceNode> ClassNamespaceNodes { get; }
 
         /// <summary>
         /// List of all use cases available in a project

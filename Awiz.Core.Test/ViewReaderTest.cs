@@ -23,7 +23,7 @@ namespace Awiz.Core.Test
         {
             _loadableGitAccessMock = new();
 
-            _namespaceBuilderMock.Setup(m => m.Build(It.IsAny<List<ClassInfo>>())).Returns(new List<ClassNamespaceNode>());
+            _namespaceBuilderMock.Setup(m => m.Build(It.IsAny<List<ClassInfo>>())).Returns(new Dictionary<string, ClassNamespaceNode>());
             _sut = new ViewReader()
             {
                 LoadableGitAccess = _loadableGitAccessMock.Object,
@@ -76,10 +76,10 @@ namespace Awiz.Core.Test
         public void ClassNamespaceNodes_WhenRepoIsRead_ThenClassNamespacesNodesAreSet()
         {
             // Arrange
-            var classNamespaces = new List<ClassNamespaceNode>()
+            var classNamespaces = new Dictionary<string, ClassNamespaceNode>()
             {
-                new ClassNamespaceNode(),
-                new ClassNamespaceNode(),
+                ["foo"] = new ClassNamespaceNode(),
+                ["bar"] = new ClassNamespaceNode(),
             };
 
             _namespaceBuilderMock.Setup(x => x.Build(It.IsAny<IList<ClassInfo>>()))

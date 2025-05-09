@@ -10,9 +10,13 @@ namespace Awiz.Core.Test.Assets.ExtendsImplements
     {
         public IList<int> Ints { get; set; }
         
-        public IList<floats> Floats { get; set; }
+        public IList<float> Floats { get; set; }
 
         public Class2 Class2Prop { get; set; }
+
+        public int Test => throw new NotImplementedException();
+
+        public Interface2 Association => throw new NotImplementedException();
 
         public void MyFunc(float param)
         {

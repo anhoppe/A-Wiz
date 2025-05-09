@@ -170,7 +170,7 @@ namespace Awiz.Core.Test
             _sut.AddClassNode(baseClass);
 
             // Assert
-            _relationBuilderMock.Verify(m => m.Build(_graphMock.Object, baseClass, new List<ClassInfo>() { derivedClass1, derivedClass2 }));
+            _relationBuilderMock.Verify(m => m.Build(_graphMock.Object, baseClass, new List<ClassInfo>() { derivedClass1, derivedClass2, baseClass }));
         }
 
         [Test]
