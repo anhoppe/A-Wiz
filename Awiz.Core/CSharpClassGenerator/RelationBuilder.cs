@@ -1,9 +1,8 @@
 ﻿using Awiz.Core.Contract.CodeInfo;
-using Awiz.Core.CSharpClassGenerator;
 using Gwiz.Core.Contract;
 using System.Globalization;
 
-namespace Awiz.Core
+namespace Awiz.Core.CSharpClassGenerator
 {
     internal class RelationBuilder : IRelationBuilder
     {
@@ -31,18 +30,18 @@ namespace Awiz.Core
 
             if (associationOwner.Properties.Any(p => p.IsEnumerable && p.GenericType.Id == associationTarget.Id))
             {
-                ClassNodeGenerator.CreateAssociation(graph, associationTarget, associationOwner, "1", "*");
+                ClassNodeGenerator.CreateAssociation(graph, associationOwner, associationTarget, "1", "*");
             }
             else
             {
                 var count = associationOwner.Properties.Count(p => p.TypeId == associationTarget.Id);
                 if (count == 1)
                 {
-                    ClassNodeGenerator.CreateAssociation(graph, associationTarget, associationOwner);
+                    ClassNodeGenerator.CreateAssociation(graph, associationOwner, associationTarget);
                 }
                 else if (count > 1)
                 {
-                    ClassNodeGenerator.CreateAssociation(graph, associationTarget, associationOwner, "1", count.ToString(CultureInfo.InvariantCulture));
+                    ClassNodeGenerator.CreateAssociation(graph, associationOwner, associationTarget, "1", count.ToString(CultureInfo.InvariantCulture));
                 }
             }
         }

@@ -4,7 +4,7 @@ using Gwiz.Core.Contract;
 using Moq;
 using NUnit.Framework;
 
-namespace Awiz.Core.Test
+namespace Awiz.Core.Test.CSharpClassGenerator
 {
     [TestFixture]
     public class RelationBuilderTest
@@ -23,11 +23,11 @@ namespace Awiz.Core.Test
             _sut = new()
             {
                 ClassNodeGenerator = _classNodeGeneratorMock.Object,
-            };  
+            };
         }
 
         [Test]
-        public void Association1ToMany_WhenClassIsAddedAndExisingClassHasEnumearbleProperty_Then1ToNAssociationIsAdded()
+        public void Association1ToMany_WhenClassIsAddedAndExisingClassHasEnumerableProperty_Then1ToNAssociationIsAdded()
         {
             // Arrange
             var class1 = new ClassInfo()
@@ -56,11 +56,11 @@ namespace Awiz.Core.Test
             _sut.Build(_graphMock.Object, class1, [class2]);
 
             // Assert
-            _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, class1, class2, "1", "*"));
+            _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, class2, class1, "1", "*"));
         }
 
         [Test]
-        public void Association1ToMany_WhenClassIsAddedAndThatHasHasEnumearblePropertyOfExisingClas_Then1ToNAssociationIsAdded()
+        public void Association1ToMany_WhenClassIsAddedAndThatHasHasEnumearblePropertyOfExisingClass_Then1ToNAssociationIsAdded()
         {
             // Arrange
             var class1 = new ClassInfo()
@@ -89,11 +89,11 @@ namespace Awiz.Core.Test
             _sut.Build(_graphMock.Object, class1, [class2]);
 
             // Assert
-            _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, class2, class1, "1", "*"));
+            _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, class1, class2, "1", "*"));
         }
 
         [Test]
-        public void Association1ToMultiple_WhenClassIsAddedAndExistingClassHasClassAsMultipleProperties_Then1ToManyAssociationIsAdded()
+        public void Association1ToMultipleCount_WhenClassIsAddedAndExistingClassHasClassAsMultipleProperties_Then1ToManyAssociationIsAdded()
         {
             // Arrange
             var class1 = new ClassInfo()
@@ -126,56 +126,55 @@ namespace Awiz.Core.Test
                     }
                 ],
             };
-
-            // Act
-            _sut.Build(_graphMock.Object, class1, [class2]);
-
-            // Assert
-            _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, class1, class2, "1", "3"));
-        }
-
-
-        [Test]
-        public void Association1ToMultiple_WhenClassIsAddedWithMultiplePropertiesToExistingClass_Then1ToManyAssociationIsAdded()
-        {
-            // Arrange
-            var class1 = new ClassInfo()
-            {
-                Properties =
-                [
-                    new PropertyInfo()
-                    {
-                        Name = "foo",
-                        TypeName = "Class1",
-                        TypeNamespace = "This.is",
-                    },
-                    new PropertyInfo()
-                    {
-                        Name = "bar",
-                        TypeName = "Class1",
-                        TypeNamespace = "This.is",
-                    },
-                    new PropertyInfo()
-                    {
-                        Name = "buz",
-                        TypeName = "Class1",
-                        TypeNamespace = "This.is",
-                    }
-                ],
-            };
-
-            var class2 = new ClassInfo()
-            {
-                Name = "Class1",
-                Namespace = "This.is",
-            };
-
 
             // Act
             _sut.Build(_graphMock.Object, class1, [class2]);
 
             // Assert
             _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, class2, class1, "1", "3"));
+        }
+
+        [Test]
+        public void Association1ToMultipleCount_WhenClassIsAddedWithMultiplePropertiesToExistingClass_Then1ToManyAssociationIsAdded()
+        {
+            // Arrange
+            var class1 = new ClassInfo()
+            {
+                Properties =
+                [
+                    new PropertyInfo()
+                    {
+                        Name = "foo",
+                        TypeName = "Class1",
+                        TypeNamespace = "This.is",
+                    },
+                    new PropertyInfo()
+                    {
+                        Name = "bar",
+                        TypeName = "Class1",
+                        TypeNamespace = "This.is",
+                    },
+                    new PropertyInfo()
+                    {
+                        Name = "buz",
+                        TypeName = "Class1",
+                        TypeNamespace = "This.is",
+                    }
+                ],
+            };
+
+            var class2 = new ClassInfo()
+            {
+                Name = "Class1",
+                Namespace = "This.is",
+            };
+
+
+            // Act
+            _sut.Build(_graphMock.Object, class1, [class2]);
+
+            // Assert
+            _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, class1, class2, "1", "3"));
         }
 
         [Test]
@@ -204,7 +203,7 @@ namespace Awiz.Core.Test
             _sut.Build(_graphMock.Object, class1, [class2]);
 
             // Assert
-            _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, class1, class2));
+            _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, class2, class1));
         }
 
         [Test]
@@ -233,7 +232,7 @@ namespace Awiz.Core.Test
             _sut.Build(_graphMock.Object, class1, [class2]);
 
             // Assert
-            _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, class2, class1));
+            _classNodeGeneratorMock.Verify(m => m.CreateAssociation(_graphMock.Object, class1, class2));
         }
 
         [Test]
@@ -342,7 +341,5 @@ namespace Awiz.Core.Test
             _classNodeGeneratorMock.Verify(m => m.CreateImplementation(_graphMock.Object, implementedInterface, implementingClass1));
             _classNodeGeneratorMock.Verify(m => m.CreateImplementation(_graphMock.Object, implementedInterface, implementingClass2));
         }
-
-
     }
 }
