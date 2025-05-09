@@ -5,7 +5,7 @@ using Gwiz.Core.Contract;
 using Microsoft.UI.Xaml;
 using Prism.Commands;
 using Prism.Mvvm;
-Ausing System.Collections.Generic;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
