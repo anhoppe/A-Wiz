@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <UserControl
     x:Class="Awiz.View.ClassPanelView"
+    x:Name="_classPanelView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Awiz"
@@ -13,9 +14,10 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <Grid>
+        <Grid Grid.Row="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto" />
                 <RowDefinition Height="auto" />
@@ -27,6 +29,70 @@
             <ComboBox Grid.Row="2" ItemsSource="{Binding ImplementedIntefaces}" SelectedIndex="{Binding SelectedInterfaceIndex, Mode=TwoWay}" DisplayMemberPath="Name" />
             <Button Grid.Row="3" Command="{Binding AddInterfaceCommand}">Add Interface</Button>
         </Grid>
-        <TreeView Grid.Row="1" x:Name="_classNodeTree" />
+        <Expander Grid.Row="1" Header="Update Information" IsExpanded="False">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0">Added Properties:</TextBlock>
+                <ListBox Grid.Row="1" ItemsSource="{Binding AddedProperties}" SelectedIndex="{Binding AddedPropertiesSelectedIndex, Mode=TwoWay}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Content}" HorizontalAlignment="Center" />
+                                <Button Command="{Binding ApplyAddProperyCommand}">Add</Button>
+                                <Button Command="{Binding DeleteAddedPropertyCommand}">Del</Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <TextBlock Grid.Row="2">Deleted Properties:</TextBlock>
+                <ListBox Grid.Row="3" ItemsSource="{Binding DeletedProperties}" SelectedIndex="{Binding DeletedPropertiesSelectedIndex, Mode=TwoWay}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Content}" HorizontalAlignment="Center" />
+                                <Button Command="{Binding ApplyDeleteProperyCommand}">Add</Button>
+                                <Button Command="{Binding DeleteDeletedPropertyCommand}">Del</Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <TextBlock Grid.Row="4">Added Methods:</TextBlock>
+                <ListBox Grid.Row="5" ItemsSource="{Binding AddedMethods}" SelectedIndex="{Binding AddedMethodsSelectedIndex, Mode=TwoWay}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Content}" HorizontalAlignment="Center" />
+                                <Button Command="{Binding ApplyAddMethodCommand}">Add</Button>
+                                <Button Command="{Binding DeleteAddedMethodCommand}">Del</Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+                <TextBlock Grid.Row="6">Deleted Methods:</TextBlock>
+                <ListBox ItemsSource="{Binding DeletedMethods}" SelectedIndex="{Binding DeletedMethodsSelectedIndex, Mode=TwoWay}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Content}" HorizontalAlignment="Center" />
+                                <Button Command="{Binding ApplyDeleteMethodCommand}">Add</Button>
+                                <Button Command="{Binding DeleteDeletedMethodCommand}">Del</Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Expander>
+        <Expander Grid.Row="2" Header="Class Nodes" IsExpanded="True">
+            <TreeView x:Name="_classNodeTree" />
+        </Expander>
     </Grid>
 </UserControl>

@@ -57,8 +57,8 @@ Nodes:
   Id: 75fe1fd2-0b2e-472d-8420-00c6f0d7e346
   Template: UseCase
   Width: 428
-  X: -749
-  Y: -139
+  X: -725
+  Y: -137
 - Content:
   - Col: 0
     Row: 0
@@ -67,8 +67,8 @@ Nodes:
   Id: 6687d9c8-601f-4b4e-8d79-529497b6726d
   Template: UseCase
   Width: 381
-  X: -721
-  Y: 67
+  X: -707
+  Y: 68
 - Content:
   - Col: 0
     Row: 0
@@ -97,8 +97,8 @@ Nodes:
   Id: 5a86f63e-5a59-4554-94ba-c9ae38c0664c
   Template: UseCase
   Width: 369
-  X: -710
-  Y: 558
+  X: -699
+  Y: 549
 - Content:
   - Col: 0
     Row: 0

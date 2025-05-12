@@ -7,18 +7,18 @@ Nodes:
   Id: c84fa886-d0fd-43aa-bb1e-f4b8b201fe79
   Template: Actor
   Width: 80
-  X: -1145
-  Y: -79
+  X: -1110
+  Y: -60
 - Content:
   - Col: 0
     Row: 0
-    Text: Detect deletion of props/methods
+    Text: Detect add/del of props/methods
   Height: 120
   Id: 964262ac-f125-4de4-b34b-0349a464174d
   Template: UseCase
   Width: 307
-  X: -287
-  Y: 498
+  X: -255
+  Y: 411
 - Content:
   - Col: 0
     Row: 0
@@ -27,8 +27,8 @@ Nodes:
   Id: 55a68732-02d6-4958-90db-7b9fa16ae8e9
   Template: UseCase
   Width: 342
-  X: -779
-  Y: -446
+  X: -787
+  Y: -436
 - Content:
   - Col: 0
     Row: 0
@@ -52,11 +52,11 @@ Nodes:
 - Content:
   - Col: 0
     Row: 0
-    Text: Monitor consistence of class diagram
+    Text: Monitor consistence of class diagram(Arch. Review)
   Height: 120
   Id: 56ec4a86-4f31-4e15-bf0d-c9056b2f9ab9
   Template: UseCase
-  Width: 351
+  Width: 429
   X: -797
   Y: 295
 - Content:
@@ -77,8 +77,8 @@ Nodes:
   Id: 14d8c238-a1f9-4b49-9b56-69c0a3b3eb15
   Template: UseCase
   Width: 314
-  X: -288
-  Y: 288
+  X: -244
+  Y: 213
 - Content:
   - Col: 0
     Row: 0
@@ -97,8 +97,8 @@ Nodes:
   Id: 9152654d-5162-4778-aff5-0633d26d828d
   Template: UseCase
   Width: 291
-  X: -278
-  Y: 77
+  X: -263
+  Y: 38
 - Content:
   - Col: 0
     Row: 0
@@ -109,6 +109,56 @@ Nodes:
   Width: 506
   X: 130
   Y: -31
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Add elements manually
+  Height: 120
+  Id: 5e3b5fab-4246-43f0-9a03-53b433642780
+  Template: UseCase
+  Width: 350
+  X: -799
+  Y: 910
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Add edges manually
+  Height: 120
+  Id: 595a399f-9d7f-4467-ad35-0274c2682201
+  Template: UseCase
+  Width: 304
+  X: -276
+  Y: 861
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Add classes / interfaces
+  Height: 120
+  Id: d41d605e-0576-4848-97e9-e6519e9141dc
+  Template: UseCase
+  Width: 290
+  X: -282
+  Y: 1065
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Map class in repo to previously added class
+  Height: 120
+  Id: f3fb5913-d3e1-498a-8d0d-79eebb149b01
+  Template: UseCase
+  Width: 430
+  X: 142
+  Y: 1069
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Detect change of access modifier
+  Height: 120
+  Id: 888fe43e-07df-4fec-969c-499441f40004
+  Template: UseCase
+  Width: 300
+  X: -278
+  Y: 589
 Edges:
 - Ending: OpenArrow
   From: 55a68732-02d6-4958-90db-7b9fa16ae8e9
@@ -189,4 +239,52 @@ Edges:
   Style: Dotted
   Text: <<extends>>
   To: 7b581e7e-e130-46d8-ab4f-f76d8b077703
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 5e3b5fab-4246-43f0-9a03-53b433642780
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<includes>>
+  To: 595a399f-9d7f-4467-ad35-0274c2682201
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 5e3b5fab-4246-43f0-9a03-53b433642780
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<includes>>
+  To: d41d605e-0576-4848-97e9-e6519e9141dc
+  ToLabel: ''
+- Ending: OpenArrow
+  From: f3fb5913-d3e1-498a-8d0d-79eebb149b01
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: d41d605e-0576-4848-97e9-e6519e9141dc
+  ToLabel: ''
+- Ending: OpenArrow
+  From: c84fa886-d0fd-43aa-bb1e-f4b8b201fe79
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: ''
+  To: c84fa886-d0fd-43aa-bb1e-f4b8b201fe79
+  ToLabel: ''
+- Ending: OpenArrow
+  From: c84fa886-d0fd-43aa-bb1e-f4b8b201fe79
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: ''
+  To: 5e3b5fab-4246-43f0-9a03-53b433642780
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 56ec4a86-4f31-4e15-bf0d-c9056b2f9ab9
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<includes>>
+  To: 888fe43e-07df-4fec-969c-499441f40004
   ToLabel: ''

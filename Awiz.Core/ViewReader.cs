@@ -24,6 +24,8 @@ namespace Awiz.Core
 
         private RelationBuilder _relationBuilder = new();
 
+        private IStorageAccess _storageAccess = new YamlStorageAccess();
+
         private Dictionary<string, string> _useCaseNameToViewPath = new Dictionary<string, string>();
 
         private Dictionary<string, string> _viewNameToViewPath = new Dictionary<string, string>();
@@ -39,12 +41,12 @@ namespace Awiz.Core
         public ArchitectureViewType LoadedView { get; private set; } = ArchitectureViewType.None;
 
         public List<string> UseCases { get; } = new List<string>();
-        
+
+        public IVersionUpdater VersionUpdater { get; } = new VersionUpdater();
+
         internal ILoadableGitRepo LoadableGitAccess { get; set; } = new GitRepo();
 
         internal INamespaceBuilder NamespaceBuilder { get; set; } = new NamespaceBuilder();
-
-        internal IStorageAccess StorageAccess { get; set; } = new YamlStorageAccess();
 
         public ViewReader()
         {
@@ -53,12 +55,12 @@ namespace Awiz.Core
 
         public ClassInfo? GetClassInfoById(string id)
         {
-            return ClassInfos.FirstOrDefault(p => p.Id == id);
+            return ClassInfos.FirstOrDefault(p => p.Id() == id);
         }
 
         public IArchitectureView LoadClassDiagram(string viewName)
         {
-            var graph = StorageAccess.LoadDiagramGraph(viewName, _viewNameToViewPath[viewName]);
+            var graph = _storageAccess.LoadDiagramGraph(viewName, _viewNameToViewPath[viewName]);
             var architectureView = new ArchitectureClassView(_classParser.Classes)
             {
                 ClassNodeGenerator = _classNodeGenerator,
@@ -66,27 +68,27 @@ namespace Awiz.Core
                 Name = viewName,
                 RelationBuilder = _relationBuilder,
                 RepoPath = _pathToRepo,
-                StorageAccess = StorageAccess,
+                StorageAccess = _storageAccess,
             };
 
-            architectureView.Load();
+            architectureView.Load(VersionUpdater);
 
             return architectureView;
         }
 
         public IArchitectureView LoadUseCase(string useCaseName)
         {
-            var graph = StorageAccess.LoadDiagramGraph(useCaseName, _useCaseNameToViewPath[useCaseName]);
+            var graph = _storageAccess.LoadDiagramGraph(useCaseName, _useCaseNameToViewPath[useCaseName]);
             var useCase = new ArchitectureUseCaseView()
             {
                 Graph = graph,
                 Name = useCaseName,
                 RepoPath = _pathToRepo,
-                StorageAccess = StorageAccess,
+                StorageAccess = _storageAccess,
                 UseCasePath = _useCaseNameToViewPath[useCaseName],
             };
 
-            useCase.Load();
+            useCase.Load(VersionUpdater);
 
             return useCase;
         }

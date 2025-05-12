@@ -55,9 +55,9 @@ namespace Awiz.Core.Storage
             return gitInfo;
         }
 
-        public IDictionary<string, string> LoadNodeIdToClassIdMapping(Stream stream)
+        public IDictionary<string, ClassInfo> LoadNodeIdToClassInfoMapping(Stream stream)
         {
-            Dictionary<string, string> nodeToClassMapping = new();
+            Dictionary<string, ClassInfo> nodeToClassMapping = new();
 
             using (var reader = new StreamReader(stream))
             {
@@ -66,10 +66,24 @@ namespace Awiz.Core.Storage
                 .WithNamingConvention(PascalCaseNamingConvention.Instance)
                 .Build();
 
-                nodeToClassMapping = serializer.Deserialize<Dictionary<string, string>>(yaml) ?? new();
+                nodeToClassMapping = serializer.Deserialize<Dictionary<string, ClassInfo>>(yaml) ?? new();
             }
 
             return nodeToClassMapping;
+        }
+
+        public void SaveClassInfos(IList<ClassInfo> classInfos, Stream stream)
+        {
+            var serializer = new SerializerBuilder()
+                .WithNamingConvention(PascalCaseNamingConvention.Instance)
+                .Build();
+
+            var yaml = serializer.Serialize(classInfos);
+
+            using (var writer = new StreamWriter(stream))
+            {
+                writer.Write(yaml);
+            }
         }
 
         public void SaveGitInfo(Dictionary<string, IGitNodeInfo> gitInfo, Stream stream)
@@ -86,11 +100,11 @@ namespace Awiz.Core.Storage
             }
         }
 
-        public void SaveNodeIdToClassIdMapping(IDictionary<string, string> nodeToClassMapping, Stream stream)
+        public void SaveNodeIdToClassInfoMapping(IDictionary<string, ClassInfo> nodeToClassMapping, Stream stream)
         {
             var serializer = new SerializerBuilder()
                 .WithNamingConvention(PascalCaseNamingConvention.Instance)
-            .Build();
+                .Build();
 
             var yaml = serializer.Serialize(nodeToClassMapping);
 

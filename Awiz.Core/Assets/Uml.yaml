@@ -9,6 +9,10 @@
         - 2
         - 5
         - 5
+    Buttons:
+      - Id: VersionUpdateInfo
+        Alignment: TopRight
+        Icon: AlertCircle
   - Name: Boundary
     Alignment: TopCenter
     BackgroundColor: 0, 255, 255, 255

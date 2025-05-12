@@ -20,6 +20,11 @@ namespace Awiz.Core.Contract
         event EventHandler<INode>? NodeAdded;
 
         /// <summary>
+        /// Event is raised when the version diff of a class node is shown
+        /// </summary>
+        event EventHandler<ClassInfo>? ShowVersionDiff;
+
+        /// <summary>
         /// The graph showing the view
         /// </summary>
         IGraph? Graph { get; }
@@ -63,7 +68,7 @@ namespace Awiz.Core.Contract
         /// <summary>
         /// Loads the information that is associated with the view
         /// </summary>
-        void Load();
+        void Load(IVersionUpdater versioUpdater);
 
         /// <summary>
         /// Saves the view to disc

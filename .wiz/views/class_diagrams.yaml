@@ -1,0 +1,746 @@
+Nodes:
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ClassProvider
+  - Col: 0
+    Row: 1
+    Text: >
+      + List<ClassInfo> Classes
+  - Col: 0
+    Row: 2
+    Text: ''
+  Height: 159
+  Id: f95a2774-47d9-44f9-9a84-2364a4e01852
+  Template: Class
+  Width: 216
+  X: -1521
+  Y: 264
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ClassParser
+  - Col: 0
+    Row: 1
+    Text: >
+      + List<ClassInfo> Classes
+
+      ~ IProjectParser? ProjectParser
+  - Col: 0
+    Row: 2
+    Text: >
+      + ParseClasses(repoPath: string): void
+
+      - AddClassDefinitions(classInfos: List<ClassInfo>, model: SemanticModel, classDeclarations: IEnumerable<ClassDeclarationSyntax>, directory: string): void
+
+      - AddInterfaceDefinitions(classInfos: List<ClassInfo>, model: SemanticModel, interfaceDeclarations: IEnumerable<InterfaceDeclarationSyntax>, directory: string): void
+
+      - GenerateSyntaxTrees(repoPath: string): List<(string, SyntaxTree)>
+
+      - GetAccessModifier(node: SyntaxNode): string
+
+      - GetFields(classDeclaration: SyntaxNode, model: SemanticModel): List<FieldInfo>
+
+      - GetMethods(classDeclaration: SyntaxNode, model: SemanticModel): List<MethodInfo>
+
+      - GetNamespace(classDeclaration: SyntaxNode, model: SemanticModel): string
+
+      - GetProperties(classDeclaration: SyntaxNode, model: SemanticModel): List<PropertyInfo>
+  Height: 215
+  Id: d33a22f0-03c1-46b2-9a03-c267057f55b8
+  Template: Class
+  Width: 231
+  X: -1788
+  Y: 225
+- Content:
+  - Col: 0
+    Row: 0
+    Text: IProjectParser
+  - Col: 0
+    Row: 1
+    Text: ''
+  - Col: 0
+    Row: 2
+    Text: >2
+       GetProject(fileName: string): string
+       ParseProject(pathToRepo: string): void
+  Height: 160
+  Id: 2ba1a1a5-2233-439f-9ab5-21b124838ecd
+  Template: Class
+  Width: 120
+  X: -1724
+  Y: 504
+- Content:
+  - Col: 0
+    Row: 0
+    Text: IRelationBuilder
+  - Col: 0
+    Row: 1
+    Text: ''
+  - Col: 0
+    Row: 2
+    Text: >2
+       Build(graph: IGraph, addedClassInfo: ClassInfo, classesInDiagram: IList<ClassInfo>): void
+  Height: 160
+  Id: aeb2d16b-f2e8-45f8-b560-d54a220936f8
+  Template: Class
+  Width: 120
+  X: -864
+  Y: 79
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ProjectParser
+  - Col: 0
+    Row: 1
+    Text: ''
+  - Col: 0
+    Row: 2
+    Text: >
+      + GetProject(fileName: string): string
+
+      + ParseProject(pathToRepo: string): void
+  Height: 160
+  Id: cee9fec0-9eb9-4217-aa43-218093c0dcce
+  Template: Class
+  Width: 120
+  X: -1722
+  Y: 734
+- Content:
+  - Col: 0
+    Row: 0
+    Text: RelationBuilder
+  - Col: 0
+    Row: 1
+    Text: >
+      ~ IClassNodeGenerator? ClassNodeGenerator
+  - Col: 0
+    Row: 2
+    Text: >
+      + Build(graph: IGraph, addedClassInfo: ClassInfo, classesInDiagram: IList<ClassInfo>): void
+
+      - AddAssociationFromOwnerToTarget(graph: IGraph, associationOwner: ClassInfo, associationTarget: ClassInfo): void
+
+      - AddExtensions(graph: IGraph, addedClassInfo: ClassInfo, classInfo: ClassInfo): void
+
+      - AddImplementations(graph: IGraph, addedClassInfo: ClassInfo, classInfo: ClassInfo): void
+  Height: 160
+  Id: 487f6b44-4a90-4506-a52f-a42243822511
+  Template: Class
+  Width: 120
+  X: -862
+  Y: -182
+- Content:
+  - Col: 0
+    Row: 0
+    Text: IStorageAccess
+  - Col: 0
+    Row: 1
+    Text: ''
+  - Col: 0
+    Row: 2
+    Text: >2
+       LoadDiagramGraph(name: string, path: string): IGraph
+       LoadGitInfo(stream: Stream): Dictionary<string, IGitNodeInfo>
+       LoadNodeIdToClassInfoMapping(stream: Stream): IDictionary<string, ClassInfo>
+       SaveGitInfo(gitInfo: Dictionary<string, IGitNodeInfo>, stream: Stream): void
+       SaveNodeIdToClassInfoMapping(nodeToClassMapping: IDictionary<string, ClassInfo>, stream: Stream): void
+  Height: 282
+  Id: e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4
+  Template: Class
+  Width: 287
+  X: -1260
+  Y: -356
+- Content:
+  - Col: 0
+    Row: 0
+    Text: YamlStorageAccess
+  - Col: 0
+    Row: 1
+    Text: ''
+  - Col: 0
+    Row: 2
+    Text: >
+      + LoadDiagramGraph(name: string, path: string): IGraph
+
+      + LoadGitInfo(stream: Stream): Dictionary<string, IGitNodeInfo>
+
+      + LoadNodeIdToClassInfoMapping(stream: Stream): IDictionary<string, ClassInfo>
+
+      + SaveClassInfos(classInfos: IList<ClassInfo>, stream: Stream): void
+
+      + SaveGitInfo(gitInfo: Dictionary<string, IGitNodeInfo>, stream: Stream): void
+
+      + SaveNodeIdToClassInfoMapping(nodeToClassMapping: IDictionary<string, ClassInfo>, stream: Stream): void
+
+      - GetEmbeddedUmlYaml(): Stream
+  Height: 307
+  Id: 3681a813-29d0-4fd0-953c-7c21d5480bc4
+  Template: Class
+  Width: 328
+  X: -1275
+  Y: 44
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ArchitectureClassView
+  - Col: 0
+    Row: 1
+    Text: >
+      + ArchitectureViewType Type
+
+      ~ IClassNodeGenerator? ClassNodeGenerator
+
+      ~ IFileSystem FileSystem
+
+      ~ IRelationBuilder? RelationBuilder
+
+      ~ ISerializer Serializer
+  - Col: 0
+    Row: 2
+    Text: >
+      + AddBaseClassNode(derivedClassInfo: ClassInfo): void
+
+      + AddClassNode(classInfo: ClassInfo): void
+
+      - RegisterNodeForSelectionEvent(classInfo: ClassInfo, node: INode): void
+
+      + AddUseCaseNode(node: INode): void
+
+      + Load(): void
+
+      + Save(): void
+
+      # OnNodeRemoved(node: INode): void
+  Height: 278
+  Id: 27bf6b0e-665e-4348-bae8-f9b0600eb666
+  Template: Class
+  Width: 298
+  X: -645
+  Y: 20
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ArchitectureView
+  - Col: 0
+    Row: 1
+    Text: >
+      + IGraph? Graph
+
+      + string Name
+
+      + string RepoPath
+
+      + ArchitectureViewType Type
+
+      ~ IStorageAccess StorageAccess
+  - Col: 0
+    Row: 2
+    Text: >
+      + AddBaseClassNode(derivedClassInfo: ClassInfo): void
+
+      + AddClassNode(classInfo: ClassInfo): void
+
+      + AddUseCaseNode(node: INode): void
+
+      + GetAssociatedCommits(node: INode): IGitNodeInfo
+
+      + Load(): void
+
+      + Save(): void
+
+      # OnNodeRemoved(node: INode): void
+
+      # RaiseClassSelected(selectedClass: ClassInfo): void
+
+      # RaiseNodeAdded(node: INode): void
+  Height: 282
+  Id: 00df91e2-d6f2-4649-a1f6-fe814f3027d6
+  Template: Class
+  Width: 414
+  X: -705
+  Y: -355
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ILoadableGitRepo
+  - Col: 0
+    Row: 1
+    Text: ''
+  - Col: 0
+    Row: 2
+    Text: >2
+       LoadRepo(pathToRepo: string): void
+  Height: 161
+  Id: 9aff6532-adbd-4786-a24a-d0612c99c975
+  Template: Class
+  Width: 326
+  X: -1356
+  Y: -638
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ViewReader
+  - Col: 0
+    Row: 1
+    Text: >
+      + List<string> ClassDiagrams
+
+      + List<ClassInfo> ClassInfos
+
+      + IDictionary<string, ClassNamespaceNode> ClassNamespaceNodes
+
+      + IGitRepo GitAccess
+
+      + ArchitectureViewType LoadedView
+
+      + List<string> UseCases
+
+      ~ ILoadableGitRepo LoadableGitAccess
+
+      ~ INamespaceBuilder NamespaceBuilder
+
+      ~ IStorageAccess StorageAccess
+  - Col: 0
+    Row: 2
+    Text: >
+      + GetClassInfoById(id: string): ClassInfo?
+
+      + LoadClassDiagram(viewName: string): IArchitectureView
+
+      + LoadUseCase(useCaseName: string): IArchitectureView
+
+      + ReadProject(pathToRepo: string): IGitRepo
+
+      - ReadClassDiagrams(): void
+
+      - ReadUseCases(): void
+  Height: 397
+  Id: 434ecb96-1384-44fd-b1a3-ed4d85e3951f
+  Template: Class
+  Width: 473
+  X: -2067
+  Y: -501
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ClassInfo
+  - Col: 0
+    Row: 1
+    Text: >
+      + string Assembly
+
+      + string BaseClass
+
+      + string Directory
+
+      + List<FieldInfo> Fields
+
+      + List<string> ImplementedInterfaces
+
+      + List<MethodInfo> Methods
+
+      + string Name
+
+      + string Namespace
+
+      + List<PropertyInfo> Properties
+
+      + ClassType Type
+
+      + IList<MethodInfo> AddedMethods
+
+      + IList<PropertyInfo> AddedProperties
+
+      + IList<MethodInfo> DeletedMethods
+
+      + IList<PropertyInfo> DeletedProperties
+  - Col: 0
+    Row: 2
+    Text: >
+      + Id(): string
+
+      + ToString(): string
+  Height: 767
+  Id: 4c734e3d-5415-4c14-864f-5ebe1b412fd5
+  Template: Class
+  Width: 606
+  X: -2464
+  Y: -62
+- Content:
+  - Col: 0
+    Row: 0
+    Text: FieldInfo
+  - Col: 0
+    Row: 1
+    Text: >
+      + string AccessModifier
+
+      + string Name
+
+      + string Type
+  - Col: 0
+    Row: 2
+    Text: >
+      + ToString(): string
+  Height: 259
+  Id: 74bd1a50-5556-41ed-b2ed-ed33983b655a
+  Template: Class
+  Width: 213
+  X: -2839
+  Y: 117
+- Content:
+  - Col: 0
+    Row: 0
+    Text: MethodInfo
+  - Col: 0
+    Row: 1
+    Text: >
+      + string AccessModifier
+
+      + string Name
+
+      + List<ParameterInfo> Parameters
+
+      + string ReturnType
+  - Col: 0
+    Row: 2
+    Text: >
+      + ToString(): string
+
+      + AccessModifierShort(): string
+  Height: 266
+  Id: 5085e20a-2c35-4563-9bf1-8163f6c5550c
+  Template: Class
+  Width: 312
+  X: -2316
+  Y: 722
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ParameterInfo
+  - Col: 0
+    Row: 1
+    Text: >
+      + string Name
+
+      + string Type
+  - Col: 0
+    Row: 2
+    Text: >
+      + ToString(): string
+  Height: 157
+  Id: 632ecc4b-39f1-4de1-8eb9-60dee4f5743b
+  Template: Class
+  Width: 207
+  X: -2267
+  Y: 1044
+- Content:
+  - Col: 0
+    Row: 0
+    Text: PropertyInfo
+  - Col: 0
+    Row: 1
+    Text: >
+      + string AccessModifier
+
+      + ClassInfo GenericType
+
+      + bool IsEnumerable
+
+      + string Name
+
+      + string TypeNamespace
+
+      + string TypeName
+  - Col: 0
+    Row: 2
+    Text: >
+      + TypeId(): string
+
+      + ToString(): string
+
+      + AccessModifierShort(): string
+  Height: 268
+  Id: 22ef5fe1-486d-4254-8c93-37fc1d9eb17e
+  Template: Class
+  Width: 236
+  X: -1954
+  Y: 929
+- Content:
+  - Col: 0
+    Row: 0
+    Text: IArchitectureWiz
+  - Col: 0
+    Row: 1
+    Text: >2
+       List<string> ClassDiagrams
+       List<ClassInfo> ClassInfos
+       IDictionary<string, ClassNamespaceNode> ClassNamespaceNodes
+       List<string> UseCases
+  - Col: 0
+    Row: 2
+    Text: >2
+       GetClassInfoById(id: string): ClassInfo?
+       LoadClassDiagram(classDiagramName: string): IArchitectureView
+       LoadUseCase(useCaseName: string): IArchitectureView
+       ReadProject(pathToRepo: string): IGitRepo
+  Height: 160
+  Id: 9ee67f59-c4d0-469b-915d-b32cea6b5d9d
+  Template: Class
+  Width: 120
+  X: -2223
+  Y: -665
+- Content:
+  - Col: 0
+    Row: 0
+    Text: IArchitectureView
+  - Col: 0
+    Row: 1
+    Text: >2
+       IGraph? Graph
+       string Name
+       ArchitectureViewType Type
+  - Col: 0
+    Row: 2
+    Text: >2
+       AddBaseClassNode(derivedClassInfo: ClassInfo): void
+       AddClassNode(classInfo: ClassInfo): void
+       AddUseCaseNode(node: INode): void
+       GetAssociatedCommits(node: INode): IGitNodeInfo
+       Load(): void
+       Save(): void
+  Height: 228
+  Id: 0d177e17-e708-41ac-b046-f2595b5fc2f3
+  Template: Class
+  Width: 366
+  X: -684
+  Y: -683
+- Content:
+  - Col: 0
+    Row: 0
+    Text: IClassProvider
+  - Col: 0
+    Row: 1
+    Text: >2
+       List<ClassInfo> Classes
+  - Col: 0
+    Row: 2
+    Text: ''
+  Height: 160
+  Id: 60012fdc-7a42-4649-8a20-da6954ca423c
+  Template: Class
+  Width: 120
+  X: -1505
+  Y: -36
+- Content:
+  - Col: 0
+    Row: 0
+    Text: VersionDiffUpdater
+  - Col: 0
+    Row: 1
+    Text: ''
+  - Col: 0
+    Row: 2
+    Text: >
+      + UpdateVersion(updatedClassInfo: ClassInfo, repoClassInfo: IList<ClassInfo>, node: INode): void
+
+      - CheckForAddedMethods(updatedClass: ClassInfo, repoClass: ClassInfo): void
+
+      - CheckForAddedProperties(updatedClass: ClassInfo, repoClass: ClassInfo): void
+
+      - CheckForDeletedMethods(updatedClass: ClassInfo, repoClass: ClassInfo): void
+
+      - CheckForDeletedProperties(updatedClass: ClassInfo, repoClass: ClassInfo): void
+  Height: 305
+  Id: 639fc1de-d5ab-409c-b3ba-e9570e125ff3
+  Template: Class
+  Width: 406
+  X: -1130
+  Y: 636
+- Content:
+  - Col: 0
+    Row: 0
+    Text: IVersionDiffUpdater
+  - Col: 0
+    Row: 1
+    Text: ''
+  - Col: 0
+    Row: 2
+    Text: >2
+       UpdateVersion(updatedClassInfo: ClassInfo, repoClassInfos: IList<ClassInfo>, node: INode): void
+  Height: 162
+  Id: 575a130d-3bc7-42f0-949f-181e9fe40886
+  Template: Class
+  Width: 362
+  X: -1122
+  Y: 387
+Edges:
+- Ending: None
+  From: d33a22f0-03c1-46b2-9a03-c267057f55b8
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 2ba1a1a5-2233-439f-9ab5-21b124838ecd
+  ToLabel: ''
+- Ending: ClosedArrow
+  From: cee9fec0-9eb9-4217-aa43-218093c0dcce
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dashed
+  Text: ''
+  To: 2ba1a1a5-2233-439f-9ab5-21b124838ecd
+  ToLabel: ''
+- Ending: ClosedArrow
+  From: 487f6b44-4a90-4506-a52f-a42243822511
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dashed
+  Text: ''
+  To: aeb2d16b-f2e8-45f8-b560-d54a220936f8
+  ToLabel: ''
+- Ending: ClosedArrow
+  From: 3681a813-29d0-4fd0-953c-7c21d5480bc4
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dashed
+  Text: ''
+  To: e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4
+  ToLabel: ''
+- Ending: None
+  From: 27bf6b0e-665e-4348-bae8-f9b0600eb666
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: aeb2d16b-f2e8-45f8-b560-d54a220936f8
+  ToLabel: ''
+- Ending: None
+  From: 00df91e2-d6f2-4649-a1f6-fe814f3027d6
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4
+  ToLabel: ''
+- Ending: ClosedArrow
+  From: 27bf6b0e-665e-4348-bae8-f9b0600eb666
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 00df91e2-d6f2-4649-a1f6-fe814f3027d6
+  ToLabel: ''
+- Ending: None
+  From: 434ecb96-1384-44fd-b1a3-ed4d85e3951f
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4
+  ToLabel: ''
+- Ending: None
+  From: 434ecb96-1384-44fd-b1a3-ed4d85e3951f
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 9aff6532-adbd-4786-a24a-d0612c99c975
+  ToLabel: ''
+- Ending: None
+  From: 4c734e3d-5415-4c14-864f-5ebe1b412fd5
+  FromLabel: 1
+  LabelOffsetPerCent: 5
+  Style: None
+  Text: ''
+  To: 74bd1a50-5556-41ed-b2ed-ed33983b655a
+  ToLabel: '*'
+- Ending: None
+  From: 4c734e3d-5415-4c14-864f-5ebe1b412fd5
+  FromLabel: 1
+  LabelOffsetPerCent: 5
+  Style: None
+  Text: ''
+  To: 5085e20a-2c35-4563-9bf1-8163f6c5550c
+  ToLabel: '*'
+- Ending: None
+  From: 5085e20a-2c35-4563-9bf1-8163f6c5550c
+  FromLabel: 1
+  LabelOffsetPerCent: 5
+  Style: None
+  Text: ''
+  To: 632ecc4b-39f1-4de1-8eb9-60dee4f5743b
+  ToLabel: '*'
+- Ending: None
+  From: 4c734e3d-5415-4c14-864f-5ebe1b412fd5
+  FromLabel: 1
+  LabelOffsetPerCent: 5
+  Style: None
+  Text: ''
+  To: 22ef5fe1-486d-4254-8c93-37fc1d9eb17e
+  ToLabel: '*'
+- Ending: None
+  From: 22ef5fe1-486d-4254-8c93-37fc1d9eb17e
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 4c734e3d-5415-4c14-864f-5ebe1b412fd5
+  ToLabel: ''
+- Ending: ClosedArrow
+  From: 434ecb96-1384-44fd-b1a3-ed4d85e3951f
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dashed
+  Text: ''
+  To: 9ee67f59-c4d0-469b-915d-b32cea6b5d9d
+  ToLabel: ''
+- Ending: None
+  From: 9ee67f59-c4d0-469b-915d-b32cea6b5d9d
+  FromLabel: 1
+  LabelOffsetPerCent: 5
+  Style: None
+  Text: ''
+  To: 4c734e3d-5415-4c14-864f-5ebe1b412fd5
+  ToLabel: '*'
+- Ending: ClosedArrow
+  From: 00df91e2-d6f2-4649-a1f6-fe814f3027d6
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dashed
+  Text: ''
+  To: 0d177e17-e708-41ac-b046-f2595b5fc2f3
+  ToLabel: ''
+- Ending: ClosedArrow
+  From: f95a2774-47d9-44f9-9a84-2364a4e01852
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dashed
+  Text: ''
+  To: 60012fdc-7a42-4649-8a20-da6954ca423c
+  ToLabel: ''
+- Ending: ClosedArrow
+  From: d33a22f0-03c1-46b2-9a03-c267057f55b8
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dashed
+  Text: ''
+  To: 60012fdc-7a42-4649-8a20-da6954ca423c
+  ToLabel: ''
+- Ending: None
+  From: 60012fdc-7a42-4649-8a20-da6954ca423c
+  FromLabel: 1
+  LabelOffsetPerCent: 5
+  Style: None
+  Text: ''
+  To: 4c734e3d-5415-4c14-864f-5ebe1b412fd5
+  ToLabel: '*'
+- Ending: ClosedArrow
+  From: 639fc1de-d5ab-409c-b3ba-e9570e125ff3
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dashed
+  Text: ''
+  To: 575a130d-3bc7-42f0-949f-181e9fe40886
+  ToLabel: ''

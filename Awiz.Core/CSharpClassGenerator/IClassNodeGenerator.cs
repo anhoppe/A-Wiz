@@ -37,7 +37,7 @@ namespace Awiz.Core.CSharpClassGenerator
         /// </summary>
         /// <param name="graph"></param>
         /// <param name="classInfo"></param>
-        INode CreateClassNode(IGraph graph, ClassInfo classInfo);
+        INode CreateClassNode(IGraph graph, ClassInfo classInfo, Action<ClassInfo> updateAction);
 
         /// <summary>
         /// Generates an extension between baseClass and derivedClass
@@ -54,5 +54,12 @@ namespace Awiz.Core.CSharpClassGenerator
         /// <param name="implementedInterface">The interface that is implemented by the class</param>
         /// <param name="implementingClass">The class that is implementing the interface</param>
         void CreateImplementation(IGraph graph, ClassInfo implementedInterface, ClassInfo implementingClass);
+
+        /// <summary>
+        /// Updates the class node with the information from the class info
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="classInfo"></param>
+        void UpdateClassNode(INode node, ClassInfo classInfo, Action<ClassInfo> updateCallback);
     }
 }

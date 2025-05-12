@@ -48,7 +48,7 @@ namespace Awiz.Core.CSharpClassGenerator
                             {
                                 referenceCount++;
                             }
-                            else if (prop.IsEnumerable && prop.GenericType.Id == classInfo2.Id)
+                            else if (prop.IsEnumerable && prop.GenericType.Id() == classInfo2.Id())
                             {
                                 isOneToN = true;
                                 break;
@@ -79,7 +79,7 @@ namespace Awiz.Core.CSharpClassGenerator
         {
             foreach (var classInfo in classProvider.Classes)
             {
-                ClassNodeGenerator.CreateClassNode(graph, classInfo);
+                ClassNodeGenerator.CreateClassNode(graph, classInfo, (_) => { });
             }
         }
 

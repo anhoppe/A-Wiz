@@ -23,13 +23,11 @@ namespace Awiz.Core.CSharpClassGenerator
             graph.AddEdge(node1, node2, fromMultiplicity, toMultiplicity, FromToLabelOffsetPerCent);
         }
 
-        public INode CreateClassNode(IGraph graph, ClassInfo classInfo)
+        public INode CreateClassNode(IGraph graph, ClassInfo classInfo, Action<ClassInfo> updateAction)
         {
             var node = graph.AddNode("Class");
-            node.Grid.Cells[0][0].Text = classInfo.Name;
 
-            node.Grid.Cells[0][1].Text = classInfo.Properties.Aggregate("", (current, prop) => current + $"{prop}\n");
-            node.Grid.Cells[0][2].Text = classInfo.Methods.Aggregate("", (current, method) => current + $"{method}\n");
+            UpdateClassNode(node, classInfo, updateAction);
 
             node.Width = 120;
             node.Height = 160;
@@ -49,6 +47,30 @@ namespace Awiz.Core.CSharpClassGenerator
             var (node1, node2) = GetNodes(implementedInterface, implementingClass);
 
             graph.AddEdge(node2, node1, Ending.ClosedArrow, Style.Dashed);
+        }
+
+        public void UpdateClassNode(INode node, ClassInfo classInfo, Action<ClassInfo> updateCallback)
+        {
+            node.Grid.Cells[0, 0].Text = classInfo.Name;
+
+            node.Grid.Cells[0, 1].Text = classInfo.Properties.Aggregate("", (current, prop) => current + $"{prop}\n");
+            node.Grid.Cells[0, 2].Text = classInfo.Methods.Aggregate("", (current, method) => current + $"{method}\n");
+
+            var hasUpdateInfo = classInfo.AddedProperties.Any() ||
+                classInfo.DeletedProperties.Any() ||
+                classInfo.AddedMethods.Any() ||
+                classInfo.DeletedMethods.Any();
+
+            var button = node.GetButtonById("VersionUpdateInfo");
+
+            if (hasUpdateInfo)
+            {
+                button.Clicked += (sender, args) =>
+                {
+                    updateCallback.Invoke(classInfo);
+                };
+            }
+            button.Visible = hasUpdateInfo;
         }
 
         private (INode node1, INode node2) GetNodes(ClassInfo class1, ClassInfo class2)

@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Awiz.ViewModel;
 using Awiz.Core.Contract.CodeTree;
 using Awiz.Core.Contract.CodeInfo;
+using Awiz.ViewModel.ClassDiagram;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.

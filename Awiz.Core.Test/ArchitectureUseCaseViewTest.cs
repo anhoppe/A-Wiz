@@ -1,4 +1,5 @@
-﻿using Awiz.Core.Contract.Git;
+﻿using Awiz.Core.Contract.CodeInfo;
+using Awiz.Core.Contract.Git;
 using Awiz.Core.Storage;
 using Gwiz.Core.Contract;
 using Moq;
@@ -66,7 +67,7 @@ namespace Awiz.Core.Test
             var gitInfoMock = new Mock<IGitNodeInfo>();
 
             // Act
-            _sut.Load();
+            _sut.Load(Mock.Of<IVersionUpdater>());
 
             // Assert
             _storageAccessMock.Verify(m => m.LoadGitInfo(stream));

@@ -1,0 +1,2193 @@
+f95a2774-47d9-44f9-9a84-2364a4e01852:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\CSharpClassGenerator\ClassFilter.cs
+  Fields: []
+  ImplementedInterfaces:
+  - Awiz.Core.CSharpClassGenerator.IClassProvider
+  Methods: []
+  Name: ClassProvider
+  Namespace: Awiz.Core.CSharpClassGenerator
+  Properties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ClassInfo
+      Namespace: Awiz.Core.Contract.CodeInfo
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Classes
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<ClassInfo>
+  Type: Class
+d33a22f0-03c1-46b2-9a03-c267057f55b8:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\CSharpClassGenerator\ClassParser.cs
+  Fields: []
+  ImplementedInterfaces:
+  - Awiz.Core.CSharpClassGenerator.IClassProvider
+  Methods:
+  - AccessModifier: public
+    Name: ParseClasses
+    Parameters:
+    - Name: repoPath
+      Type: string
+    ReturnType: void
+  - AccessModifier: private
+    Name: AddClassDefinitions
+    Parameters:
+    - Name: classInfos
+      Type: List<ClassInfo>
+    - Name: model
+      Type: SemanticModel
+    - Name: classDeclarations
+      Type: IEnumerable<ClassDeclarationSyntax>
+    - Name: directory
+      Type: string
+    ReturnType: void
+  - AccessModifier: private
+    Name: AddInterfaceDefinitions
+    Parameters:
+    - Name: classInfos
+      Type: List<ClassInfo>
+    - Name: model
+      Type: SemanticModel
+    - Name: interfaceDeclarations
+      Type: IEnumerable<InterfaceDeclarationSyntax>
+    - Name: directory
+      Type: string
+    ReturnType: void
+  - AccessModifier: private
+    Name: GenerateSyntaxTrees
+    Parameters:
+    - Name: repoPath
+      Type: string
+    ReturnType: List<(string, SyntaxTree)>
+  - AccessModifier: private
+    Name: GetAccessModifier
+    Parameters:
+    - Name: node
+      Type: SyntaxNode
+    ReturnType: string
+  - AccessModifier: private
+    Name: GetFields
+    Parameters:
+    - Name: classDeclaration
+      Type: SyntaxNode
+    - Name: model
+      Type: SemanticModel
+    ReturnType: List<FieldInfo>
+  - AccessModifier: private
+    Name: GetMethods
+    Parameters:
+    - Name: classDeclaration
+      Type: SyntaxNode
+    - Name: model
+      Type: SemanticModel
+    ReturnType: List<MethodInfo>
+  - AccessModifier: private
+    Name: GetNamespace
+    Parameters:
+    - Name: classDeclaration
+      Type: SyntaxNode
+    - Name: model
+      Type: SemanticModel
+    ReturnType: string
+  - AccessModifier: private
+    Name: GetProperties
+    Parameters:
+    - Name: classDeclaration
+      Type: SyntaxNode
+    - Name: model
+      Type: SemanticModel
+    ReturnType: List<PropertyInfo>
+  Name: ClassParser
+  Namespace: Awiz.Core.CSharpClassGenerator
+  Properties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ClassInfo
+      Namespace: Awiz.Core.Contract.CodeInfo
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Classes
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<ClassInfo>
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: ProjectParser
+    TypeNamespace: Awiz.Core.CSharpClassGenerator
+    TypeName: IProjectParser?
+  Type: Class
+2ba1a1a5-2233-439f-9ab5-21b124838ecd:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\CSharpClassGenerator\IProjectParser.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: ''
+    Name: GetProject
+    Parameters:
+    - Name: fileName
+      Type: string
+    ReturnType: string
+  - AccessModifier: ''
+    Name: ParseProject
+    Parameters:
+    - Name: pathToRepo
+      Type: string
+    ReturnType: void
+  Name: IProjectParser
+  Namespace: Awiz.Core.CSharpClassGenerator
+  Properties: []
+  Type: Interface
+aeb2d16b-f2e8-45f8-b560-d54a220936f8:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\CSharpClassGenerator\IRelationBuilder.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: ''
+    Name: Build
+    Parameters:
+    - Name: graph
+      Type: IGraph
+    - Name: addedClassInfo
+      Type: ClassInfo
+    - Name: classesInDiagram
+      Type: IList<ClassInfo>
+    ReturnType: void
+  Name: IRelationBuilder
+  Namespace: Awiz.Core.CSharpClassGenerator
+  Properties: []
+  Type: Interface
+cee9fec0-9eb9-4217-aa43-218093c0dcce:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\CSharpClassGenerator\ProjectParser.cs
+  Fields:
+  - AccessModifier: private
+    Name: _pathToProject
+    Type: string
+  ImplementedInterfaces:
+  - Awiz.Core.CSharpClassGenerator.IProjectParser
+  Methods:
+  - AccessModifier: public
+    Name: GetProject
+    Parameters:
+    - Name: fileName
+      Type: string
+    ReturnType: string
+  - AccessModifier: public
+    Name: ParseProject
+    Parameters:
+    - Name: pathToRepo
+      Type: string
+    ReturnType: void
+  Name: ProjectParser
+  Namespace: Awiz.Core.CSharpClassGenerator
+  Properties: []
+  Type: Class
+487f6b44-4a90-4506-a52f-a42243822511:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\CSharpClassGenerator\RelationBuilder.cs
+  Fields: []
+  ImplementedInterfaces:
+  - Awiz.Core.CSharpClassGenerator.IRelationBuilder
+  Methods:
+  - AccessModifier: public
+    Name: Build
+    Parameters:
+    - Name: graph
+      Type: IGraph
+    - Name: addedClassInfo
+      Type: ClassInfo
+    - Name: classesInDiagram
+      Type: IList<ClassInfo>
+    ReturnType: void
+  - AccessModifier: private
+    Name: AddAssociationFromOwnerToTarget
+    Parameters:
+    - Name: graph
+      Type: IGraph
+    - Name: associationOwner
+      Type: ClassInfo
+    - Name: associationTarget
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: private
+    Name: AddExtensions
+    Parameters:
+    - Name: graph
+      Type: IGraph
+    - Name: addedClassInfo
+      Type: ClassInfo
+    - Name: classInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: private
+    Name: AddImplementations
+    Parameters:
+    - Name: graph
+      Type: IGraph
+    - Name: addedClassInfo
+      Type: ClassInfo
+    - Name: classInfo
+      Type: ClassInfo
+    ReturnType: void
+  Name: RelationBuilder
+  Namespace: Awiz.Core.CSharpClassGenerator
+  Properties:
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: ClassNodeGenerator
+    TypeNamespace: Awiz.Core.CSharpClassGenerator
+    TypeName: IClassNodeGenerator?
+  Type: Class
+e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\Storage\IStorageAccess.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: ''
+    Name: LoadDiagramGraph
+    Parameters:
+    - Name: name
+      Type: string
+    - Name: path
+      Type: string
+    ReturnType: IGraph
+  - AccessModifier: ''
+    Name: LoadGitInfo
+    Parameters:
+    - Name: stream
+      Type: Stream
+    ReturnType: Dictionary<string, IGitNodeInfo>
+  - AccessModifier: ''
+    Name: LoadNodeIdToClassInfoMapping
+    Parameters:
+    - Name: stream
+      Type: Stream
+    ReturnType: IDictionary<string, ClassInfo>
+  - AccessModifier: ''
+    Name: SaveGitInfo
+    Parameters:
+    - Name: gitInfo
+      Type: Dictionary<string, IGitNodeInfo>
+    - Name: stream
+      Type: Stream
+    ReturnType: void
+  - AccessModifier: ''
+    Name: SaveNodeIdToClassInfoMapping
+    Parameters:
+    - Name: nodeToClassMapping
+      Type: IDictionary<string, ClassInfo>
+    - Name: stream
+      Type: Stream
+    ReturnType: void
+  Name: IStorageAccess
+  Namespace: Awiz.Core.Storage
+  Properties: []
+  Type: Interface
+3681a813-29d0-4fd0-953c-7c21d5480bc4:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\Storage\YamlStorageAccess.cs
+  Fields: []
+  ImplementedInterfaces:
+  - Awiz.Core.Storage.IStorageAccess
+  Methods:
+  - AccessModifier: public
+    Name: LoadDiagramGraph
+    Parameters:
+    - Name: name
+      Type: string
+    - Name: path
+      Type: string
+    ReturnType: IGraph
+  - AccessModifier: public
+    Name: LoadGitInfo
+    Parameters:
+    - Name: stream
+      Type: Stream
+    ReturnType: Dictionary<string, IGitNodeInfo>
+  - AccessModifier: public
+    Name: LoadNodeIdToClassInfoMapping
+    Parameters:
+    - Name: stream
+      Type: Stream
+    ReturnType: IDictionary<string, ClassInfo>
+  - AccessModifier: public
+    Name: SaveClassInfos
+    Parameters:
+    - Name: classInfos
+      Type: IList<ClassInfo>
+    - Name: stream
+      Type: Stream
+    ReturnType: void
+  - AccessModifier: public
+    Name: SaveGitInfo
+    Parameters:
+    - Name: gitInfo
+      Type: Dictionary<string, IGitNodeInfo>
+    - Name: stream
+      Type: Stream
+    ReturnType: void
+  - AccessModifier: public
+    Name: SaveNodeIdToClassInfoMapping
+    Parameters:
+    - Name: nodeToClassMapping
+      Type: IDictionary<string, ClassInfo>
+    - Name: stream
+      Type: Stream
+    ReturnType: void
+  - AccessModifier: private
+    Name: GetEmbeddedUmlYaml
+    Parameters: []
+    ReturnType: Stream
+  Name: YamlStorageAccess
+  Namespace: Awiz.Core.Storage
+  Properties: []
+  Type: Class
+27bf6b0e-665e-4348-bae8-f9b0600eb666:
+  AddedMethods:
+  - AccessModifier: private
+    Name: RegisterVersionUpdateNotification
+    Parameters:
+    - Name: node
+      Type: INode
+    - Name: classInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: private
+    Name: RegisterVersionUpdateNotification
+    Parameters:
+    - Name: node
+      Type: INode
+    - Name: classInfo
+      Type: ClassInfo
+    ReturnType: void
+  AddedProperties:
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: VersionDiffUpdater
+    TypeNamespace: Awiz.Core.CSharpClassGenerator
+    TypeName: IVersionDiffUpdater?
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: VersionDiffUpdater
+    TypeNamespace: Awiz.Core.CSharpClassGenerator
+    TypeName: IVersionDiffUpdater?
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: VersionDiffUpdater
+    TypeNamespace: Awiz.Core.CSharpClassGenerator
+    TypeName: IVersionDiffUpdater?
+  Assembly: Awiz.Core
+  BaseClass: Awiz.Core.ArchitectureView
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\ArchitectureClassView.cs
+  Fields:
+  - AccessModifier: private
+    Name: _classInfos
+    Type: IList<ClassInfo>
+  - AccessModifier: private
+    Name: _classNodeGenerator
+    Type: IClassNodeGenerator?
+  - AccessModifier: private
+    Name: _nodeToClassInfo
+    Type: Dictionary<INode, ClassInfo>
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: public
+    Name: AddBaseClassNode
+    Parameters:
+    - Name: derivedClassInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: public
+    Name: AddClassNode
+    Parameters:
+    - Name: classInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: private
+    Name: RegisterNodeForSelectionEvent
+    Parameters:
+    - Name: classInfo
+      Type: ClassInfo
+    - Name: node
+      Type: INode
+    ReturnType: void
+  - AccessModifier: public
+    Name: AddUseCaseNode
+    Parameters:
+    - Name: node
+      Type: INode
+    ReturnType: void
+  - AccessModifier: public
+    Name: Load
+    Parameters: []
+    ReturnType: void
+  - AccessModifier: public
+    Name: Save
+    Parameters: []
+    ReturnType: void
+  - AccessModifier: protected
+    Name: OnNodeRemoved
+    Parameters:
+    - Name: node
+      Type: INode
+    ReturnType: void
+  Name: ArchitectureClassView
+  Namespace: Awiz.Core
+  Properties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: Type
+    TypeNamespace: Awiz.Core.Contract
+    TypeName: ArchitectureViewType
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: ClassNodeGenerator
+    TypeNamespace: Awiz.Core.CSharpClassGenerator
+    TypeName: IClassNodeGenerator?
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: FileSystem
+    TypeNamespace: Wiz.Infrastructure.IO
+    TypeName: IFileSystem
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: RelationBuilder
+    TypeNamespace: Awiz.Core.CSharpClassGenerator
+    TypeName: IRelationBuilder?
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: Serializer
+    TypeNamespace: <global namespace>
+    TypeName: ISerializer
+  Type: Class
+00df91e2-d6f2-4649-a1f6-fe814f3027d6:
+  AddedMethods:
+  - AccessModifier: protected
+    Name: RaiseShowVersionDiff
+    Parameters:
+    - Name: classInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: protected
+    Name: RaiseShowVersionDiff
+    Parameters:
+    - Name: classInfo
+      Type: ClassInfo
+    ReturnType: void
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\ArchitectureView.cs
+  Fields:
+  - AccessModifier: protected
+    Name: _gitNodeInfo
+    Type: Dictionary<string, IGitNodeInfo>
+  - AccessModifier: private
+    Name: _graph
+    Type: IGraph?
+  ImplementedInterfaces:
+  - Awiz.Core.Contract.IArchitectureView
+  Methods:
+  - AccessModifier: public
+    Name: AddBaseClassNode
+    Parameters:
+    - Name: derivedClassInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: public
+    Name: AddClassNode
+    Parameters:
+    - Name: classInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: public
+    Name: AddUseCaseNode
+    Parameters:
+    - Name: node
+      Type: INode
+    ReturnType: void
+  - AccessModifier: public
+    Name: GetAssociatedCommits
+    Parameters:
+    - Name: node
+      Type: INode
+    ReturnType: IGitNodeInfo
+  - AccessModifier: public
+    Name: Load
+    Parameters: []
+    ReturnType: void
+  - AccessModifier: public
+    Name: Save
+    Parameters: []
+    ReturnType: void
+  - AccessModifier: protected
+    Name: OnNodeRemoved
+    Parameters:
+    - Name: node
+      Type: INode
+    ReturnType: void
+  - AccessModifier: protected
+    Name: RaiseClassSelected
+    Parameters:
+    - Name: selectedClass
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: protected
+    Name: RaiseNodeAdded
+    Parameters:
+    - Name: node
+      Type: INode
+    ReturnType: void
+  Name: ArchitectureView
+  Namespace: Awiz.Core
+  Properties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: Graph
+    TypeNamespace: System
+    TypeName: IGraph?
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Name
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: RepoPath
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: Type
+    TypeNamespace: Awiz.Core.Contract
+    TypeName: ArchitectureViewType
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: StorageAccess
+    TypeNamespace: Awiz.Core.Storage
+    TypeName: IStorageAccess
+  Type: Class
+9aff6532-adbd-4786-a24a-d0612c99c975:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\ILoadableGitRepo.cs
+  Fields: []
+  ImplementedInterfaces:
+  - Awiz.Core.Contract.Git.IGitRepo
+  Methods:
+  - AccessModifier: ''
+    Name: LoadRepo
+    Parameters:
+    - Name: pathToRepo
+      Type: string
+    ReturnType: void
+  Name: ILoadableGitRepo
+  Namespace: Awiz.Core
+  Properties: []
+  Type: Interface
+434ecb96-1384-44fd-b1a3-ed4d85e3951f:
+  AddedMethods: []
+  AddedProperties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: VersionUpdater
+    TypeNamespace: Awiz.Core.Contract.CodeInfo
+    TypeName: IVersionUpdater
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties:
+  - &o0
+    AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: StorageAccess
+    TypeNamespace: Awiz.Core.Storage
+    TypeName: IStorageAccess
+  - *o0
+  Directory: C:\repo\A-Wiz\Awiz.Core\ViewReader.cs
+  Fields:
+  - AccessModifier: private
+    Name: _classNodeGenerator
+    Type: ClassNodeGenerator
+  - AccessModifier: private
+    Name: _classParser
+    Type: ClassParser
+  - AccessModifier: private
+    Name: _pathToRepo
+    Type: string
+  - AccessModifier: private
+    Name: _pathToWiz
+    Type: string
+  - AccessModifier: private
+    Name: _relationBuilder
+    Type: RelationBuilder
+  - AccessModifier: private
+    Name: _useCaseNameToViewPath
+    Type: Dictionary<string, string>
+  - AccessModifier: private
+    Name: _viewNameToViewPath
+    Type: Dictionary<string, string>
+  ImplementedInterfaces:
+  - Awiz.Core.Contract.IArchitectureWiz
+  Methods:
+  - AccessModifier: public
+    Name: GetClassInfoById
+    Parameters:
+    - Name: id
+      Type: string
+    ReturnType: ClassInfo?
+  - AccessModifier: public
+    Name: LoadClassDiagram
+    Parameters:
+    - Name: viewName
+      Type: string
+    ReturnType: IArchitectureView
+  - AccessModifier: public
+    Name: LoadUseCase
+    Parameters:
+    - Name: useCaseName
+      Type: string
+    ReturnType: IArchitectureView
+  - AccessModifier: public
+    Name: ReadProject
+    Parameters:
+    - Name: pathToRepo
+      Type: string
+    ReturnType: IGitRepo
+  - AccessModifier: private
+    Name: ReadClassDiagrams
+    Parameters: []
+    ReturnType: void
+  - AccessModifier: private
+    Name: ReadUseCases
+    Parameters: []
+    ReturnType: void
+  Name: ViewReader
+  Namespace: Awiz.Core
+  Properties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: String
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: ClassDiagrams
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<string>
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ClassInfo
+      Namespace: Awiz.Core.Contract.CodeInfo
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: ClassInfos
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<ClassInfo>
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: KeyValuePair
+      Namespace: System.Collections.Generic
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: ClassNamespaceNodes
+    TypeNamespace: System.Collections.Generic
+    TypeName: IDictionary<string, ClassNamespaceNode>
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: GitAccess
+    TypeNamespace: Awiz.Core.Contract.Git
+    TypeName: IGitRepo
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: LoadedView
+    TypeNamespace: Awiz.Core.Contract
+    TypeName: ArchitectureViewType
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: String
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: UseCases
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<string>
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: LoadableGitAccess
+    TypeNamespace: Awiz.Core
+    TypeName: ILoadableGitRepo
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: NamespaceBuilder
+    TypeNamespace: Awiz.Core.CodeTree
+    TypeName: INamespaceBuilder
+  - *o0
+  Type: Class
+4c734e3d-5415-4c14-864f-5ebe1b412fd5:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core.Contract
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core.Contract\CodeInfo\ClassInfo.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: public
+    Name: Id
+    Parameters: []
+    ReturnType: string
+  - AccessModifier: public
+    Name: ToString
+    Parameters: []
+    ReturnType: string
+  Name: ClassInfo
+  Namespace: Awiz.Core.Contract.CodeInfo
+  Properties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Assembly
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: BaseClass
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Directory
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: FieldInfo
+      Namespace: Awiz.Core.Contract.CodeInfo
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Fields
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<FieldInfo>
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: String
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: ImplementedInterfaces
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<string>
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: MethodInfo
+      Namespace: Awiz.Core.Contract.CodeInfo
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Methods
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<MethodInfo>
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Name
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Namespace
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: PropertyInfo
+      Namespace: Awiz.Core.Contract.CodeInfo
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Properties
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<PropertyInfo>
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: Type
+    TypeNamespace: Awiz.Core.Contract.CodeInfo
+    TypeName: ClassType
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: MethodInfo
+      Namespace: Awiz.Core.Contract.CodeInfo
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: AddedMethods
+    TypeNamespace: System.Collections.Generic
+    TypeName: IList<MethodInfo>
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: PropertyInfo
+      Namespace: Awiz.Core.Contract.CodeInfo
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: AddedProperties
+    TypeNamespace: System.Collections.Generic
+    TypeName: IList<PropertyInfo>
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: MethodInfo
+      Namespace: Awiz.Core.Contract.CodeInfo
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: DeletedMethods
+    TypeNamespace: System.Collections.Generic
+    TypeName: IList<MethodInfo>
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: PropertyInfo
+      Namespace: Awiz.Core.Contract.CodeInfo
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: DeletedProperties
+    TypeNamespace: System.Collections.Generic
+    TypeName: IList<PropertyInfo>
+  Type: Class
+74bd1a50-5556-41ed-b2ed-ed33983b655a:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core.Contract
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core.Contract\CodeInfo\FieldInfo.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: public
+    Name: ToString
+    Parameters: []
+    ReturnType: string
+  Name: FieldInfo
+  Namespace: Awiz.Core.Contract.CodeInfo
+  Properties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: AccessModifier
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Name
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Type
+    TypeNamespace: System
+    TypeName: string
+  Type: Class
+5085e20a-2c35-4563-9bf1-8163f6c5550c:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core.Contract
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core.Contract\CodeInfo\MethodInfo.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: public
+    Name: ToString
+    Parameters: []
+    ReturnType: string
+  - AccessModifier: public
+    Name: AccessModifierShort
+    Parameters: []
+    ReturnType: string
+  Name: MethodInfo
+  Namespace: Awiz.Core.Contract.CodeInfo
+  Properties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: AccessModifier
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Name
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ParameterInfo
+      Namespace: Awiz.Core.Contract.CodeInfo
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Parameters
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<ParameterInfo>
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: ReturnType
+    TypeNamespace: System
+    TypeName: string
+  Type: Class
+632ecc4b-39f1-4de1-8eb9-60dee4f5743b:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core.Contract
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core.Contract\CodeInfo\ParameterInfo.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: public
+    Name: ToString
+    Parameters: []
+    ReturnType: string
+  Name: ParameterInfo
+  Namespace: Awiz.Core.Contract.CodeInfo
+  Properties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Name
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Type
+    TypeNamespace: System
+    TypeName: string
+  Type: Class
+22ef5fe1-486d-4254-8c93-37fc1d9eb17e:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core.Contract
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core.Contract\CodeInfo\PropertyInfo.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: public
+    Name: TypeId
+    Parameters: []
+    ReturnType: string
+  - AccessModifier: public
+    Name: ToString
+    Parameters: []
+    ReturnType: string
+  - AccessModifier: public
+    Name: AccessModifierShort
+    Parameters: []
+    ReturnType: string
+  Name: PropertyInfo
+  Namespace: Awiz.Core.Contract.CodeInfo
+  Properties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: AccessModifier
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: GenericType
+    TypeNamespace: Awiz.Core.Contract.CodeInfo
+    TypeName: ClassInfo
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: IsEnumerable
+    TypeNamespace: System
+    TypeName: bool
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Name
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: TypeNamespace
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: TypeName
+    TypeNamespace: System
+    TypeName: string
+  Type: Class
+9ee67f59-c4d0-469b-915d-b32cea6b5d9d:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core.Contract
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core.Contract\IArchitectureWiz.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: ''
+    Name: GetClassInfoById
+    Parameters:
+    - Name: id
+      Type: string
+    ReturnType: ClassInfo?
+  - AccessModifier: ''
+    Name: LoadClassDiagram
+    Parameters:
+    - Name: classDiagramName
+      Type: string
+    ReturnType: IArchitectureView
+  - AccessModifier: ''
+    Name: LoadUseCase
+    Parameters:
+    - Name: useCaseName
+      Type: string
+    ReturnType: IArchitectureView
+  - AccessModifier: ''
+    Name: ReadProject
+    Parameters:
+    - Name: pathToRepo
+      Type: string
+    ReturnType: IGitRepo
+  Name: IArchitectureWiz
+  Namespace: Awiz.Core.Contract
+  Properties:
+  - AccessModifier: ''
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: String
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: ClassDiagrams
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<string>
+  - AccessModifier: ''
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ClassInfo
+      Namespace: Awiz.Core.Contract.CodeInfo
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: ClassInfos
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<ClassInfo>
+  - AccessModifier: ''
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: KeyValuePair
+      Namespace: System.Collections.Generic
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: ClassNamespaceNodes
+    TypeNamespace: System.Collections.Generic
+    TypeName: IDictionary<string, ClassNamespaceNode>
+  - AccessModifier: ''
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: String
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: UseCases
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<string>
+  Type: Interface
+0d177e17-e708-41ac-b046-f2595b5fc2f3:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core.Contract
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core.Contract\IArchitectureView.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: ''
+    Name: AddBaseClassNode
+    Parameters:
+    - Name: derivedClassInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: ''
+    Name: AddClassNode
+    Parameters:
+    - Name: classInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: ''
+    Name: AddUseCaseNode
+    Parameters:
+    - Name: node
+      Type: INode
+    ReturnType: void
+  - AccessModifier: ''
+    Name: GetAssociatedCommits
+    Parameters:
+    - Name: node
+      Type: INode
+    ReturnType: IGitNodeInfo
+  - AccessModifier: ''
+    Name: Load
+    Parameters: []
+    ReturnType: void
+  - AccessModifier: ''
+    Name: Save
+    Parameters: []
+    ReturnType: void
+  Name: IArchitectureView
+  Namespace: Awiz.Core.Contract
+  Properties:
+  - AccessModifier: ''
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: Graph
+    TypeNamespace: System
+    TypeName: IGraph?
+  - AccessModifier: ''
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: Char
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Name
+    TypeNamespace: System
+    TypeName: string
+  - AccessModifier: ''
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: Type
+    TypeNamespace: Awiz.Core.Contract
+    TypeName: ArchitectureViewType
+  Type: Interface
+60012fdc-7a42-4649-8a20-da6954ca423c:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\CSharpClassGenerator\IClassProvider.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods: []
+  Name: IClassProvider
+  Namespace: Awiz.Core.CSharpClassGenerator
+  Properties:
+  - AccessModifier: ''
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ClassInfo
+      Namespace: Awiz.Core.Contract.CodeInfo
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: Classes
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<ClassInfo>
+  Type: Interface
+639fc1de-d5ab-409c-b3ba-e9570e125ff3:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\CSharpClassGenerator\VersionDiffUpdater.cs
+  Fields: []
+  ImplementedInterfaces:
+  - Awiz.Core.CSharpClassGenerator.IVersionDiffUpdater
+  Methods:
+  - AccessModifier: public
+    Name: UpdateVersion
+    Parameters:
+    - Name: updatedClassInfo
+      Type: ClassInfo
+    - Name: repoClassInfo
+      Type: IList<ClassInfo>
+    - Name: node
+      Type: INode
+    ReturnType: void
+  - AccessModifier: private
+    Name: CheckForAddedMethods
+    Parameters:
+    - Name: updatedClass
+      Type: ClassInfo
+    - Name: repoClass
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: private
+    Name: CheckForAddedProperties
+    Parameters:
+    - Name: updatedClass
+      Type: ClassInfo
+    - Name: repoClass
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: private
+    Name: CheckForDeletedMethods
+    Parameters:
+    - Name: updatedClass
+      Type: ClassInfo
+    - Name: repoClass
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: private
+    Name: CheckForDeletedProperties
+    Parameters:
+    - Name: updatedClass
+      Type: ClassInfo
+    - Name: repoClass
+      Type: ClassInfo
+    ReturnType: void
+  Name: VersionDiffUpdater
+  Namespace: Awiz.Core.CSharpClassGenerator
+  Properties: []
+  Type: Class
+575a130d-3bc7-42f0-949f-181e9fe40886:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\CSharpClassGenerator\IVersionDiffUpdater.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: ''
+    Name: UpdateVersion
+    Parameters:
+    - Name: updatedClassInfo
+      Type: ClassInfo
+    - Name: repoClassInfos
+      Type: IList<ClassInfo>
+    - Name: node
+      Type: INode
+    ReturnType: void
+  Name: IVersionDiffUpdater
+  Namespace: Awiz.Core.CSharpClassGenerator
+  Properties: []
+  Type: Interface

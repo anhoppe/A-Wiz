@@ -34,7 +34,7 @@ namespace Awiz.Core
             RaiseNodeAdded(node);
         }
 
-        public override void Load()
+        public override void Load(IVersionUpdater versionUpdater)
         {
             var storagePath = Path.Combine(RepoPath, $".wiz\\req_storage\\{Name}");
 

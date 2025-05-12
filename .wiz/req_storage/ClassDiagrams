@@ -1,1 +1,24 @@
-{}
+c6f0c1a0-4538-4d5d-a70a-1dba07d12f63:
+  AssociatedCommits:
+  - Author: anhoppe
+    Message: A-Wiz-19 adde heuristic which .cs files belong to which project to have better layout of source tree in class diagrams
+    Sha: 5c9f74e651935ffa600478e043b948eae92d6ed7
+  - &o1
+    Author: anhoppe
+    Message: A-Wiz-19 saving / loading of dynamically created class diagrams; supporting removal of diagram elements; prevent possibility to add class/interface twice to the diagram
+    Sha: b8200ab7b72ffc8ed2e81097b3758fe29c1fe9a4
+  - &o2
+    Author: anhoppe
+    Message: A-Wiz-19 Changed saving of class diagrams, removed the mechanism of always constructing the class diagram when loaded
+    Sha: 50b61cc9c9fc2c8aa8b8520219e692b6a94e730f
+  - &o0
+    Author: anhoppe
+    Message: A-Wiz-19 Add classes / interfaces interactively to a class diagram; automatically insert relations when class/interface node is added
+    Sha: 5b538024b9df875e3f50ec2d996529edc45de82f
+76b2244a-2ca7-407d-a7e5-4180f4316172:
+  AssociatedCommits:
+  - *o0
+05a6928a-2a5a-4e8c-9bc1-4b72e6ee74b3:
+  AssociatedCommits:
+  - *o1
+  - *o2

@@ -17,7 +17,8 @@ namespace Awiz.Core.Test
         Mock<IRelationBuilder> _relationBuilderMock = new();
         Mock<ISerializer> _serializerMock = new();
         Mock<IStorageAccess> _storageAccessMock = new();
-        
+        Mock<IVersionUpdater> _versionUpdater = new();
+
         ArchitectureClassView _sut = new(new List<ClassInfo>());
 
         [SetUp]
@@ -28,6 +29,7 @@ namespace Awiz.Core.Test
             _graphMock = new();
             _relationBuilderMock = new();
             _storageAccessMock = new();
+            _versionUpdater = new();
 
             _sut = new ArchitectureClassView(new List<ClassInfo>())
             {
@@ -75,13 +77,13 @@ namespace Awiz.Core.Test
             };
 
             var nodeMock = new Mock<INode>();
-            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, baseClass)).Returns(nodeMock.Object);
+            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, baseClass, It.IsAny<Action<ClassInfo>>())).Returns(nodeMock.Object);
 
             // Act
             _sut.AddBaseClassNode(derivedClass);
 
             // Assert
-            _classNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, baseClass));
+            _classNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, baseClass, It.IsAny<Action<ClassInfo>>()));
             _relationBuilderMock.Verify(m => m.Build(_graphMock.Object, baseClass, It.IsAny<IList<ClassInfo>>()));
         }
 
@@ -155,13 +157,13 @@ namespace Awiz.Core.Test
             };
 
             var baseClassNodeMock = new Mock<INode>();
-            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, baseClass)).Returns(baseClassNodeMock.Object);
+            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, baseClass, It.IsAny<Action<ClassInfo>>())).Returns(baseClassNodeMock.Object);
 
             var derivedClass1NodeMock = new Mock<INode>();
-            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, derivedClass1)).Returns(derivedClass1NodeMock.Object);
+            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, derivedClass1, It.IsAny<Action<ClassInfo>>())).Returns(derivedClass1NodeMock.Object);
 
             var derivedClass2NodeMock = new Mock<INode>();
-            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, derivedClass2)).Returns(derivedClass2NodeMock.Object);
+            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, derivedClass2, It.IsAny<Action<ClassInfo>>())).Returns(derivedClass2NodeMock.Object);
 
             _sut.AddClassNode(derivedClass1);
             _sut.AddClassNode(derivedClass2);
@@ -185,14 +187,14 @@ namespace Awiz.Core.Test
             };
 
             var nodeMock = new Mock<INode>();
-            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, classInfo)).Returns(nodeMock.Object);
+            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, classInfo, It.IsAny<Action<ClassInfo>>())).Returns(nodeMock.Object);
 
             // Act
             _sut.AddClassNode(classInfo);
             _sut.AddClassNode(classInfo);
             
             // Assert
-            _classNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, classInfo), Times.Once);
+            _classNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, classInfo, It.IsAny<Action<ClassInfo>>()), Times.Once);
         }
 
         [Test]
@@ -229,34 +231,72 @@ namespace Awiz.Core.Test
             node2Mock.Setup(m => m.Id).Returns("bar");
             _graphMock.Setup(m => m.Nodes).Returns([node1Mock.Object, node2Mock.Object]);
 
-            var mapping = new Dictionary<string, string>()
+            var mapping = new Dictionary<string, ClassInfo>()
             {
-                { "foo", "This.is.Class1" },
-                { "bar", "This.is.Class2" }
+                { "foo", classInfo1 },
+                { "bar", classInfo2 }
             };
 
-            _storageAccessMock.Setup(m => m.LoadNodeIdToClassIdMapping(It.IsAny<Stream>())).Returns(mapping);
+            _storageAccessMock.Setup(m => m.LoadNodeIdToClassInfoMapping(It.IsAny<Stream>())).Returns(mapping);
             _fileSystemMock.Setup(m => m.Exists("c:\\temp\\.wiz\\storage\\foobar.yaml")).Returns(true);
             _fileSystemMock.Setup(m => m.OpenRead("c:\\temp\\.wiz\\storage\\foobar.yaml")).Returns(Mock.Of<Stream>());
 
             // Unfortunately, we have to test if the mapping is correct by calling Save and check that the passed map is corrrect
             bool mappingCorrect = false;
-            _storageAccessMock.Setup(m => m.SaveNodeIdToClassIdMapping(It.IsAny<IDictionary<string, string>>(), It.IsAny<Stream>())).Callback((IDictionary<string, string> mapping, Stream stream) =>
+            _storageAccessMock.Setup(m => m.SaveNodeIdToClassInfoMapping(It.IsAny<IDictionary<string, ClassInfo>>(), It.IsAny<Stream>())).Callback((IDictionary<string, ClassInfo> mapping, Stream stream) =>
             {
                 if (mapping.Count == 2 && 
-                    mapping.ContainsKey("foo") && mapping["foo"] == "This.is.Class1" &&
-                    mapping.ContainsKey("bar") && mapping["bar"] == "This.is.Class2")
+                    mapping.ContainsKey("foo") && mapping["foo"] == classInfo1 &&
+                    mapping.ContainsKey("bar") && mapping["bar"] == classInfo2)
                 {
                     mappingCorrect = true;
                 }
             });
 
             // Act
-            _sut.Load();
+            _sut.Load(Mock.Of<IVersionUpdater>());
 
             // Assert
             _sut.Save();
             Assert.That(mappingCorrect);
+        }
+
+        [Test]
+        public void Load_WhenLoading_ThenTheLoadedClassInfosAreVersionUpdated()
+        {
+            // Arrange
+            _fileSystemMock.Setup(m => m.Exists(It.IsAny<string>())).Returns(true);
+            _fileSystemMock.Setup(m => m.OpenRead(It.IsAny<string>())).Returns(Mock.Of<Stream>());
+
+            var classInfo1 = new ClassInfo()
+            {
+                Name = "foo",
+            };
+
+            var classInfo2 = new ClassInfo()
+            {
+                Name = "bar",
+            };
+
+            var node1Mock = new Mock<INode>();
+            var node2Mock = new Mock<INode>();
+            node1Mock.Setup(m => m.Id).Returns("buz");
+            node2Mock.Setup(m => m.Id).Returns("bam");
+            _graphMock.Setup(m => m.Nodes).Returns(new List<INode>() { node1Mock.Object, node2Mock.Object });
+
+            _storageAccessMock.Setup(m => m.LoadNodeIdToClassInfoMapping(It.IsAny<Stream>()))
+                .Returns(new Dictionary<string, ClassInfo>()
+                {
+                    { "buz", classInfo1 },
+                    { "bam", classInfo2 }
+                });
+
+            // Act
+            _sut.Load(_versionUpdater.Object);
+
+            // Assert
+           _versionUpdater.Verify(m => m.CheckVersionUpdates(It.IsAny<ClassInfo>(), It.IsAny<IList<ClassInfo>>()), Times.Exactly(2), "Expected that each class is checked for updates in comparison to earlier versions");
+           _classNodeGeneratorMock.Verify(m => m.UpdateClassNode(It.IsAny<INode>(), It.IsAny<ClassInfo>(), It.IsAny<Action<ClassInfo>>()), Times.Exactly(2), "Each node is updated to register for version changes");
         }
 
         [Test]
@@ -265,7 +305,6 @@ namespace Awiz.Core.Test
             // Arrange
             var classInfo = new ClassInfo()
             {
-                Directory = "c:/temp/foo.cs",
                 Name = "BaseClass",
                 Namespace = "This.is",
             };
@@ -273,15 +312,16 @@ namespace Awiz.Core.Test
             var nodeMock = new Mock<INode>();
             nodeMock.Setup(m => m.Id).Returns("foo");
 
-            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, classInfo)).Returns(nodeMock.Object);
+            _classNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, classInfo, It.IsAny<Action<ClassInfo>>())).Returns(nodeMock.Object);
+            
             _sut.AddClassNode(classInfo);
 
             _fileSystemMock.Setup(m => m.Create(It.IsAny<string>())).Returns(Mock.Of<Stream>());
 
             bool mappingCorrect = false;
-            _storageAccessMock.Setup(m => m.SaveNodeIdToClassIdMapping(It.IsAny<IDictionary<string, string>>(), It.IsAny<Stream>())).Callback((IDictionary<string, string> mapping, Stream stream) =>
+            _storageAccessMock.Setup(m => m.SaveNodeIdToClassInfoMapping(It.IsAny<IDictionary<string, ClassInfo>>(), It.IsAny<Stream>())).Callback((IDictionary<string, ClassInfo> mapping, Stream stream) =>
             {
-                if (mapping.Count == 1 && mapping.ContainsKey("foo") && mapping["foo"] == "This.is.BaseClass")
+                if (mapping.Count == 1 && mapping.ContainsKey("foo") && mapping["foo"].Id() == "This.is.BaseClass")
                 {
                     mappingCorrect = true;
                 }

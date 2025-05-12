@@ -39,6 +39,8 @@ namespace Awiz.Core
 
         public event EventHandler<INode>? NodeAdded;
 
+        public event EventHandler<ClassInfo>? ShowVersionDiff;
+
         public abstract void AddBaseClassNode(ClassInfo derivedClassInfo);
 
         public abstract void AddClassNode(ClassInfo classInfo);
@@ -55,7 +57,7 @@ namespace Awiz.Core
             return _gitNodeInfo[node.Id];
         }
 
-        public abstract void Load();
+        public abstract void Load(IVersionUpdater versionUpdater);
         
         public abstract void Save();
 
@@ -65,10 +67,14 @@ namespace Awiz.Core
         {
             ClassSelected?.Invoke(this, selectedClass);
         }
-
         protected void RaiseNodeAdded(INode node)
         {
             NodeAdded?.Invoke(this, node);
+        }
+
+        protected void RaiseShowVersionDiff(ClassInfo classInfo)
+        {
+            ShowVersionDiff?.Invoke(this, classInfo);
         }
     }
 }

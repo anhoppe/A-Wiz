@@ -49,7 +49,8 @@ namespace Awiz.Core.Test.Storage
             var stream = new MemoryStream(10);
             var gitInfo = new Dictionary<string, IGitNodeInfo>
             {
-                { "foo", 
+                { 
+                    "foo", 
                     new GitNodeInfo(new List<Commit> 
                     { 
                         new Commit()

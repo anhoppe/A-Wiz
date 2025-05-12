@@ -9,17 +9,17 @@ namespace Awiz.Core
 {
     internal class ArchitectureClassView : ArchitectureView
     {
-        private IList<ClassInfo> _classInfos;
-
         private IClassNodeGenerator? _classNodeGenerator;
-
+        
         private Dictionary<INode, ClassInfo> _nodeToClassInfo = new();
         
+        private IList<ClassInfo> _repoClassInfos;
+
         public ArchitectureClassView(IList<ClassInfo> classInfos)
         {
-            _classInfos = classInfos;
+            _repoClassInfos = classInfos;
         }
-
+        
         public override ArchitectureViewType Type => ArchitectureViewType.Class;
 
         internal IClassNodeGenerator? ClassNodeGenerator 
@@ -43,7 +43,7 @@ namespace Awiz.Core
 
         public override void AddBaseClassNode(ClassInfo derivedClassInfo)
         {
-            var baseClassInfo = _classInfos.First(p => p.Id == derivedClassInfo.BaseClass);
+            var baseClassInfo = _repoClassInfos.First(p => p.Id() == derivedClassInfo.BaseClass);
 
             AddClassNode(baseClassInfo);
         }
@@ -70,22 +70,11 @@ namespace Awiz.Core
                 throw new NullReferenceException("RelationuBuilder is not set");
             }
 
-            var node = ClassNodeGenerator.CreateClassNode(Graph, classInfo);
+            var node = ClassNodeGenerator.CreateClassNode(Graph, classInfo, RaiseShowVersionDiff);
             _nodeToClassInfo[node] = classInfo;
 
             RelationBuilder.Build(Graph, classInfo, _nodeToClassInfo.Select(p => p.Value).ToList());
             RegisterNodeForSelectionEvent(classInfo, node);
-        }
-
-        private void RegisterNodeForSelectionEvent(ClassInfo classInfo, INode node)
-        {
-            node.SelectedChanged += (sender, isSelected) =>
-            {
-                if (isSelected)
-                {
-                    RaiseClassSelected(classInfo);
-                }
-            };
         }
 
         public override void AddUseCaseNode(INode node)
@@ -93,11 +82,15 @@ namespace Awiz.Core
             throw new NotSupportedException("Can't add a use case node to a class diagram");
         }
 
-        public override void Load()
+        public override void Load(IVersionUpdater versionUpdater)
         {
             if (Graph == null)
             {
                 throw new NullReferenceException("Graph is not set");
+            }
+            if (ClassNodeGenerator == null)
+            {
+                throw new NullReferenceException("ClassNodeGenerator is not set");
             }
 
             var storagePath = Path.Combine(RepoPath, $".wiz\\storage\\{Name}.yaml");
@@ -106,20 +99,37 @@ namespace Awiz.Core
             {
                 using (var stream = FileSystem.OpenRead(storagePath))
                 {
-                    var mapping = StorageAccess.LoadNodeIdToClassIdMapping(stream);
+                    var mapping = StorageAccess.LoadNodeIdToClassInfoMapping(stream);
 
-                    foreach (var (nodeId, classId) in mapping)
+                    foreach (var (nodeId, classInfo) in mapping)
                     {
-                        var classInfo = _classInfos.FirstOrDefault(p => p.Id == classId);
                         var node = Graph.Nodes.FirstOrDefault(p => p.Id == nodeId);
                         if (classInfo != null && node != null)
                         {
                             _nodeToClassInfo[node] = classInfo;
                             RegisterNodeForSelectionEvent(classInfo, node);
+
+                            versionUpdater.CheckVersionUpdates(classInfo, _repoClassInfos);
+                            ClassNodeGenerator.UpdateClassNode(node, classInfo, RaiseShowVersionDiff);
                         }
                     }
                 }
             }
+
+            versionUpdater.ClassUpdated += (sender, classInfo) =>
+            {
+                if (ClassNodeGenerator == null)
+                {
+                    throw new NullReferenceException("ClassNodeGenerator is not set");
+                }
+
+                if (_nodeToClassInfo.ContainsValue(classInfo))
+                {
+                    var node = _nodeToClassInfo.First(p => p.Value == classInfo).Key;
+                    ClassNodeGenerator.UpdateClassNode(node, classInfo, RaiseShowVersionDiff);
+                    Graph.Update();
+                }
+            };
         }
 
         public override void Save()
@@ -140,7 +150,7 @@ namespace Awiz.Core
             var storagePath = Path.Combine(RepoPath, $".wiz\\storage\\{Name}.yaml");
             using (var fileStream = FileSystem.Create(storagePath))
             {
-                StorageAccess.SaveNodeIdToClassIdMapping(_nodeToClassInfo.Select(p => (p.Key.Id, p.Value.Id)).ToDictionary(), fileStream);
+                StorageAccess.SaveNodeIdToClassInfoMapping(_nodeToClassInfo.Select(p => (p.Key.Id, p.Value)).ToDictionary(), fileStream);
             }
         }
 
@@ -150,6 +160,17 @@ namespace Awiz.Core
             {
                 _nodeToClassInfo.Remove(node);
             }
+        }
+
+        private void RegisterNodeForSelectionEvent(ClassInfo classInfo, INode node)
+        {
+            node.SelectedChanged += (sender, isSelected) =>
+            {
+                if (isSelected)
+                {
+                    RaiseClassSelected(classInfo);
+                }
+            };
         }
     }
 }

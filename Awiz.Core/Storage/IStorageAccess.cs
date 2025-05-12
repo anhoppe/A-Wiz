@@ -29,17 +29,21 @@ namespace Awiz.Core.Storage
         /// </summary>
         /// <param name="stream">Strean the mapping is loaded from</param>
         /// <returns>Dictionary with the mapping</returns>
-        IDictionary<string, string> LoadNodeIdToClassIdMapping(Stream stream);
+        IDictionary<string, ClassInfo> LoadNodeIdToClassInfoMapping(Stream stream);
 
         /// <summary>
-        /// 
+        /// Saves the git info to a stream
         /// </summary>
         /// <param name="gitInfo"></param>
         /// <param name="stream"></param>
         void SaveGitInfo(Dictionary<string, IGitNodeInfo> gitInfo, Stream stream);
 
-        void SaveNodeIdToClassIdMapping(IDictionary<string, string> nodeToClassMapping, Stream stream);
-
-
+        /// <summary>
+        /// Saves mapping fom node to class id to stream.
+        /// The mapping is used to determine to which class info the node was created from.
+        /// </summary>
+        /// <param name="nodeToClassMapping"></param>
+        /// <param name="stream"></param>
+        void SaveNodeIdToClassInfoMapping(IDictionary<string, ClassInfo> nodeToClassMapping, Stream stream);
     }
 }

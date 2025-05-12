@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Awiz.Core;
 using Awiz.Core.Contract;
+using Awiz.ViewModel.ClassDiagram;
 using Gwiz.Core;
 using Gwiz.Core.Contract;
 using Microsoft.UI.Xaml;
@@ -124,7 +125,8 @@ namespace Awiz.ViewModel
                     Graph = _architectureView.Graph ?? new Graph();
                     ClassPanelViewModel.Graph = Graph;
                     ClassPanelViewModel.ArchitectureWiz = _viewReader;
-                    ClassPanelViewModel.ArchitectureView = _architectureView;                   
+                    ClassPanelViewModel.ArchitectureView = _architectureView;
+                    ClassPanelViewModel.VersionUpdater = _viewReader.VersionUpdater;
 
                     UseCasePanelViewModel.Visibility = Visibility.Collapsed;
                     ClassPanelViewModel.Visibility = Visibility.Visible;

@@ -12,7 +12,16 @@
         public List<ParameterInfo> Parameters { get; set; } = new List<ParameterInfo>();
         
         public string ReturnType { get; set; } = string.Empty;
-                
-        public override string ToString() => $"{AccessModifier} {ReturnType} {Name}({string.Join(", ", Parameters.Select(p => p.ToString()))})";
+
+        public string AccessModifierShort() => AccessModifier.ToLower() switch
+        {
+            "public" => "+",
+            "private" => "-",
+            "protected" => "#",
+            "internal" => "~",
+            _ => "",
+        };
+
+        public override string ToString() => $"{AccessModifierShort()} {Name}({string.Join(", ", Parameters.Select(p => p.ToString()))}): {ReturnType}";
     }
 }

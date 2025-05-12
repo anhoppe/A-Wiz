@@ -3,8 +3,6 @@ using Awiz.Core.Contract.CodeInfo;
 using Awiz.Core.Contract.CodeTree;
 using Moq;
 using NUnit.Framework;
-using System.Linq;
-using System.Security.Cryptography;
 using Wiz.Infrastructure.IO;
 
 namespace Awiz.Core.Test
@@ -24,6 +22,7 @@ namespace Awiz.Core.Test
             _loadableGitAccessMock = new();
 
             _namespaceBuilderMock.Setup(m => m.Build(It.IsAny<List<ClassInfo>>())).Returns(new Dictionary<string, ClassNamespaceNode>());
+
             _sut = new ViewReader()
             {
                 LoadableGitAccess = _loadableGitAccessMock.Object,

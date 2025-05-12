@@ -9,6 +9,6 @@
         
         public string Type { get; set; } = string.Empty;
         
-        public override string ToString() => $"{Type} {Name}";
+        public override string ToString() => $"{Name}: {Type}";
     }
 }

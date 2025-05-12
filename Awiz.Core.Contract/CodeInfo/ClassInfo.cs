@@ -1,6 +1,4 @@
-﻿using System.Xml.Linq;
-
-namespace Awiz.Core.Contract.CodeInfo
+﻿namespace Awiz.Core.Contract.CodeInfo
 {
     public enum ClassType
     {
@@ -10,6 +8,18 @@ namespace Awiz.Core.Contract.CodeInfo
 
     public class ClassInfo
     {
+        /// <summary>
+        /// Version diff information
+        /// List of methods that were added to the class in newer versions
+        /// </summary>
+        public IList<MethodInfo> AddedMethods { get; set; } = new List<MethodInfo>();
+
+        /// <summary>
+        /// Version diff information
+        /// List of properties that were added to the class in newer versions
+        /// </summary>
+        public IList<PropertyInfo> AddedProperties { get; set; } = new List<PropertyInfo>();
+
         /// <summary>
         /// Name of the assembly the class belongs to
         /// </summary>
@@ -22,30 +32,31 @@ namespace Awiz.Core.Contract.CodeInfo
         public string BaseClass { get; set; } = string.Empty;
 
         /// <summary>
+        /// Version diff information
+        /// List of methods that were deleted from the class in newer versions
+        /// </summary>
+        public IList<MethodInfo> DeletedMethods { get; set; } = new List<MethodInfo>();
+
+        /// <summary>
+        /// Version diff information
+        /// List of methods that were deleted from the class in newer versions
+        /// </summary>
+        public IList<PropertyInfo> DeletedProperties { get; set; } = new List<PropertyInfo>();
+
+        /// <summary>
         /// The directory the class is extracted from
         /// </summary>
         public string Directory { get; set; } = string.Empty;
 
         public List<FieldInfo> Fields { get; set; } = new List<FieldInfo>();
 
-        public string Id
-        {
-            get
-            {
-                var id = $"{Namespace}.{Name}";
-                if (!string.IsNullOrEmpty(id) && id[^1] == '?')
-                {
-                    id = id[..^1];
-                }
+        public List<string> ImplementedInterfaces { get; set; } = new List<string>();
 
-                return id;
-            }
-        }
-
-        public List<string> ImplementedInterfaces { get; } = new List<string>();
-        
         public List<MethodInfo> Methods { get; set; } = new List<MethodInfo>();
 
+        /// <summary>
+        /// Name of the class / interface
+        /// </summary>
         public string Name { get; set; } = string.Empty;
 
         public string Namespace { get; set; } = string.Empty;
@@ -54,6 +65,17 @@ namespace Awiz.Core.Contract.CodeInfo
 
         public ClassType Type { get; set; } = ClassType.Class;
 
-        public override string ToString() => Name;      
+        public string Id()
+        {
+            var id = $"{Namespace}.{Name}";
+            if (!string.IsNullOrEmpty(id) && id[^1] == '?')
+            {
+                id = id[..^1];
+            }
+
+            return id;
+        }
+
+        public override string ToString() => Name;
     }
 }
