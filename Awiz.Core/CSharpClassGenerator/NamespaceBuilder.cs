@@ -1,7 +1,7 @@
 ﻿using Awiz.Core.Contract.CodeInfo;
 using Awiz.Core.Contract.CodeTree;
 
-namespace Awiz.Core.CodeTree
+namespace Awiz.Core.CSharpClassGenerator
 {
     /// <summary>
     /// Creates a tree hierarchy of classes according to the namespaces

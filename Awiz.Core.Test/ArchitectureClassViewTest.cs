@@ -4,7 +4,7 @@ using Moq;
 using NUnit.Framework;
 using Wiz.Infrastructure.IO;
 using Awiz.Core.Contract.CodeInfo;
-using Awiz.Core.CSharpClassGenerator;
+using Awiz.Core.ClassDiagram;
 
 namespace Awiz.Core.Test
 {

@@ -1,6 +1,6 @@
-﻿using Awiz.Core.Contract;
+﻿using Awiz.Core.ClassDiagram;
+using Awiz.Core.Contract;
 using Awiz.Core.Contract.CodeInfo;
-using Awiz.Core.CSharpClassGenerator;
 using Gwiz.Core.Contract;
 using Gwiz.Core.Serializer;
 using Wiz.Infrastructure.IO;

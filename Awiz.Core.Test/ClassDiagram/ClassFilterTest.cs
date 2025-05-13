@@ -1,9 +1,10 @@
-﻿using Awiz.Core.Contract.CodeInfo;
+﻿using Awiz.Core.ClassDiagram;
+using Awiz.Core.Contract.CodeInfo;
 using Awiz.Core.CSharpClassGenerator;
 using Moq;
 using NUnit.Framework;
 
-namespace Awiz.Core.Test.CSharpClassGenerator
+namespace Awiz.Core.Test.ClassDiagram
 {
     [TestFixture]
     public class ClassFilterTest

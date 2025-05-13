@@ -64,7 +64,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="CSharpClassGenerator\ClassFilterTest.cs">
+    <Compile Update="ClassDiagram\ClassFilterTest.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Compile>
   </ItemGroup>
@@ -76,6 +76,10 @@
     <None Update="Assets\ExtendsImplements\wiz.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="SequenceDiagram\" />
   </ItemGroup>
 
 </Project>

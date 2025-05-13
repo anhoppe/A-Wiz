@@ -1,6 +1,7 @@
 ﻿using Awiz.Core.Contract.CodeInfo;
+using Awiz.Core.CSharpClassGenerator;
 
-namespace Awiz.Core.CSharpClassGenerator
+namespace Awiz.Core.ClassDiagram
 {
     public class ClassFilter : IClassFilter
     {

@@ -1,11 +1,13 @@
 ﻿using Gwiz.Core.Contract;
 using Awiz.Core.Contract.CodeInfo;
+using Awiz.Core.CSharpClassGenerator;
 
-namespace Awiz.Core.CSharpClassGenerator
+namespace Awiz.Core.ClassDiagram
 {
     /// <summary>
     /// Generates the classes given the view configuration, 
     /// the class provider and the graph to be filled.
+    /// This is was the first approach to create a diagram automatically each time it is loaded
     /// </summary>
     public class ClassGenerator
     {

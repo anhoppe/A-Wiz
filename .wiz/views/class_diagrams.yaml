@@ -14,8 +14,8 @@ Nodes:
   Id: f95a2774-47d9-44f9-9a84-2364a4e01852
   Template: Class
   Width: 216
-  X: -1521
-  Y: 264
+  X: -1287
+  Y: 423
 - Content:
   - Col: 0
     Row: 0
@@ -46,12 +46,12 @@ Nodes:
       - GetNamespace(classDeclaration: SyntaxNode, model: SemanticModel): string
 
       - GetProperties(classDeclaration: SyntaxNode, model: SemanticModel): List<PropertyInfo>
-  Height: 215
+  Height: 223
   Id: d33a22f0-03c1-46b2-9a03-c267057f55b8
   Template: Class
-  Width: 231
-  X: -1788
-  Y: 225
+  Width: 310
+  X: -1745
+  Y: 425
 - Content:
   - Col: 0
     Row: 0
@@ -68,8 +68,8 @@ Nodes:
   Id: 2ba1a1a5-2233-439f-9ab5-21b124838ecd
   Template: Class
   Width: 120
-  X: -1724
-  Y: 504
+  X: -1653
+  Y: 694
 - Content:
   - Col: 0
     Row: 0
@@ -85,8 +85,8 @@ Nodes:
   Id: aeb2d16b-f2e8-45f8-b560-d54a220936f8
   Template: Class
   Width: 120
-  X: -864
-  Y: 79
+  X: -721
+  Y: 84
 - Content:
   - Col: 0
     Row: 0
@@ -104,8 +104,8 @@ Nodes:
   Id: cee9fec0-9eb9-4217-aa43-218093c0dcce
   Template: Class
   Width: 120
-  X: -1722
-  Y: 734
+  X: -1649
+  Y: 915
 - Content:
   - Col: 0
     Row: 0
@@ -128,8 +128,8 @@ Nodes:
   Id: 487f6b44-4a90-4506-a52f-a42243822511
   Template: Class
   Width: 120
-  X: -862
-  Y: -182
+  X: -719
+  Y: -221
 - Content:
   - Col: 0
     Row: 0
@@ -149,8 +149,8 @@ Nodes:
   Id: e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4
   Template: Class
   Width: 287
-  X: -1260
-  Y: -356
+  X: -1180
+  Y: -444
 - Content:
   - Col: 0
     Row: 0
@@ -178,8 +178,8 @@ Nodes:
   Id: 3681a813-29d0-4fd0-953c-7c21d5480bc4
   Template: Class
   Width: 328
-  X: -1275
-  Y: 44
+  X: -1197
+  Y: -92
 - Content:
   - Col: 0
     Row: 0
@@ -212,12 +212,12 @@ Nodes:
       + Save(): void
 
       # OnNodeRemoved(node: INode): void
-  Height: 278
+  Height: 409
   Id: 27bf6b0e-665e-4348-bae8-f9b0600eb666
   Template: Class
-  Width: 298
-  X: -645
-  Y: 20
+  Width: 337
+  X: -483
+  Y: -39
 - Content:
   - Col: 0
     Row: 0
@@ -258,8 +258,8 @@ Nodes:
   Id: 00df91e2-d6f2-4649-a1f6-fe814f3027d6
   Template: Class
   Width: 414
-  X: -705
-  Y: -355
+  X: -526
+  Y: -444
 - Content:
   - Col: 0
     Row: 0
@@ -275,8 +275,8 @@ Nodes:
   Id: 9aff6532-adbd-4786-a24a-d0612c99c975
   Template: Class
   Width: 326
-  X: -1356
-  Y: -638
+  X: -1564
+  Y: -8
 - Content:
   - Col: 0
     Row: 0
@@ -319,8 +319,8 @@ Nodes:
   Id: 434ecb96-1384-44fd-b1a3-ed4d85e3951f
   Template: Class
   Width: 473
-  X: -2067
-  Y: -501
+  X: -2011
+  Y: -499
 - Content:
   - Col: 0
     Row: 0
@@ -387,8 +387,8 @@ Nodes:
   Id: 74bd1a50-5556-41ed-b2ed-ed33983b655a
   Template: Class
   Width: 213
-  X: -2839
-  Y: 117
+  X: -2874
+  Y: 191
 - Content:
   - Col: 0
     Row: 0
@@ -413,8 +413,8 @@ Nodes:
   Id: 5085e20a-2c35-4563-9bf1-8163f6c5550c
   Template: Class
   Width: 312
-  X: -2316
-  Y: 722
+  X: -2315
+  Y: 759
 - Content:
   - Col: 0
     Row: 0
@@ -485,12 +485,12 @@ Nodes:
        LoadClassDiagram(classDiagramName: string): IArchitectureView
        LoadUseCase(useCaseName: string): IArchitectureView
        ReadProject(pathToRepo: string): IGitRepo
-  Height: 160
+  Height: 297
   Id: 9ee67f59-c4d0-469b-915d-b32cea6b5d9d
   Template: Class
-  Width: 120
-  X: -2223
-  Y: -665
+  Width: 548
+  X: -2432
+  Y: -836
 - Content:
   - Col: 0
     Row: 0
@@ -514,8 +514,8 @@ Nodes:
   Id: 0d177e17-e708-41ac-b046-f2595b5fc2f3
   Template: Class
   Width: 366
-  X: -684
-  Y: -683
+  X: -509
+  Y: -731
 - Content:
   - Col: 0
     Row: 0
@@ -531,8 +531,8 @@ Nodes:
   Id: 60012fdc-7a42-4649-8a20-da6954ca423c
   Template: Class
   Width: 120
-  X: -1505
-  Y: -36
+  X: -1422
+  Y: 240
 - Content:
   - Col: 0
     Row: 0
@@ -556,8 +556,8 @@ Nodes:
   Id: 639fc1de-d5ab-409c-b3ba-e9570e125ff3
   Template: Class
   Width: 406
-  X: -1130
-  Y: 636
+  X: -779
+  Y: 648
 - Content:
   - Col: 0
     Row: 0
@@ -573,8 +573,25 @@ Nodes:
   Id: 575a130d-3bc7-42f0-949f-181e9fe40886
   Template: Class
   Width: 362
-  X: -1122
-  Y: 387
+  X: -761
+  Y: 398
+- Content:
+  - Col: 0
+    Row: 0
+    Text: IGitRepo
+  - Col: 0
+    Row: 1
+    Text: ''
+  - Col: 0
+    Row: 2
+    Text: >2
+       GetHistory(): List<Commit>
+  Height: 160
+  Id: 74c6895a-7fd9-4f59-a517-c74492a22bdc
+  Template: Class
+  Width: 120
+  X: -1466
+  Y: -227
 Edges:
 - Ending: None
   From: d33a22f0-03c1-46b2-9a03-c267057f55b8
@@ -639,14 +656,6 @@ Edges:
   Style: None
   Text: ''
   To: e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4
-  ToLabel: ''
-- Ending: None
-  From: 434ecb96-1384-44fd-b1a3-ed4d85e3951f
-  FromLabel: ''
-  LabelOffsetPerCent: 0
-  Style: None
-  Text: ''
-  To: 9aff6532-adbd-4786-a24a-d0612c99c975
   ToLabel: ''
 - Ending: None
   From: 4c734e3d-5415-4c14-864f-5ebe1b412fd5
@@ -743,4 +752,20 @@ Edges:
   Style: Dashed
   Text: ''
   To: 575a130d-3bc7-42f0-949f-181e9fe40886
+  ToLabel: ''
+- Ending: ClosedArrow
+  From: 9aff6532-adbd-4786-a24a-d0612c99c975
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dashed
+  Text: ''
+  To: 74c6895a-7fd9-4f59-a517-c74492a22bdc
+  ToLabel: ''
+- Ending: None
+  From: 434ecb96-1384-44fd-b1a3-ed4d85e3951f
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 74c6895a-7fd9-4f59-a517-c74492a22bdc
   ToLabel: ''

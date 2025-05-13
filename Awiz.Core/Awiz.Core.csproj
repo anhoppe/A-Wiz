@@ -33,4 +33,8 @@
   <ProjectReference Include="..\Wiz.Infrastructure.IO\Wiz.Infrastructure.IO.csproj" />
 </ItemGroup>
 
+<ItemGroup>
+  <Folder Include="CodeTree\" />
+</ItemGroup>
+
 </Project>

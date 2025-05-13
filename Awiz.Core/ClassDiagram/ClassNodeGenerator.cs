@@ -1,7 +1,7 @@
 ﻿using Gwiz.Core.Contract;
 using Awiz.Core.Contract.CodeInfo;
 
-namespace Awiz.Core.CSharpClassGenerator
+namespace Awiz.Core.ClassDiagram
 {
     internal class ClassNodeGenerator : IClassNodeGenerator
     {

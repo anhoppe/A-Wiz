@@ -1,6 +1,6 @@
-﻿using Awiz.Core.CodeTree;
-using Awiz.Core.Contract.CodeInfo;
+﻿using Awiz.Core.Contract.CodeInfo;
 using Awiz.Core.Contract.CodeTree;
+using Awiz.Core.CSharpClassGenerator;
 using Moq;
 using NUnit.Framework;
 using Wiz.Infrastructure.IO;

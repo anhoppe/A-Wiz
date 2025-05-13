@@ -22,3 +22,18 @@ c6f0c1a0-4538-4d5d-a70a-1dba07d12f63:
   AssociatedCommits:
   - *o1
   - *o2
+964262ac-f125-4de4-b34b-0349a464174d:
+  AssociatedCommits:
+  - &o3
+    Author: anhoppe
+    Message: A-Wiz-21 Introduced version update information when classes / interfaces where changed in code. Allow user to review the changes as suggestions, suggestions can be applied or deleted
+    Sha: 888616bcee6e5595106e3f6dad5c67959226a947
+55a68732-02d6-4958-90db-7b9fa16ae8e9:
+  AssociatedCommits: []
+56ec4a86-4f31-4e15-bf0d-c9056b2f9ab9:
+  AssociatedCommits:
+  - *o3
+7b581e7e-e130-46d8-ab4f-f76d8b077703:
+  AssociatedCommits: []
+1baf8276-fbf5-4d7a-a73e-af9e1463fcab:
+  AssociatedCommits: []

@@ -4,8 +4,8 @@ using Awiz.Core.CSharpClassGenerator;
 using Awiz.Core.Contract.Git;
 using Awiz.Core.Git;
 using Awiz.Core.Contract.CodeInfo;
-using Awiz.Core.CodeTree;
 using Awiz.Core.Contract.CodeTree;
+using Awiz.Core.ClassDiagram;
 
 namespace Awiz.Core
 {

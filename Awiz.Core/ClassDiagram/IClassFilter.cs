@@ -1,4 +1,6 @@
-﻿namespace Awiz.Core.CSharpClassGenerator
+﻿using Awiz.Core.CSharpClassGenerator;
+
+namespace Awiz.Core.ClassDiagram
 {
     public interface IClassFilter
     {

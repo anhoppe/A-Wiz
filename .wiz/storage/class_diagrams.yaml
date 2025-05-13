@@ -439,84 +439,8 @@ e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4:
   Properties: []
   Type: Class
 27bf6b0e-665e-4348-bae8-f9b0600eb666:
-  AddedMethods:
-  - AccessModifier: private
-    Name: RegisterVersionUpdateNotification
-    Parameters:
-    - Name: node
-      Type: INode
-    - Name: classInfo
-      Type: ClassInfo
-    ReturnType: void
-  - AccessModifier: private
-    Name: RegisterVersionUpdateNotification
-    Parameters:
-    - Name: node
-      Type: INode
-    - Name: classInfo
-      Type: ClassInfo
-    ReturnType: void
-  AddedProperties:
-  - AccessModifier: internal
-    GenericType:
-      AddedMethods: []
-      AddedProperties: []
-      Assembly: ''
-      BaseClass: ''
-      DeletedMethods: []
-      DeletedProperties: []
-      Directory: ''
-      Fields: []
-      ImplementedInterfaces: []
-      Methods: []
-      Name: ''
-      Namespace: ''
-      Properties: []
-      Type: Class
-    IsEnumerable: false
-    Name: VersionDiffUpdater
-    TypeNamespace: Awiz.Core.CSharpClassGenerator
-    TypeName: IVersionDiffUpdater?
-  - AccessModifier: internal
-    GenericType:
-      AddedMethods: []
-      AddedProperties: []
-      Assembly: ''
-      BaseClass: ''
-      DeletedMethods: []
-      DeletedProperties: []
-      Directory: ''
-      Fields: []
-      ImplementedInterfaces: []
-      Methods: []
-      Name: ''
-      Namespace: ''
-      Properties: []
-      Type: Class
-    IsEnumerable: false
-    Name: VersionDiffUpdater
-    TypeNamespace: Awiz.Core.CSharpClassGenerator
-    TypeName: IVersionDiffUpdater?
-  - AccessModifier: internal
-    GenericType:
-      AddedMethods: []
-      AddedProperties: []
-      Assembly: ''
-      BaseClass: ''
-      DeletedMethods: []
-      DeletedProperties: []
-      Directory: ''
-      Fields: []
-      ImplementedInterfaces: []
-      Methods: []
-      Name: ''
-      Namespace: ''
-      Properties: []
-      Type: Class
-    IsEnumerable: false
-    Name: VersionDiffUpdater
-    TypeNamespace: Awiz.Core.CSharpClassGenerator
-    TypeName: IVersionDiffUpdater?
+  AddedMethods: []
+  AddedProperties: []
   Assembly: Awiz.Core
   BaseClass: Awiz.Core.ArchitectureView
   DeletedMethods: []
@@ -932,7 +856,6 @@ e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4:
     Name: StorageAccess
     TypeNamespace: Awiz.Core.Storage
     TypeName: IStorageAccess
-  - *o0
   Directory: C:\repo\A-Wiz\Awiz.Core\ViewReader.cs
   Fields:
   - AccessModifier: private
@@ -2189,5 +2112,24 @@ e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4:
     ReturnType: void
   Name: IVersionDiffUpdater
   Namespace: Awiz.Core.CSharpClassGenerator
+  Properties: []
+  Type: Interface
+74c6895a-7fd9-4f59-a517-c74492a22bdc:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core.Contract
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core.Contract\Git\IGitRepo.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: ''
+    Name: GetHistory
+    Parameters: []
+    ReturnType: List<Commit>
+  Name: IGitRepo
+  Namespace: Awiz.Core.Contract.Git
   Properties: []
   Type: Interface

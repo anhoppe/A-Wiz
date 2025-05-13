@@ -1,7 +1,7 @@
 ﻿using Awiz.Core.Contract.CodeInfo;
 using Gwiz.Core.Contract;
 
-namespace Awiz.Core.CSharpClassGenerator
+namespace Awiz.Core.ClassDiagram
 {
     /// <summary>
     /// Factory class to generate A-Wiz nodes from class info

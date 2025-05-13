@@ -7,18 +7,18 @@ Nodes:
   Id: 5cd7833d-92ef-447d-add9-fc76aa0461d4
   Template: Actor
   Width: 80
-  X: -1163
-  Y: -341
+  X: -1212
+  Y: -190
 - Content:
   - Col: 0
     Row: 0
-    Text: ''
+    Text: Monitor development progress
   Height: 120
   Id: 38bbe267-307a-40db-a50b-071d3cf98d48
   Template: UseCase
-  Width: 180
-  X: 120
-  Y: 120
+  Width: 296
+  X: -849
+  Y: 274
 - Content:
   - Col: 0
     Row: 0
@@ -59,6 +59,26 @@ Nodes:
   Width: 298
   X: -530
   Y: -32
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Show if commits are associated
+  Height: 120
+  Id: 3f47d553-6b35-471d-bbdc-f1e37a422f90
+  Template: UseCase
+  Width: 288
+  X: -379
+  Y: 166
+- Content:
+  - Col: 0
+    Row: 0
+    Text: Mark Use-Case as resolved
+  Height: 120
+  Id: 4becdfd1-b565-4cb2-93f6-a2bb59b437db
+  Template: UseCase
+  Width: 284
+  X: -368
+  Y: 383
 Edges:
 - Ending: OpenArrow
   From: c2f930e3-8112-436f-81a5-93d3c7687e8d
@@ -91,4 +111,28 @@ Edges:
   Style: Dotted
   Text: ''
   To: adb561b8-88b3-4cab-960c-c172eb11fa7c
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 5cd7833d-92ef-447d-add9-fc76aa0461d4
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: ''
+  To: 38bbe267-307a-40db-a50b-071d3cf98d48
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 3f47d553-6b35-471d-bbdc-f1e37a422f90
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 38bbe267-307a-40db-a50b-071d3cf98d48
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 4becdfd1-b565-4cb2-93f6-a2bb59b437db
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dotted
+  Text: <<extends>>
+  To: 38bbe267-307a-40db-a50b-071d3cf98d48
   ToLabel: ''

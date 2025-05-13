@@ -1,7 +1,7 @@
 ﻿using Awiz.Core.Contract.CodeInfo;
 using Gwiz.Core.Contract;
 
-namespace Awiz.Core.CSharpClassGenerator
+namespace Awiz.Core.ClassDiagram
 {
     /// <summary>
     /// Responsible for creation of relations in a class diagram (extends, implements, associations)

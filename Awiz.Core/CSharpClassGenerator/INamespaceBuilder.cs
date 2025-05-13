@@ -1,7 +1,7 @@
 ﻿using Awiz.Core.Contract.CodeInfo;
 using Awiz.Core.Contract.CodeTree;
 
-namespace Awiz.Core.CodeTree
+namespace Awiz.Core.CSharpClassGenerator
 {
     /// <summary>
     /// Generates the namespace tree that can be used to group the source files based on the parsed classes

@@ -2,7 +2,7 @@
 using Gwiz.Core.Contract;
 using System.Globalization;
 
-namespace Awiz.Core.CSharpClassGenerator
+namespace Awiz.Core.ClassDiagram
 {
     internal class RelationBuilder : IRelationBuilder
     {
