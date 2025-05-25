@@ -45,6 +45,8 @@ namespace Awiz.Core
 
         public abstract void AddClassNode(ClassInfo classInfo);
 
+        public abstract void AddMethodCall(ClassInfo sourceClass, ClassInfo targetClass, MethodInfo methodInfo);
+
         public abstract void AddUseCaseNode(INode node);
 
         public IGitNodeInfo GetAssociatedCommits(INode node)

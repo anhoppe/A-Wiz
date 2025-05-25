@@ -24,12 +24,16 @@
             </Grid.ColumnDefinitions>
             <local:UseCasePanelView 
                 Grid.Column="0" 
-                Visibility="{Binding Visibility}" 
+                Visibility="{Binding Visibility}"
                 DataContext="{Binding UseCasePanelViewModel}" />
             <local:ClassPanelView 
                 Grid.Column="0" 
-                Visibility="{Binding Visibility}" 
+                Visibility="{Binding Visibility}"
                 DataContext="{Binding ClassPanelViewModel}" />
+            <local:SequencePanelView 
+                Grid.Column="0" 
+                Visibility="{Binding Visibility}"
+                DataContext="{Binding SequencePanelViewModel}" />
             <uicontrol:GraphUiControl 
                 Grid.Column="1" 
                 x:Name="_uiControl" 

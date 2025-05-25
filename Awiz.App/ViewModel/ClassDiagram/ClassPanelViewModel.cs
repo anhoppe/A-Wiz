@@ -1,6 +1,6 @@
 ﻿using Awiz.Core.Contract;
 using Awiz.Core.Contract.CodeInfo;
-using Awiz.Core.Contract.CodeTree;
+using Awiz.Core.Contract.CSharpParsing;
 using Gwiz.Core.Contract;
 using Microsoft.UI.Xaml;
 using Prism.Commands;
@@ -59,8 +59,6 @@ namespace Awiz.ViewModel.ClassDiagram
         public int AddedPropertiesSelectedIndex { get; set; } = -1;
 
         public ICommand AddInterfaceCommand { get; }
-
-
 
         public IArchitectureView? ArchitectureView
         {

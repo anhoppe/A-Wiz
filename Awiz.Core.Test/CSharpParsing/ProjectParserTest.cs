@@ -1,7 +1,7 @@
-﻿using Awiz.Core.CSharpClassGenerator;
+﻿using Awiz.Core.CSharpParsing;
 using NUnit.Framework;
 
-namespace Awiz.Core.Test.CSharpClassGenerator
+namespace Awiz.Core.Test.CSharpParsing
 {
     [TestFixture]
     public class ProjectParserTest

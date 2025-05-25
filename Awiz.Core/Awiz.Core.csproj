@@ -12,7 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="CSharpClassGenerator\ClassParser.cs" />
+    <None Include="CSharpParsing\ClassParser.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,10 +31,6 @@
   <ProjectReference Include="..\..\G-Wiz\Gwiz.Core\Gwiz.Core.csproj" />
   <ProjectReference Include="..\Awiz.Core.Contract\Awiz.Core.Contract.csproj" />
   <ProjectReference Include="..\Wiz.Infrastructure.IO\Wiz.Infrastructure.IO.csproj" />
-</ItemGroup>
-
-<ItemGroup>
-  <Folder Include="CodeTree\" />
 </ItemGroup>
 
 </Project>

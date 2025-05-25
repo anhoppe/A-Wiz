@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Awiz.Core.Test.Assets.ExtendsImplements
 {
-    public class Class2 : Class1
+    public class Class3
     {
-        internal Interface2 Interface2 { get; set; }
-
-        public void MyOtherFunc()
+        public void MyEvenMoreOtherFunc()
         {
             // do something
         }

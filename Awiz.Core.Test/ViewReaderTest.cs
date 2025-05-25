@@ -1,6 +1,6 @@
 ﻿using Awiz.Core.Contract.CodeInfo;
-using Awiz.Core.Contract.CodeTree;
-using Awiz.Core.CSharpClassGenerator;
+using Awiz.Core.Contract.CSharpParsing;
+using Awiz.Core.CSharpParsing;
 using Moq;
 using NUnit.Framework;
 using Wiz.Infrastructure.IO;
@@ -21,7 +21,7 @@ namespace Awiz.Core.Test
         {
             _loadableGitAccessMock = new();
 
-            _namespaceBuilderMock.Setup(m => m.Build(It.IsAny<List<ClassInfo>>())).Returns(new Dictionary<string, ClassNamespaceNode>());
+            _namespaceBuilderMock.Setup(m => m.GetClassTree(true)).Returns(new Dictionary<string, ClassNamespaceNode>());
 
             _sut = new ViewReader()
             {
@@ -44,17 +44,64 @@ namespace Awiz.Core.Test
         }
 
         [Test]
-        public void LoadUseCase_WhenReadingExtendsImplementsProject_ThenTheUseCaseGrapgIsAvailable()
+        public void ClassDiagrams_WhenReadingExtendsImplementsProject_ThenProjectsInViewsAreDetected()
         {
             // Arrange
             _sut.ReadProject("Assets\\ExtendsImplements\\");
 
             // Act
-            var view = _sut.LoadUseCase("base");
+            var views = _sut.ClassDiagrams;
 
             // Assert
-            Assert.That(view.Graph?.Nodes.Count, Is.EqualTo(4), "Expected all nodes defined for the use case in the graph");
-            Assert.That(view.Graph?.Edges.Count, Is.EqualTo(2), "Expected all edges defined for the use case in the graph");
+            Assert.That(views.Count, Is.EqualTo(2));
+
+            Assert.That(views.Contains("annotation_options"));
+            Assert.That(views.Contains("include_by_name"));
+        }
+
+        [Test]
+        public void ClassInfo_WhenRepoWithInterfacesIsRead_ThenTheIntefacesInClassObjectContainFullId()
+        {
+            // Arrange
+            _sut.ReadProject("Assets\\ExtendsImplements\\");
+
+            // Act
+            var classInfos = _sut.ClassInfos;
+
+            // Assert
+            var class1 = classInfos.First(p => p.Name == "Class1");
+            Assert.That(class1.ImplementedInterfaces.Count, Is.EqualTo(1));
+            Assert.That(class1.ImplementedInterfaces[0], Is.EqualTo("Awiz.Core.Test.Assets.ExtendsImplements.Interface1"));
+        }
+
+        [Test]
+        public void ClassInfos_WhenRepoIsRead_ThenClassInfosAreAvailable()
+        {
+            // Arrange
+            _sut.ReadProject("Assets\\ExtendsImplements\\");
+
+            // Act
+            var classInfos = _sut.ClassInfos;
+
+            // Assert
+            Assert.That(6, Is.EqualTo(classInfos.Count));
+        }
+
+        [Test]
+        public void ClassNamespaceNodes_WhenRepoIsRead_ThenClassNamespacesNodesAreSet()
+        {
+            // Arrange
+            var classNamespaces = new Dictionary<string, ClassNamespaceNode>()
+            {
+                ["foo"] = new ClassNamespaceNode(),
+                ["bar"] = new ClassNamespaceNode(),
+            };
+
+            // Act
+            _sut.ReadProject("Assets\\ExtendsImplements\\");
+
+            // Assert
+            _namespaceBuilderMock.Verify(x => x.Build(It.IsAny<IList<ClassInfo>>()));
         }
 
         [Test]
@@ -72,51 +119,31 @@ namespace Awiz.Core.Test
         }
 
         [Test]
-        public void ClassNamespaceNodes_WhenRepoIsRead_ThenClassNamespacesNodesAreSet()
+        public void LoadSequenceDiagram_WhenReadongProject_ThenTheGraphsForSequnceDiagramsAreAvailable()
         {
             // Arrange
-            var classNamespaces = new Dictionary<string, ClassNamespaceNode>()
-            {
-                ["foo"] = new ClassNamespaceNode(),
-                ["bar"] = new ClassNamespaceNode(),
-            };
-
-            _namespaceBuilderMock.Setup(x => x.Build(It.IsAny<IList<ClassInfo>>()))
-                .Returns(classNamespaces);
-
-            // Act
             _sut.ReadProject("Assets\\ExtendsImplements\\");
 
+            // Act
+            var view = _sut.LoadSequenceDiagram("my_sequence");
+
             // Assert
-            Assert.That(_sut.ClassNamespaceNodes.Count, Is.EqualTo(2));
+            // ToDo: Assert content of the diagram
         }
 
+
         [Test]
-        public void ClassInfos_WhenRepoIsRead_ThenClassInfosAreAvailable()
+        public void LoadUseCase_WhenReadingExtendsImplementsProject_ThenTheUseCaseGrapgIsAvailable()
         {
             // Arrange
             _sut.ReadProject("Assets\\ExtendsImplements\\");
 
             // Act
-            var classInfos = _sut.ClassInfos;
+            var view = _sut.LoadUseCase("base");
 
             // Assert
-            Assert.That(classInfos.Count, Is.EqualTo(5));
-        }
-
-        [Test]
-        public void ClassInfo_WhenRepoWithInterfacesIsRead_ThenTheIntefacesInClassObjectContainFullId()
-        {
-            // Arrange
-            _sut.ReadProject("Assets\\ExtendsImplements\\");
-
-            // Act
-            var classInfos = _sut.ClassInfos;
-
-            // Assert
-            var class1 = classInfos.First(p => p.Name == "Class1");
-            Assert.That(class1.ImplementedInterfaces.Count, Is.EqualTo(1));
-            Assert.That(class1.ImplementedInterfaces[0], Is.EqualTo("Awiz.Core.Test.Assets.ExtendsImplements.Interface1"));
+            Assert.That(view.Graph?.Nodes.Count, Is.EqualTo(4), "Expected all nodes defined for the use case in the graph");
+            Assert.That(view.Graph?.Edges.Count, Is.EqualTo(2), "Expected all edges defined for the use case in the graph");
         }
 
         [Test]
@@ -139,7 +166,7 @@ namespace Awiz.Core.Test
             // Arrange
             FileSystem fs = new();
             var tempPath = fs.CopyToTempPath("Assets\\ExtendsImplements\\");
-            
+
             _sut.ReadProject(tempPath);
 
             var view = _sut.LoadUseCase("base");
@@ -170,6 +197,20 @@ namespace Awiz.Core.Test
         }
 
         [Test]
+        public void SequenceDiagrams_WhenReadingExten7dsImplementsProject_ThenSequenceDiagramsAreDetected()
+        {
+            // Arrange
+            _sut.ReadProject("Assets\\ExtendsImplements\\");
+
+            // Act
+            var views = _sut.SequenceDiagrams;
+
+            // Assert
+            Assert.That(views.Count, Is.EqualTo(1));
+            Assert.That(views.Contains("my_sequence"));
+        }
+
+        [Test]
         public void UseCases_WhenReadingExtendsImplementsProject_ThenUseCasesAreDetected()
         {
             // Arrange
@@ -181,22 +222,6 @@ namespace Awiz.Core.Test
             // Assert
             Assert.That(useCases.Count, Is.EqualTo(1));
             Assert.That("base", Is.EqualTo(useCases[0]));
-        }
-
-        [Test]
-        public void ClassDiagrams_WhenReadingExtendsImplementsProject_ThenProjectsInViewsAreDetected()
-        {
-            // Arrange
-            _sut.ReadProject("Assets\\ExtendsImplements\\");
-
-            // Act
-            var views = _sut.ClassDiagrams;
-
-            // Assert
-            Assert.That(views.Count, Is.EqualTo(2));
-
-            Assert.That(views.Contains("annotation_options"));
-            Assert.That(views.Contains("include_by_name"));
         }
     }
 }

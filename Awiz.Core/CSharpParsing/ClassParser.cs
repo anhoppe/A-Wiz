@@ -3,13 +3,51 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Awiz.Core.CSharpClassGenerator
+namespace Awiz.Core.CSharpParsing
 {
-    public class ClassParser : IClassProvider
+    public class ClassParser : ISourceCode
     {
+        private IDictionary<MethodInfo, IEnumerable<(string, string)>> _methodInvocations = new Dictionary<MethodInfo, IEnumerable<(string, string)>>();
+
         public List<ClassInfo> Classes { get; private set; } = new();
 
         internal IProjectParser? ProjectParser { private get; set; }
+
+        public IList<CallSite> GetCallSites(MethodInfo method)
+        {
+            var invocations = _methodInvocations[method];
+
+            if (invocations == null)
+            {
+                return new List<CallSite>();
+            }
+
+            var callSites = new List<CallSite>();
+
+            foreach (var invocation in invocations)
+            {
+                var calledClass = Classes.FirstOrDefault(p => p.Id() == invocation.Item1);
+                if (calledClass == null)
+                {
+                    continue;
+                }
+
+                var calledMethod = calledClass.Methods.FirstOrDefault(p => p.Name == invocation.Item2);
+                if (calledMethod == null)
+                {
+                    continue;
+                }
+
+                callSites.Add(new CallSite(calledClass, calledMethod));
+            }
+
+            return callSites;
+        }
+
+        public IList<ClassInfo> GetImplementations(ClassInfo interfaceInfo)
+        {
+            return Classes.Where(p => p.ImplementedInterfaces.Contains(interfaceInfo.Id())).ToList();
+        }
 
         public void ParseClasses(string repoPath)
         {
@@ -185,6 +223,36 @@ namespace Awiz.Core.CSharpClassGenerator
             return ""; // Default (no explicit modifier)
         }
 
+        private void GetCallSites(SemanticModel model, MethodDeclarationSyntax method, MethodInfo methodInfo)
+        {
+            IEnumerable<InvocationExpressionSyntax> invocations = method.DescendantNodes().OfType<InvocationExpressionSyntax>();
+
+            var callSiteByName = new List<(string, string)>();
+            foreach (var invocation in invocations)
+            {
+                var symbolInfo = model.GetSymbolInfo(invocation);
+                string typeId = string.Empty;
+                string methodName = string.Empty;
+                if (symbolInfo.Symbol is IMethodSymbol methodSymbol)
+                {
+                    typeId = $"{methodSymbol.ContainingNamespace}.{methodSymbol.ContainingType.Name}";
+                    methodName = methodSymbol.Name;
+                }
+                else if (symbolInfo.CandidateSymbols.Length == 1 && symbolInfo.CandidateSymbols[0] is IMethodSymbol candidate)
+                {
+                    typeId = $"{candidate.ContainingNamespace}.{candidate.ContainingType.Name}";
+                    methodName = candidate.Name;
+                }
+
+                if (!callSiteByName.Any(p => p.Item1 == typeId && p.Item2 == methodName))
+                {
+                    callSiteByName.Add((typeId, methodName));
+                }
+            }
+
+            _methodInvocations[methodInfo] = callSiteByName;
+        }
+
         private static List<FieldInfo> GetFields(SyntaxNode classDeclaration, SemanticModel model)
         {
             return classDeclaration.DescendantNodes().OfType<FieldDeclarationSyntax>()
@@ -196,19 +264,26 @@ namespace Awiz.Core.CSharpClassGenerator
                 }).ToList();
         }
 
-        private static List<MethodInfo> GetMethods(SyntaxNode classDeclaration, SemanticModel model)
+        private List<MethodInfo> GetMethods(SyntaxNode classDeclaration, SemanticModel model)
         {
             return classDeclaration.DescendantNodes().OfType<MethodDeclarationSyntax>()
-                .Select(method => new MethodInfo
+                .Select(method =>
                 {
-                    Name = method.Identifier.ToString(),
-                    ReturnType = method.ReturnType?.ToString() ?? "void", // Handle void return type
-                    AccessModifier = GetAccessModifier(method),
-                    Parameters = method.ParameterList.Parameters.Select(p => new ParameterInfo
+                    var methodInfo = new MethodInfo()
                     {
-                        Name = p.Identifier.ToString(),
-                        Type = p.Type?.ToString() ?? ""
-                    }).ToList()
+                        Name = method.Identifier.ToString(),
+                        ReturnType = method.ReturnType?.ToString() ?? "void", // Handle void return type
+                        AccessModifier = GetAccessModifier(method),
+                        Parameters = method.ParameterList.Parameters.Select(p => new ParameterInfo
+                        {
+                            Name = p.Identifier.ToString(),
+                            Type = p.Type?.ToString() ?? ""
+                        }).ToList()
+                    };
+
+                    GetCallSites(model, method, methodInfo);
+
+                    return methodInfo;
                 }).ToList();
         }
 

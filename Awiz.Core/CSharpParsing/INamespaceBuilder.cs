@@ -1,7 +1,7 @@
 ﻿using Awiz.Core.Contract.CodeInfo;
-using Awiz.Core.Contract.CodeTree;
+using Awiz.Core.Contract.CSharpParsing;
 
-namespace Awiz.Core.CSharpClassGenerator
+namespace Awiz.Core.CSharpParsing
 {
     /// <summary>
     /// Generates the namespace tree that can be used to group the source files based on the parsed classes
@@ -13,6 +13,8 @@ namespace Awiz.Core.CSharpClassGenerator
         /// </summary>
         /// <param name="classInfos"></param>
         /// <returns>Returns a dictinary with a namespace tree in each</returns>
-        IDictionary<string, ClassNamespaceNode> Build(IList<ClassInfo> classInfos);
+        void Build(IList<ClassInfo> classInfos);
+
+        IDictionary<string, ClassNamespaceNode> GetClassTree(bool includeInterfaces);
     }
 }

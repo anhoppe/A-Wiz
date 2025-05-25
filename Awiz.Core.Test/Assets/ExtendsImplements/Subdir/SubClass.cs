@@ -2,7 +2,7 @@
 
 namespace Awiz.Core.Test.Assets.ExtendsImplements.Subdir
 {
-    public class Class3 : Class2
+    public class SubClass : Class2
     {
         public string Foo { get; set; }
     }

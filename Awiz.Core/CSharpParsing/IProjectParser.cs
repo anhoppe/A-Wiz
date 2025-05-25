@@ -1,4 +1,4 @@
-﻿namespace Awiz.Core.CSharpClassGenerator
+﻿namespace Awiz.Core.CSharpParsing
 {
     /// <summary>
     /// Used to determine which cs file belongs to which assembly

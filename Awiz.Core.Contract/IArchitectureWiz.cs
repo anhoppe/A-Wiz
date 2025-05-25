@@ -1,7 +1,6 @@
 ﻿using Awiz.Core.Contract.CodeInfo;
-using Awiz.Core.Contract.CodeTree;
+using Awiz.Core.Contract.CSharpParsing;
 using Awiz.Core.Contract.Git;
-using Gwiz.Core.Contract;
 
 namespace Awiz.Core.Contract
 {
@@ -21,9 +20,9 @@ namespace Awiz.Core.Contract
         List<ClassInfo> ClassInfos { get; }
 
         /// <summary>
-        /// List of all classes in the repo
+        /// List of all sequence diagrams available in a project
         /// </summary>
-        IDictionary<string, ClassNamespaceNode> ClassNamespaceNodes { get; }
+        List<string> SequenceDiagrams { get; }
 
         /// <summary>
         /// List of all use cases available in a project
@@ -38,11 +37,25 @@ namespace Awiz.Core.Contract
         ClassInfo? GetClassInfoById(string id);
 
         /// <summary>
+        /// Returns the class namespace nodes as tree.
+        /// </summary>
+        /// <param name="includeInterfaces">If set to true, the returned tree contains the interfaces</param>
+        /// <returns>Class tree sorted by namespace</returns>
+        IDictionary<string, ClassNamespaceNode> GetClassNamespaceNodes(bool includeInterfaces);
+
+        /// <summary>
         /// Loads a class diagram by name (all names from ClassDiagrams property are valid)
         /// </summary>
         /// <param name="classDiagramName">Name of the class diagram to load</param>
         /// <returns>The loaded architectural view</returns>
         IArchitectureView LoadClassDiagram(string classDiagramName);
+
+        /// <summary>
+        /// Loads a sequence diagram by name (all names from SequenceDiagrams property are valid)
+        /// </summary>
+        /// <param name="sequenceDiagramName">Name of the sequence diagram to load</param>
+        /// <returns>The loaded architectural view containing the sequence diagram</returns>
+        IArchitectureView LoadSequenceDiagram(string sequenceDiagramName);
 
         /// <summary>
         /// Loadas a use case diagram by name (all anems from UseCases property are valid)

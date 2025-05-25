@@ -7,6 +7,7 @@
     {
         None,
         UseCase,
-        Class
+        Class,
+        Sequence
     }
 }

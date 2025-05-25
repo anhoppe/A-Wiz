@@ -1,5 +1,4 @@
-﻿
-namespace Awiz.Core.CSharpClassGenerator
+﻿namespace Awiz.Core.CSharpParsing
 {
     internal class ProjectParser : IProjectParser
     {

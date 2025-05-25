@@ -36,7 +36,21 @@
     Grid:
       Editable: 
         - all
-
+  - Name: SequenceHeader
+    Alignment: CenterCenter
+    BackgroundColor: 255, 255, 255, 255
+    LineColor: 255, 0, 0, 0
+  - Name: SequenceLifeline
+    BackgroundColor: 255, 255, 255, 255
+    LineColor: 255, 0, 0, 0
+    Buttons:
+      - Id: StartCallSequence
+        Alignment: TopLeft
+        Icon: ArrowRight
+      - Id: AddMethodCall
+        Alignment: BottomRight
+        Icon: ArrowRight
+  
 EdgeTemplates:
   - Source: Actor
     Target: UseCase

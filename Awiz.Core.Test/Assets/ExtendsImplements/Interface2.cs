@@ -8,5 +8,6 @@ namespace Awiz.Core.Test.Assets.ExtendsImplements
 {
     public interface Interface2 : Interface1
     {
+        void ThisIsAnInterfaceMethod();
     }
 }

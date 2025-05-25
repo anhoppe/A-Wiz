@@ -1,6 +1,6 @@
 ﻿using Awiz.Core.Contract.CodeInfo;
 
-namespace Awiz.Core.CSharpClassGenerator
+namespace Awiz.Core.CSharpParsing
 {
     internal class VersionUpdater : IVersionUpdater
     {

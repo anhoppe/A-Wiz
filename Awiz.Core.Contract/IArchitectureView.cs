@@ -53,6 +53,14 @@ namespace Awiz.Core.Contract
         void AddClassNode(ClassInfo classInfo);
 
         /// <summary>
+        /// Adds a call from one class to another in a sequence diagram
+        /// </summary>
+        /// <param name="sourceClass"></param>
+        /// <param name="targetClass"></param>
+        /// <param name="methodInfo"></param>
+        void AddMethodCall(ClassInfo sourceClass, ClassInfo targetClass, MethodInfo methodInfo);
+
+        /// <summary>
         /// Adds a node to the graph, only possible when the loaded view is a use case diagram
         /// </summary>
         /// <param name="node"></param>

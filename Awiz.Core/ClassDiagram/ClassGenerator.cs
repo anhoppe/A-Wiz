@@ -1,6 +1,6 @@
 ﻿using Gwiz.Core.Contract;
 using Awiz.Core.Contract.CodeInfo;
-using Awiz.Core.CSharpClassGenerator;
+using Awiz.Core.CSharpParsing;
 
 namespace Awiz.Core.ClassDiagram
 {
@@ -17,7 +17,7 @@ namespace Awiz.Core.ClassDiagram
 
         internal IClassNodeGenerator ClassNodeGenerator { get; set; } = new ClassNodeGenerator();
 
-        public void Generate(IClassProvider classProvider, IGraph graph)
+        public void Generate(ISourceCode classProvider, IGraph graph)
         {
             var filteredClassProvider = ClassFilter.Filter(classProvider);
 
@@ -33,7 +33,7 @@ namespace Awiz.Core.ClassDiagram
             graph.Update();
         }
 
-        private void AddAssociationsToGraph(IClassProvider classProvider, IGraph graph)
+        private void AddAssociationsToGraph(ISourceCode classProvider, IGraph graph)
         {
             foreach (var classInfo in classProvider.Classes)
             {
@@ -77,7 +77,7 @@ namespace Awiz.Core.ClassDiagram
             }
         }
 
-        private void AddClassesToGraph(IClassProvider classProvider, IGraph graph)
+        private void AddClassesToGraph(ISourceCode classProvider, IGraph graph)
         {
             foreach (var classInfo in classProvider.Classes)
             {
@@ -85,7 +85,7 @@ namespace Awiz.Core.ClassDiagram
             }
         }
 
-        private void AddExtension(IClassProvider classProvider, IGraph graph, ClassInfo classInfo)
+        private void AddExtension(ISourceCode classProvider, IGraph graph, ClassInfo classInfo)
         {
             if (!string.IsNullOrEmpty(classInfo.BaseClass))
             {
@@ -97,7 +97,7 @@ namespace Awiz.Core.ClassDiagram
             }
         }
 
-        private void AddExtensionsAndImplementationsToGraph(IClassProvider classProvider, IGraph graph)
+        private void AddExtensionsAndImplementationsToGraph(ISourceCode classProvider, IGraph graph)
         {
             foreach (var classInfo in classProvider.Classes)
             {
@@ -109,7 +109,7 @@ namespace Awiz.Core.ClassDiagram
             }
         }
 
-        private void AddImplementations(IClassProvider classProvider, IGraph graph, ClassInfo classInfo)
+        private void AddImplementations(ISourceCode classProvider, IGraph graph, ClassInfo classInfo)
         {
             foreach (var implInterface in classInfo.ImplementedInterfaces)
             {

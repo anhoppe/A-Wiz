@@ -1,8 +1,8 @@
 ﻿using Awiz.Core.Contract.CodeInfo;
-using Awiz.Core.CSharpClassGenerator;
+using Awiz.Core.CSharpParsing;
 using NUnit.Framework;
 
-namespace Awiz.Core.Test.CodeTree
+namespace Awiz.Core.Test.CSharpParsing
 {
     [TestFixture]
     public class NamespaceBuilderTest
@@ -16,7 +16,7 @@ namespace Awiz.Core.Test.CodeTree
         }
 
         [Test]
-        public void Build_When2ClassesInRootNamespace_ThenTheClassesAreInTheRootNode()
+        public void GetClassTree_When2ClassesInRootNamespace_ThenTheClassesAreInTheRootNode()
         {
             // Arrange
             var classInfos = new List<ClassInfo>
@@ -35,8 +35,10 @@ namespace Awiz.Core.Test.CodeTree
                 },
             };
 
+            _sut.Build(classInfos);
+
             // Act
-            var roots = _sut.Build(classInfos);
+            var roots = _sut.GetClassTree(false);
 
             // Assert
             Assert.That(roots.Count, Is.EqualTo(1));
@@ -48,7 +50,7 @@ namespace Awiz.Core.Test.CodeTree
         }
 
         [Test]
-        public void Build_When2ClassesAreInDifferentRootNamespaces_ThenRootsHasTwoNodes()
+        public void GetClassTree_When2ClassesAreInDifferentRootNamespaces_ThenRootsHasTwoNodes()
         {
             // Arrange
             var classInfos = new List<ClassInfo>
@@ -66,9 +68,11 @@ namespace Awiz.Core.Test.CodeTree
                     Namespace = "Namespace2"
                 },
             };
+            
+            _sut.Build(classInfos);
 
             // Act
-            var roots = _sut.Build(classInfos);
+            var roots = _sut.GetClassTree(false);
 
             // Assert
             Assert.That(roots.Count, Is.EqualTo(1));
@@ -80,7 +84,7 @@ namespace Awiz.Core.Test.CodeTree
         }
 
         [Test]
-        public void Build_WhenClassesAreInNamespaceHierarchy_ThenNamespaceNodesAreCorrectlyCreated()
+        public void GetClassTree_WhenClassesAreInNamespaceHierarchy_ThenNamespaceNodesAreCorrectlyCreated()
         {
             // Arrange
             var classInfos = new List<ClassInfo>
@@ -110,9 +114,10 @@ namespace Awiz.Core.Test.CodeTree
                     Namespace = "Namespace1.Sub2.Sub3"
                 },
             };
+            _sut.Build(classInfos);
 
             // Act
-            var roots = _sut.Build(classInfos);
+            var roots = _sut.GetClassTree(false);
 
             // Assert
             Assert.That(roots.Count, Is.EqualTo(1));
@@ -152,13 +157,81 @@ namespace Awiz.Core.Test.CodeTree
                 },
             };
 
+            _sut.Build(classInfos);
+
             // Act
-            var roots = _sut.Build(classInfos);
+            var roots = _sut.GetClassTree(false);
 
             // Assert
             Assert.That(roots.Count, Is.EqualTo(2));
             Assert.That(roots["foo"].Name, Is.EqualTo("Namespace1"));
             Assert.That(roots["bar"].Name, Is.EqualTo("Namespace1"));
+        }
+
+        [Test]
+        public void GetInterfaces_WhenInterfacesShouldBeReturned_ThenInterfacesInTheTree()
+        {
+            // Arrange
+            var classInfos = new List<ClassInfo>
+            {
+                new ClassInfo()
+                {
+                    Assembly = "foo",
+                    Type = ClassType.Class,
+                    Name = "Class1",
+                    Namespace = "Namespace1"
+                },
+                new ClassInfo()
+                {
+                    Assembly = "foo",
+                    Type = ClassType.Interface,
+                    Name = "Interface1",
+                    Namespace = "Namespace1"
+                },
+            };
+
+            _sut.Build(classInfos);
+
+            // Act
+            var roots = _sut.GetClassTree(true);
+
+            // Assert
+            Assert.That(roots["foo"].Classes.Count, Is.EqualTo(2));
+            Assert.That(roots["foo"].Classes[0].Name, Is.EqualTo("Class1"));
+            Assert.That(roots["foo"].Classes[1].Name, Is.EqualTo("Interface1"));
+        }
+
+
+        [Test]
+        public void GetInterfaces_WhenInterfacesShouldNotBeReturned_ThenInterfacesNotInTheTree()
+        {
+            // Arrange
+            var classInfos = new List<ClassInfo>
+            {
+                new ClassInfo()
+                {
+                    Assembly = "foo",
+                    Type = ClassType.Class,
+                    Name = "Class1",
+                    Namespace = "Namespace1"
+                },
+                new ClassInfo()
+                {
+                    Assembly = "foo",
+                    Type = ClassType.Interface,
+                    Name = "Interface1",
+                    Namespace = "Namespace1"
+                },
+            };
+
+            _sut.Build(classInfos);
+
+            // Act
+            var roots = _sut.GetClassTree(false);
+
+            // Assert
+            Assert.That(roots["foo"].Classes.Count, Is.EqualTo(1));
+            Assert.That(roots["foo"].Classes[0].Name, Is.EqualTo("Class1"));
         }
     }
 }

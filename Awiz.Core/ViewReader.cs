@@ -1,11 +1,12 @@
 ﻿using Awiz.Core.Storage;
 using Awiz.Core.Contract;
-using Awiz.Core.CSharpClassGenerator;
+using Awiz.Core.CSharpParsing;
 using Awiz.Core.Contract.Git;
 using Awiz.Core.Git;
 using Awiz.Core.Contract.CodeInfo;
-using Awiz.Core.Contract.CodeTree;
 using Awiz.Core.ClassDiagram;
+using Awiz.Core.Contract.CSharpParsing;
+using Awiz.Core.SequenceDiagram;
 
 namespace Awiz.Core
 {
@@ -18,6 +19,10 @@ namespace Awiz.Core
             ProjectParser = new ProjectParser(),
         };
 
+        private IInteractionBehavior _interactionBehavior;
+
+        private IMethodSelector _methodSelector;
+
         private string _pathToRepo = string.Empty;
 
         private string _pathToWiz = string.Empty;
@@ -26,19 +31,43 @@ namespace Awiz.Core
 
         private IStorageAccess _storageAccess = new YamlStorageAccess();
 
+        private Dictionary<string, string> _sequenceDiagramNameToViewPath = new Dictionary<string, string>();
+
+        private SequenceNodeGenerator _sequenceNodeGenerator;
+        
         private Dictionary<string, string> _useCaseNameToViewPath = new Dictionary<string, string>();
 
         private Dictionary<string, string> _viewNameToViewPath = new Dictionary<string, string>();
+
+        public ViewReader()
+        {
+            _methodSelector = new MethodSelector()
+            {
+                SourceCode = _classParser,
+            };
+
+            _interactionBehavior = new InteractionBehavior()
+            {
+                MethodSelector = _methodSelector,
+            };
+
+            _relationBuilder.ClassNodeGenerator = _classNodeGenerator;
+            
+            _sequenceNodeGenerator = new SequenceNodeGenerator()
+            {
+                SourceCode = _classParser,
+            };
+        }
 
         public List<string> ClassDiagrams { get; } = new();
 
         public List<ClassInfo> ClassInfos { get; private set; } = new();
 
-        public IDictionary<string, ClassNamespaceNode> ClassNamespaceNodes { get; set; } = new Dictionary<string, ClassNamespaceNode>();
-
         public IGitRepo GitAccess => LoadableGitAccess;
 
         public ArchitectureViewType LoadedView { get; private set; } = ArchitectureViewType.None;
+
+        public List<string> SequenceDiagrams { get; } = new();
 
         public List<string> UseCases { get; } = new List<string>();
 
@@ -48,15 +77,12 @@ namespace Awiz.Core
 
         internal INamespaceBuilder NamespaceBuilder { get; set; } = new NamespaceBuilder();
 
-        public ViewReader()
-        {
-            _relationBuilder.ClassNodeGenerator = _classNodeGenerator;
-        }
-
         public ClassInfo? GetClassInfoById(string id)
         {
             return ClassInfos.FirstOrDefault(p => p.Id() == id);
         }
+        
+        public IDictionary<string, ClassNamespaceNode> GetClassNamespaceNodes(bool includeInterfaces) => NamespaceBuilder.GetClassTree(includeInterfaces);
 
         public IArchitectureView LoadClassDiagram(string viewName)
         {
@@ -72,6 +98,22 @@ namespace Awiz.Core
             };
 
             architectureView.Load(VersionUpdater);
+
+            return architectureView;
+        }
+
+        public IArchitectureView LoadSequenceDiagram(string sequenceDiagramName)
+        {
+            var graph = _storageAccess.LoadDiagramGraph(sequenceDiagramName, _sequenceDiagramNameToViewPath[sequenceDiagramName]);
+            var architectureView = new ArchitectureSequenceView()
+            {
+                Graph = graph,
+                InteractionBehavior = _interactionBehavior,
+                Name = sequenceDiagramName,
+                RepoPath = _pathToRepo,
+                SequenceNodeGenerator = _sequenceNodeGenerator,
+                StorageAccess = _storageAccess,
+            };
 
             return architectureView;
         }
@@ -107,11 +149,12 @@ namespace Awiz.Core
             // Parse the source code information from the repo
             _classParser.ParseClasses(_pathToRepo);
             ClassInfos = _classParser.Classes;
-            ClassNamespaceNodes = NamespaceBuilder.Build(_classParser.Classes);
+            NamespaceBuilder.Build(_classParser.Classes);
             
             // Parse the wiz information from the repo
             ReadUseCases();
             ReadClassDiagrams();
+            ReadSequenceDiagrams();
 
             return LoadableGitAccess;
         }
@@ -127,6 +170,20 @@ namespace Awiz.Core
                 var viewName = Path.GetFileNameWithoutExtension(file);
                 _viewNameToViewPath[viewName] = file;
                 ClassDiagrams.Add(viewName);
+            }
+        }
+
+        private void ReadSequenceDiagrams()
+        {
+            var path = Path.Combine(_pathToWiz, "sequence");
+
+            var files = Directory.GetFiles(path, "*.yaml", SearchOption.TopDirectoryOnly);
+
+            foreach (var file in files)
+            {
+                var sequenceDiagramName = Path.GetFileNameWithoutExtension(file);
+                SequenceDiagrams.Add(sequenceDiagramName);
+                _sequenceDiagramNameToViewPath[sequenceDiagramName] = file;
             }
         }
 

@@ -1,4 +1,4 @@
-﻿using Awiz.Core.CSharpClassGenerator;
+﻿using Awiz.Core.CSharpParsing;
 
 namespace Awiz.Core.ClassDiagram
 {
@@ -10,6 +10,6 @@ namespace Awiz.Core.ClassDiagram
         /// </summary>
         /// <param name="classProvider">input class provider</param>
         /// <returns>Fitlered class provider that can be used to generate the graph</returns>
-        IClassProvider Filter(IClassProvider classProvider);
+        ISourceCode Filter(ISourceCode classProvider);
     }
 }

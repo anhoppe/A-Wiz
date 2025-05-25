@@ -20,7 +20,11 @@ namespace Awiz.Core.ClassDiagram
         {
             var (node1, node2) = GetNodes(from, to);
 
-            graph.AddEdge(node1, node2, fromMultiplicity, toMultiplicity, FromToLabelOffsetPerCent);
+            var edgeBuilder = graph.AddEdge(node1, node2);
+            edgeBuilder.WithFromLabel(fromMultiplicity).
+                WithToLabel(toMultiplicity).
+                WithLabelOffsetPerCent(FromToLabelOffsetPerCent).
+                Build();
         }
 
         public INode CreateClassNode(IGraph graph, ClassInfo classInfo, Action<ClassInfo> updateAction)
@@ -29,8 +33,8 @@ namespace Awiz.Core.ClassDiagram
 
             UpdateClassNode(node, classInfo, updateAction);
 
-            node.Width = 120;
-            node.Height = 160;
+            node.Width = Design.ClassNodeWidth;
+            node.Height = Design.ClassNodeHeight;
 
             return node;
         }
@@ -39,14 +43,20 @@ namespace Awiz.Core.ClassDiagram
         {
             var (node1, node2) = GetNodes(baseClass, derivedClass);
 
-            graph.AddEdge(node2, node1, Ending.ClosedArrow, Style.None);
+            var edgeBuilder = graph.AddEdge(node2, node1);
+            edgeBuilder.WithEnding(Ending.ClosedArrow).
+                Build();
         }
 
         public void CreateImplementation(IGraph graph, ClassInfo implementedInterface, ClassInfo implementingClass)
         {
             var (node1, node2) = GetNodes(implementedInterface, implementingClass);
 
-            graph.AddEdge(node2, node1, Ending.ClosedArrow, Style.Dashed);
+            var edgeBuilder = graph.AddEdge(node2, node1);
+            edgeBuilder.WithEnding(Ending.ClosedArrow).
+                WithStyle(Style.Dashed).
+                Build();
+
         }
 
         public void UpdateClassNode(INode node, ClassInfo classInfo, Action<ClassInfo> updateCallback)

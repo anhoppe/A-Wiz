@@ -10,15 +10,19 @@
   <ItemGroup>
     <Compile Remove="Assets\ExtendsImplements\Class1.cs" />
     <Compile Remove="Assets\ExtendsImplements\Class2.cs" />
+    <Compile Remove="Assets\ExtendsImplements\Class3.cs" />
     <Compile Remove="Assets\ExtendsImplements\Interface1.cs" />
     <Compile Remove="Assets\ExtendsImplements\Interface2.cs" />
-    <Compile Remove="Assets\ExtendsImplements\Subdir\Class3.cs" />
+    <Compile Remove="Assets\ExtendsImplements\Subdir\SubClass.cs" />
     <Compile Remove="Assets\GenericSupport\Class1.cs" />
     <Compile Remove="Assets\GenericSupport\Class2.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="Assets\ExtendsImplements\.wiz\reqs\base.yaml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Assets\ExtendsImplements\.wiz\sequence\my_sequence.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Assets\ExtendsImplements\.wiz\views\annotation_options.yaml">
@@ -33,13 +37,16 @@
     <None Include="Assets\ExtendsImplements\Class2.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Assets\ExtendsImplements\Class3.cs">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Assets\ExtendsImplements\Interface1.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Assets\ExtendsImplements\Interface2.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Assets\ExtendsImplements\Subdir\Class3.cs">
+    <None Include="Assets\ExtendsImplements\Subdir\SubClass.cs">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Assets\GenericSupport\Class1.cs">
@@ -76,10 +83,6 @@
     <None Update="Assets\ExtendsImplements\wiz.yaml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="SequenceDiagram\" />
   </ItemGroup>
 
 </Project>

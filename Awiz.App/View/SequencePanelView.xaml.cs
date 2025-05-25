@@ -2,21 +2,57 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Awiz.Core.Contract.CodeInfo;
 using Awiz.ViewModel.ClassDiagram;
+using Awiz.Core.Contract.CodeInfo;
 using Awiz.Core.Contract.CSharpParsing;
+using Awiz.ViewModel;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
 
 namespace Awiz.View
 {
-    public sealed partial class ClassPanelView : UserControl
+    public sealed partial class SequencePanelView : UserControl
     {
-        public ClassPanelView()
+        public SequencePanelView()
         {
             this.InitializeComponent();
         }
+
+        private TreeViewNode CreateTreeViewNode(ClassNamespaceNode node)
+        {
+            var treeNode = new TreeViewNode
+            {
+                Content = node,
+                IsExpanded = true
+            };
+
+            foreach (var child in node.Children)
+            {
+                treeNode.Children.Add(CreateTreeViewNode(child));
+            }
+
+            foreach (var childClass in node.Classes)
+            {
+                var treeViewNode = new TreeViewNode()
+                {
+                    Content = childClass,
+                };
+                treeNode.Children.Add(treeViewNode);
+            }
+
+            return treeNode;
+        }
+
+        private void SequencePanelView_Loaded(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as SequencePanelViewModel;
+            if (viewModel != null)
+            {
+                PopulateTree(viewModel.ClassNamespaceNodes);
+            }
+        }
+
 
         private void PopulateTree(IDictionary<string, ClassNamespaceNode> classNamespaceNodes)
         {
@@ -47,7 +83,7 @@ namespace Awiz.View
                             return;
                         }
 
-                        var dataContext = DataContext as ClassPanelViewModel;
+                        var dataContext = DataContext as SequencePanelViewModel;
                         if (dataContext == null)
                         {
                             return;
@@ -57,40 +93,6 @@ namespace Awiz.View
                     }
                 }
             };
-        }
-
-        private void ClassPanelView_Loaded(object sender, RoutedEventArgs e)
-        {
-            var viewModel = DataContext as ClassPanelViewModel;
-            if (viewModel != null)
-            {
-                PopulateTree(viewModel.ClassNamespaceNodes);
-            }
-        }
-
-        private TreeViewNode CreateTreeViewNode(ClassNamespaceNode node)
-        {
-            var treeNode = new TreeViewNode 
-            { 
-                Content = node, 
-                IsExpanded = true 
-            };
-
-            foreach (var child in node.Children)
-            {
-                treeNode.Children.Add(CreateTreeViewNode(child));
-            }
-
-            foreach (var childClass in node.Classes)
-            {
-                var treeViewNode = new TreeViewNode()
-                {
-                    Content = childClass,
-                };
-                treeNode.Children.Add(treeViewNode);
-            }
-
-            return treeNode;
         }
     }
 }

@@ -809,9 +809,24 @@ e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4:
   Properties: []
   Type: Interface
 434ecb96-1384-44fd-b1a3-ed4d85e3951f:
-  AddedMethods: []
-  AddedProperties:
+  AddedMethods:
   - AccessModifier: public
+    Name: GetClassNamespaceNodes
+    Parameters:
+    - Name: includeInterfaces
+      Type: bool
+    ReturnType: IDictionary<string, ClassNamespaceNode>
+  - AccessModifier: private
+    Name: ReadSequenceDiagrams
+    Parameters: []
+    ReturnType: void
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties:
+  - &o0
+    AccessModifier: public
     GenericType:
       AddedMethods: []
       AddedProperties: []
@@ -823,19 +838,15 @@ e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4:
       Fields: []
       ImplementedInterfaces: []
       Methods: []
-      Name: ''
-      Namespace: ''
+      Name: KeyValuePair
+      Namespace: System.Collections.Generic
       Properties: []
       Type: Class
-    IsEnumerable: false
-    Name: VersionUpdater
-    TypeNamespace: Awiz.Core.Contract.CodeInfo
-    TypeName: IVersionUpdater
-  Assembly: Awiz.Core
-  BaseClass: ''
-  DeletedMethods: []
-  DeletedProperties:
-  - &o0
+    IsEnumerable: true
+    Name: ClassNamespaceNodes
+    TypeNamespace: System.Collections.Generic
+    TypeName: IDictionary<string, ClassNamespaceNode>
+  - &o1
     AccessModifier: internal
     GenericType:
       AddedMethods: []
@@ -914,6 +925,12 @@ e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4:
     Name: ReadUseCases
     Parameters: []
     ReturnType: void
+  - AccessModifier: public
+    Name: LoadSequenceDiagram
+    Parameters:
+    - Name: sequenceDiagramName
+      Type: string
+    ReturnType: IArchitectureView
   Name: ViewReader
   Namespace: Awiz.Core
   Properties:
@@ -957,26 +974,7 @@ e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4:
     Name: ClassInfos
     TypeNamespace: System.Collections.Generic
     TypeName: List<ClassInfo>
-  - AccessModifier: public
-    GenericType:
-      AddedMethods: []
-      AddedProperties: []
-      Assembly: ''
-      BaseClass: ''
-      DeletedMethods: []
-      DeletedProperties: []
-      Directory: ''
-      Fields: []
-      ImplementedInterfaces: []
-      Methods: []
-      Name: KeyValuePair
-      Namespace: System.Collections.Generic
-      Properties: []
-      Type: Class
-    IsEnumerable: true
-    Name: ClassNamespaceNodes
-    TypeNamespace: System.Collections.Generic
-    TypeName: IDictionary<string, ClassNamespaceNode>
+  - *o0
   - AccessModifier: public
     GenericType:
       AddedMethods: []
@@ -1077,7 +1075,47 @@ e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4:
     Name: NamespaceBuilder
     TypeNamespace: Awiz.Core.CodeTree
     TypeName: INamespaceBuilder
-  - *o0
+  - *o1
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: String
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: SequenceDiagrams
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<string>
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: VersionUpdater
+    TypeNamespace: Awiz.Core.Contract.CodeInfo
+    TypeName: IVersionUpdater
   Type: Class
 4c734e3d-5415-4c14-864f-5ebe1b412fd5:
   AddedMethods: []
@@ -1771,12 +1809,59 @@ e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4:
     TypeName: string
   Type: Class
 9ee67f59-c4d0-469b-915d-b32cea6b5d9d:
-  AddedMethods: []
-  AddedProperties: []
+  AddedMethods:
+  - AccessModifier: ''
+    Name: GetClassNamespaceNodes
+    Parameters:
+    - Name: includeInterfaces
+      Type: bool
+    ReturnType: IDictionary<string, ClassNamespaceNode>
+  AddedProperties:
+  - AccessModifier: ''
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: String
+      Namespace: System
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: SequenceDiagrams
+    TypeNamespace: System.Collections.Generic
+    TypeName: List<string>
   Assembly: Awiz.Core.Contract
   BaseClass: ''
   DeletedMethods: []
-  DeletedProperties: []
+  DeletedProperties:
+  - &o2
+    AccessModifier: ''
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: KeyValuePair
+      Namespace: System.Collections.Generic
+      Properties: []
+      Type: Class
+    IsEnumerable: true
+    Name: ClassNamespaceNodes
+    TypeNamespace: System.Collections.Generic
+    TypeName: IDictionary<string, ClassNamespaceNode>
   Directory: C:\repo\A-Wiz\Awiz.Core.Contract\IArchitectureWiz.cs
   Fields: []
   ImplementedInterfaces: []
@@ -1805,6 +1890,12 @@ e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4:
     - Name: pathToRepo
       Type: string
     ReturnType: IGitRepo
+  - AccessModifier: ''
+    Name: LoadSequenceDiagram
+    Parameters:
+    - Name: sequenceDiagramName
+      Type: string
+    ReturnType: IArchitectureView
   Name: IArchitectureWiz
   Namespace: Awiz.Core.Contract
   Properties:
@@ -1848,26 +1939,7 @@ e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4:
     Name: ClassInfos
     TypeNamespace: System.Collections.Generic
     TypeName: List<ClassInfo>
-  - AccessModifier: ''
-    GenericType:
-      AddedMethods: []
-      AddedProperties: []
-      Assembly: ''
-      BaseClass: ''
-      DeletedMethods: []
-      DeletedProperties: []
-      Directory: ''
-      Fields: []
-      ImplementedInterfaces: []
-      Methods: []
-      Name: KeyValuePair
-      Namespace: System.Collections.Generic
-      Properties: []
-      Type: Class
-    IsEnumerable: true
-    Name: ClassNamespaceNodes
-    TypeNamespace: System.Collections.Generic
-    TypeName: IDictionary<string, ClassNamespaceNode>
+  - *o2
   - AccessModifier: ''
     GenericType:
       AddedMethods: []
@@ -1996,19 +2068,25 @@ e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4:
     TypeNamespace: Awiz.Core.Contract
     TypeName: ArchitectureViewType
   Type: Interface
-60012fdc-7a42-4649-8a20-da6954ca423c:
+b387480f-c1b1-46b7-a0bc-4ba2aed69bea:
   AddedMethods: []
   AddedProperties: []
   Assembly: Awiz.Core
   BaseClass: ''
   DeletedMethods: []
   DeletedProperties: []
-  Directory: C:\repo\A-Wiz\Awiz.Core\CSharpClassGenerator\IClassProvider.cs
+  Directory: C:\repo\A-Wiz\Awiz.Core\CSharpParsing\ISourceCode.cs
   Fields: []
   ImplementedInterfaces: []
-  Methods: []
-  Name: IClassProvider
-  Namespace: Awiz.Core.CSharpClassGenerator
+  Methods:
+  - AccessModifier: ''
+    Name: GetCallSites
+    Parameters:
+    - Name: method
+      Type: MethodInfo
+    ReturnType: IList<CallSite>
+  Name: ISourceCode
+  Namespace: Awiz.Core.CSharpParsing
   Properties:
   - AccessModifier: ''
     GenericType:
@@ -2133,3 +2211,95 @@ e5bb12ac-a78c-4f75-ac4b-00b93e65e6f4:
   Namespace: Awiz.Core.Contract.Git
   Properties: []
   Type: Interface
+ec52a776-bcb9-4ccf-885a-51fd128332b1:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: Awiz.Core.ArchitectureView
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\ArchitectureSequenceView.cs
+  Fields:
+  - AccessModifier: private
+    Name: _nodeToClassInfo
+    Type: Dictionary<INode, ClassInfo>
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: public
+    Name: AddBaseClassNode
+    Parameters:
+    - Name: derivedClassInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: public
+    Name: AddClassNode
+    Parameters:
+    - Name: classInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: public
+    Name: AddUseCaseNode
+    Parameters:
+    - Name: node
+      Type: INode
+    ReturnType: void
+  - AccessModifier: public
+    Name: Load
+    Parameters:
+    - Name: versionUpdater
+      Type: IVersionUpdater
+    ReturnType: void
+  - AccessModifier: public
+    Name: Save
+    Parameters: []
+    ReturnType: void
+  - AccessModifier: protected
+    Name: OnNodeRemoved
+    Parameters:
+    - Name: node
+      Type: INode
+    ReturnType: void
+  Name: ArchitectureSequenceView
+  Namespace: Awiz.Core
+  Properties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: Type
+    TypeNamespace: Awiz.Core.Contract
+    TypeName: ArchitectureViewType
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: SequenceNodeGenerator
+    TypeNamespace: Awiz.Core.SequenceDiagram
+    TypeName: ISequenceNodeGenerator?
+  Type: Class

@@ -27,6 +27,11 @@ namespace Awiz.Core
             throw new NotSupportedException("Cannot add a class node to a Use Case diagram");
         }
 
+        public override void AddMethodCall(ClassInfo sourceClass, ClassInfo targetClass, MethodInfo methodInfo)
+        {
+            throw new NotSupportedException("Cannot add a method call in a Use Case diagram");
+        }
+
         public override void AddUseCaseNode(INode node)
         {
             _gitNodeInfo.Add(node.Id, new GitNodeInfo());

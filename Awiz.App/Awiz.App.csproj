@@ -19,6 +19,7 @@
   <ItemGroup>
     <None Remove="ClassPanelView.xaml" />
     <None Remove="UseCasePanelView.xaml" />
+    <None Remove="View\SequencePanelView.xaml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,6 +72,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Model\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="View\SequencePanelView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <!--

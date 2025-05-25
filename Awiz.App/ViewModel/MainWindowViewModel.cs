@@ -27,10 +27,14 @@ namespace Awiz.ViewModel
 
             CommitInfoPanelViewModel = new CommitInfoPanelViewModel(_viewReader.GitAccess);
             UseCasePanelViewModel = new UseCasePanelViewModel(CommitInfoPanelViewModel);
-
             UseCasePanelViewModel.Visibility = Visibility.Collapsed;
+            
             ClassPanelViewModel.Visibility = Visibility.Collapsed;
-            ClassPanelViewModel.SetClassTree(_viewReader.ClassNamespaceNodes);
+            ClassPanelViewModel.SetClassTree(_viewReader.GetClassNamespaceNodes(true));
+
+            SequencePanelViewModel.Visibility = Visibility.Collapsed;
+            SequencePanelViewModel.SetClassTree(_viewReader.GetClassNamespaceNodes(false));
+
             CreateMenu();
         }
 
@@ -49,6 +53,8 @@ namespace Awiz.ViewModel
         }
 
         public List<MenuBarItem> MenuItems { get; } = new();
+
+        public SequencePanelViewModel SequencePanelViewModel { get; } = new();
 
         public UseCasePanelViewModel UseCasePanelViewModel { get; }
 
@@ -96,8 +102,9 @@ namespace Awiz.ViewModel
                     Graph = _architectureView.Graph ?? new Graph();
                     UseCasePanelViewModel.Graph = Graph;
 
-                    UseCasePanelViewModel.Visibility = Visibility.Visible;
                     ClassPanelViewModel.Visibility = Visibility.Collapsed;
+                    SequencePanelViewModel.Visibility = Visibility.Collapsed;
+                    UseCasePanelViewModel.Visibility = Visibility.Visible;
 
                     CommitInfoPanelViewModel.SetupGitInfo(Graph, _architectureView);
                 };
@@ -108,7 +115,7 @@ namespace Awiz.ViewModel
             // Views
             var viewsMenuItem = new MenuBarItem
             {
-                Title = "Views",
+                Title = "Class Diagrams",
             };
             MenuItems.Add(viewsMenuItem);
 
@@ -129,10 +136,42 @@ namespace Awiz.ViewModel
                     ClassPanelViewModel.VersionUpdater = _viewReader.VersionUpdater;
 
                     UseCasePanelViewModel.Visibility = Visibility.Collapsed;
+                    SequencePanelViewModel.Visibility = Visibility.Collapsed;
+
                     ClassPanelViewModel.Visibility = Visibility.Visible;
                 };
 
                 viewsMenuItem.Items.Add(item);
+            }
+
+            // Sequence Diagrams
+            var sequenceDiagramMenuItem = new MenuBarItem
+            {
+                Title = "Sequence Diagrams",
+            };
+            MenuItems.Add(sequenceDiagramMenuItem);
+
+            foreach (var sequenceDiagramName in _viewReader.SequenceDiagrams)
+            {
+                var item = new MenuFlyoutItem()
+                {
+                    Text = sequenceDiagramName,
+                };
+
+                item.Click += (s, e) =>
+                {
+                    _architectureView = _viewReader.LoadSequenceDiagram(sequenceDiagramName);
+                    Graph = _architectureView.Graph ?? new Graph();
+                    SequencePanelViewModel.Graph = Graph;
+                    SequencePanelViewModel.ArchitectureWiz = _viewReader;
+                    SequencePanelViewModel.ArchitectureView = _architectureView;
+
+                    ClassPanelViewModel.Visibility = Visibility.Collapsed;
+                    UseCasePanelViewModel.Visibility = Visibility.Collapsed;
+                    SequencePanelViewModel.Visibility = Visibility.Visible;
+                };
+
+                sequenceDiagramMenuItem.Items.Add(item);
             }
         }
     }

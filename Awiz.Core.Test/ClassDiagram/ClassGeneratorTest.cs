@@ -1,6 +1,6 @@
 ﻿using Awiz.Core.ClassDiagram;
 using Awiz.Core.Contract.CodeInfo;
-using Awiz.Core.CSharpClassGenerator;
+using Awiz.Core.CSharpParsing;
 using Gwiz.Core.Contract;
 using Moq;
 using NUnit.Framework;
@@ -12,7 +12,7 @@ namespace Awiz.Core.Test.ClassDiagram
     {
         private AnnotationOptions _annotationOptions = new();
         private Mock<IClassNodeGenerator> _classNodeGeneratorMock = new();
-        private Mock<IClassProvider> _classProviderMock = new();
+        private Mock<ISourceCode> _classProviderMock = new();
 
         private Mock<IGraph> _graphMock = new();
 
@@ -24,12 +24,12 @@ namespace Awiz.Core.Test.ClassDiagram
             _annotationOptions = new();
 
             _classNodeGeneratorMock = new Mock<IClassNodeGenerator>();
-            _classProviderMock = new Mock<IClassProvider>();
+            _classProviderMock = new Mock<ISourceCode>();
 
             _graphMock = new Mock<IGraph>();
 
             var classFilterMock = new Mock<IClassFilter>();
-            classFilterMock.Setup(m => m.Filter(It.IsAny<IClassProvider>())).Returns((IClassProvider cp) => cp);
+            classFilterMock.Setup(m => m.Filter(It.IsAny<ISourceCode>())).Returns((ISourceCode cp) => cp);
 
             _sut = new ClassGenerator()
             {

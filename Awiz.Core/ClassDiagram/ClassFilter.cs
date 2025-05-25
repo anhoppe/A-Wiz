@@ -1,5 +1,5 @@
 ﻿using Awiz.Core.Contract.CodeInfo;
-using Awiz.Core.CSharpClassGenerator;
+using Awiz.Core.CSharpParsing;
 
 namespace Awiz.Core.ClassDiagram
 {
@@ -9,9 +9,19 @@ namespace Awiz.Core.ClassDiagram
         
         private readonly DynamicDeserializerYaml _dynamicDeserializer = new();
 
-        private class ClassProvider : IClassProvider
+        private class ClassProvider : ISourceCode
         {
             public List<ClassInfo> Classes { get; } = new();
+
+            public IList<CallSite> GetCallSites(MethodInfo method)
+            {
+                throw new NotImplementedException();
+            }
+
+            public IList<ClassInfo> GetImplementations(ClassInfo interfaceInfo)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         public ClassFilter() { }
@@ -45,7 +55,7 @@ namespace Awiz.Core.ClassDiagram
         /// </summary>
         public bool EnableAssociations { get; set; }
 
-        public IClassProvider Filter(IClassProvider classProvider)
+        public ISourceCode Filter(ISourceCode classProvider)
         {
             var filteredClasses = new ClassProvider();
 

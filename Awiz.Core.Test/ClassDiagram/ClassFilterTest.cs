@@ -1,6 +1,6 @@
 ﻿using Awiz.Core.ClassDiagram;
 using Awiz.Core.Contract.CodeInfo;
-using Awiz.Core.CSharpClassGenerator;
+using Awiz.Core.CSharpParsing;
 using Moq;
 using NUnit.Framework;
 
@@ -9,14 +9,6 @@ namespace Awiz.Core.Test.ClassDiagram
     [TestFixture]
     public class ClassFilterTest
     {
-        private Mock<IClassProvider> _classProviderMock = new();
-        
-        [SetUp]
-        public void SetUp()
-        {
-            _classProviderMock = new Mock<IClassProvider>();
-        }
-
         [Test]
         public void ctor_WhenPathToRepoAndViewNamePassed_ThenTheFilterIsAppliedAsDefinedInTheView()
         {
@@ -56,7 +48,7 @@ namespace Awiz.Core.Test.ClassDiagram
                 Name = "Interface2",
             };
 
-            var classProviderMock = new Mock<IClassProvider>();
+            var classProviderMock = new Mock<ISourceCode>();
             classProviderMock.Setup(p => p.Classes).Returns([
                 class1,
                 class2,

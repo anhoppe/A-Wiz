@@ -48,6 +48,11 @@ namespace Awiz.Core
             AddClassNode(baseClassInfo);
         }
 
+        public override void AddMethodCall(ClassInfo sourceClass, ClassInfo targetClass, MethodInfo methodInfo)
+        {
+            throw new NotSupportedException("Cannot add a method call in a class diagram");
+        }
+
         public override void AddClassNode(ClassInfo classInfo)
         {
             if (_nodeToClassInfo.ContainsValue(classInfo))

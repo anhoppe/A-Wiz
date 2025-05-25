@@ -74,11 +74,18 @@ namespace Awiz.Core.Test.ClassDiagram
                 [node2Mock.Object] = classInfo2,
             };
 
+            var edgeBuilderMock = new Mock<IEdgeBuilder>();
+            edgeBuilderMock.Setup(m => m.WithFromLabel("foo")).Returns(edgeBuilderMock.Object);
+            edgeBuilderMock.Setup(m => m.WithToLabel("bar")).Returns(edgeBuilderMock.Object);
+            edgeBuilderMock.Setup(m => m.WithLabelOffsetPerCent(It.IsAny<float>())).Returns(edgeBuilderMock.Object);
+
+            _graphMock.Setup(m => m.AddEdge(node1Mock.Object, node2Mock.Object)).Returns(edgeBuilderMock.Object);
+
             // Act
             _sut.CreateAssociation(_graphMock.Object, classInfo1, classInfo2, "foo", "bar");
 
             // Assert
-            _graphMock.Verify(m => m.AddEdge(node1Mock.Object, node2Mock.Object, "foo", "bar", It.IsAny<float>()));
+            edgeBuilderMock.Verify(m => m.Build(), "Build should have been called because the edgeBuilder is setup to return this when the expected methods with parameters were called, which finally results in the Build call");
         }
 
         [Test]
@@ -106,11 +113,17 @@ namespace Awiz.Core.Test.ClassDiagram
                 [node2Mock.Object] = classInfo2,
             };
 
+            var edgeBuilderMock = new Mock<IEdgeBuilder>();
+            edgeBuilderMock.Setup(m => m.WithEnding(Ending.ClosedArrow)).Returns(edgeBuilderMock.Object);
+            edgeBuilderMock.Setup(m => m.WithStyle(Style.Dashed)).Returns(edgeBuilderMock.Object);
+
+            _graphMock.Setup(m => m.AddEdge(node2Mock.Object, node1Mock.Object)).Returns(edgeBuilderMock.Object);
+
             // Act
             _sut.CreateImplementation(_graphMock.Object, classInfo1, classInfo2);
 
             // Assert
-            _graphMock.Verify(m => m.AddEdge(node2Mock.Object, node1Mock.Object, Ending.ClosedArrow, Style.Dashed));
+            edgeBuilderMock.Verify(m => m.Build(), "Build should have been called because the edgeBuilder is setup to return this when the expected methods with parameters were called, which finally results in the Build call");
         }
 
         [Test]
@@ -138,11 +151,17 @@ namespace Awiz.Core.Test.ClassDiagram
                 [node2Mock.Object] = classInfo2,
             };
 
+            var edgeBuilderMock = new Mock<IEdgeBuilder>();
+            edgeBuilderMock.Setup(m => m.WithEnding(Ending.ClosedArrow)).Returns(edgeBuilderMock.Object);
+
+            _graphMock.Setup(m => m.AddEdge(node2Mock.Object, node1Mock.Object)).Returns(edgeBuilderMock.Object);
+
             // Act
             _sut.CreateExtension(_graphMock.Object, classInfo1, classInfo2);
 
             // Assert
-            _graphMock.Verify(m => m.AddEdge(node2Mock.Object, node1Mock.Object, Ending.ClosedArrow, Style.None));
+            edgeBuilderMock.Verify(m => m.Build(), "Build should have been called because the edgeBuilder is setup to return this when the expected methods with parameters were called, which finally results in the Build call");
+
         }
 
         [Test]
