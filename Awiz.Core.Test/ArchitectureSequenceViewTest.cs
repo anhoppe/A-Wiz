@@ -1,8 +1,10 @@
 ﻿using Awiz.Core.Contract.CodeInfo;
 using Awiz.Core.SequenceDiagram;
+using Awiz.Core.Storage;
 using Gwiz.Core.Contract;
 using Moq;
 using NUnit.Framework;
+using Wiz.Infrastructure.IO;
 
 namespace Awiz.Core.Test
 {
@@ -11,11 +13,7 @@ namespace Awiz.Core.Test
     {
         private Mock<IGraph> _graphMock = new();
 
-        private Mock<INode> _headerNodeMock = new();
-
         private Mock<IInteractionBehavior> _interactionBehaviorMock = new();
-
-        private Mock<INode> _lifelineNodeMock = new();
 
         private Mock<ISequenceNodeGenerator> _sequenceNodeGeneratorMock = new();
 
@@ -35,12 +33,13 @@ namespace Awiz.Core.Test
                 SequenceNodeGenerator = _sequenceNodeGeneratorMock.Object,
             };
 
-            _headerNodeMock = new();
-            _lifelineNodeMock = new();
+            // Mocking here for the user lifeline that is created in the Initialize method
+            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, It.IsAny<ClassInfo>(), It.IsAny<int>())).Returns(CreateHeaderAndLifelineNodes());
+            _sut.Initialize();
         }
 
         [Test]
-        public void AddClassNode_WhenClassNodeIsAdded_ThenStartCallSequenceButtonIsVisibleAndAddMethodCallIsInvisible()
+        public void AddClassNode_WhenClassNodeIsAdded_ThenUpdateUserInitiaiteCallSequenceIsCalled()
         {
             // Arrange
             var classInfo = new ClassInfo()
@@ -49,33 +48,34 @@ namespace Awiz.Core.Test
                 Namespace = "MyNamespace",
             };
 
-            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, classInfo)).Returns((_headerNodeMock.Object, _lifelineNodeMock.Object));
-
             // Act
             _sut.AddClassNode(classInfo);
 
             // Assert
-            _interactionBehaviorMock.Verify(m => m.AttachButtonBehavior(_sut, classInfo, _lifelineNodeMock.Object), Times.Once);
+            _interactionBehaviorMock.Verify(m => m.UpdateUserInitiaiteCallSequence(It.IsAny<INode>(), It.IsAny<IList<ClassInfo>>(), It.IsAny<Action<ClassInfo, MethodInfo>>()), Times.Exactly(2), "Expected to be called twice, once during initializaiton and once during test");
         }
 
         [Test]
-        public void AddMethodCall_WhenMethodCallIsAdded_ThenCreateMethodCall()
+        public void AddMethodCall_WhenMethodCallIsAdded_ThenCreateMethodCallAndMethodCallInfoAddedToCallStack()
         {
             // Arrange
             var sourceClassInfo = new ClassInfo()
             {
-                Name = "Class1",
+                Name = "SourceClass",
                 Namespace = "MyNamespace",
             };
 
             var targetClassInfo = new ClassInfo()
             {
-                Name = "Class1",
+                Name = "TargetClass",
                 Namespace = "MyNamespace",
             };
 
-            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, sourceClassInfo)).Returns((_headerNodeMock.Object, _lifelineNodeMock.Object));
-            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, targetClassInfo)).Returns((_headerNodeMock.Object, _lifelineNodeMock.Object));
+            (var sourceHeaderNode, var sourceLifelineNode) = CreateHeaderAndLifelineNodes();
+            (var targetHeaderNode, var targetLifelineNode) = CreateHeaderAndLifelineNodes();
+
+            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, sourceClassInfo, It.IsAny<int>())).Returns((sourceHeaderNode, sourceLifelineNode));
+            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, targetClassInfo, It.IsAny<int>())).Returns((targetHeaderNode, targetLifelineNode));
 
             _sut.AddClassNode(sourceClassInfo);
 
@@ -85,7 +85,12 @@ namespace Awiz.Core.Test
             _sut.AddMethodCall(sourceClassInfo, targetClassInfo, calledMethod);
 
             // Assert
-            _sequenceNodeGeneratorMock.Verify(m => m.CreateMethodCall(_graphMock.Object, sourceClassInfo, targetClassInfo, calledMethod), Times.Once);
+            _sequenceNodeGeneratorMock.Verify(m => m.CreateMethodCall(_graphMock.Object, It.IsAny<CallInfo>()), Times.Once);
+            
+            var methodCallInfo = _sut.CallInfo.Peek();
+            Assert.That(methodCallInfo.CalledMethod, Is.EqualTo(calledMethod));
+            Assert.That(methodCallInfo.SourceNode, Is.EqualTo(sourceLifelineNode));
+            Assert.That(methodCallInfo.TargetNode, Is.EqualTo(targetLifelineNode));
         }
 
         [Test]
@@ -104,8 +109,8 @@ namespace Awiz.Core.Test
                 Namespace = "MyNamespace",
             };
 
-            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, sourceClassInfo)).Returns((_headerNodeMock.Object, _lifelineNodeMock.Object));
-            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, targetClassInfo)).Returns((_headerNodeMock.Object, _lifelineNodeMock.Object));
+            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, sourceClassInfo, It.IsAny<int>())).Returns(CreateHeaderAndLifelineNodes());
+            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, targetClassInfo, It.IsAny<int>())).Returns(CreateHeaderAndLifelineNodes());
 
             _sut.AddClassNode(sourceClassInfo);
             _sut.AddClassNode(targetClassInfo);
@@ -114,35 +119,88 @@ namespace Awiz.Core.Test
             _sut.AddMethodCall(sourceClassInfo, targetClassInfo, new MethodInfo());
 
             // Assert
-            _sequenceNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, It.IsAny<ClassInfo>()), Times.Exactly(2), "Expected that the target class is not added again with AddMethodCall");
+            _sequenceNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, It.IsAny<ClassInfo>(), It.IsAny<int>()), Times.Exactly(3), 
+                "Expected that only three class nodes are added, 1 for the user, 1 for source and 1 for target class. Target class is not added again with AddMethodCall");
         }
 
-        [Test]
-        public void AddMethodCall_WhenTargetClassWasNotYetAdded_ThenTargetClassIsAdded()
+        [Test, Ignore("Refactor Loading / Saving, then bring back test for it")]
+        public void Load_WhenLoaded_ThenNodeToClassInfoStored()
         {
-            // Arrange
-            var sourceClassInfo = new ClassInfo()
+            // Arrang
+            var classInfo1 = new ClassInfo()
             {
                 Name = "Class1",
-                Namespace = "MyNamespace",
+                Namespace = "This.is",
             };
 
-            var targetClassInfo = new ClassInfo()
+            var classInfo2 = new ClassInfo()
             {
-                Name = "Class1",
-                Namespace = "MyNamespace",
+                Name = "Class2",
+                Namespace = "This.is",
             };
-            
-            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, sourceClassInfo)).Returns((_headerNodeMock.Object, _lifelineNodeMock.Object));
-            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, targetClassInfo)).Returns((_headerNodeMock.Object, _lifelineNodeMock.Object));
 
-            _sut.AddClassNode(sourceClassInfo);
+            var fileSystemMock = new Mock<IFileSystem>();
+            var serializerMock = new Mock<ISerializer>();
+            var storageAccessMock = new Mock<IStorageAccess>();
+
+            _sut = new ArchitectureSequenceView()
+            {
+                FileSystem = fileSystemMock.Object,
+                Graph = _graphMock.Object,
+                InteractionBehavior = _interactionBehaviorMock.Object,
+                Name = "foobar",
+                RepoPath = "c:\\temp",
+                SequenceNodeGenerator = _sequenceNodeGeneratorMock.Object,
+                Serializer = serializerMock.Object,
+                StorageAccess = storageAccessMock.Object,
+            };
+
+            var node1Mock = new Mock<INode>();
+            var node2Mock = new Mock<INode>();
+            node1Mock.Setup(m => m.Id).Returns("foo");
+            node2Mock.Setup(m => m.Id).Returns("bar");
+            _graphMock.Setup(m => m.Nodes).Returns([node1Mock.Object, node2Mock.Object]);
+
+            var mapping = new Dictionary<string, ClassInfo>()
+            {
+                { "foo", classInfo1 },
+                { "bar", classInfo2 }
+            };
+
+            storageAccessMock.Setup(m => m.LoadNodeIdToClassInfoMapping(It.IsAny<Stream>())).Returns(mapping);
+            fileSystemMock.Setup(m => m.Exists("c:\\temp\\.wiz\\storage\\sequence\\mapping\\foobar.yaml")).Returns(true);
+            fileSystemMock.Setup(m => m.OpenRead("c:\\temp\\.wiz\\storage\\sequence\\mapping\\foobar.yaml")).Returns(Mock.Of<Stream>());
+
+            // Unfortunately, we have to test if the mapping is correct by calling Save and check that the passed map is corrrect
+            bool mappingCorrect = false;
+            storageAccessMock.Setup(m => m.SaveNodeIdToClassInfoMapping(It.IsAny<IDictionary<string, ClassInfo>>(), It.IsAny<Stream>())).Callback((IDictionary<string, ClassInfo> mapping, Stream stream) =>
+            {
+                if (mapping.Count == 2 &&
+                    mapping.ContainsKey("foo") && mapping["foo"] == classInfo1 &&
+                    mapping.ContainsKey("bar") && mapping["bar"] == classInfo2)
+                {
+                    mappingCorrect = true;
+                }
+            });
 
             // Act
-            _sut.AddMethodCall(sourceClassInfo, targetClassInfo, new MethodInfo());
+            _sut.Load(Mock.Of<IVersionUpdater>());
 
             // Assert
-            _interactionBehaviorMock.Verify(m => m.AttachButtonBehavior(_sut, targetClassInfo, _lifelineNodeMock.Object));
+            _sut.Save();
+            Assert.That(mappingCorrect);
         }
+
+        private (INode headerNode, INode lifelineNode) CreateHeaderAndLifelineNodes()
+        {
+            var headerNodeMock = new Mock<INode>();
+            var lifelineNodeMock = new Mock<INode>();
+
+            headerNodeMock.Setup(p => p.Id).Returns("");
+            lifelineNodeMock.Setup(p => p.Id).Returns($"{ISequenceNodeGenerator.LifelineId}:bar");
+
+            return (headerNodeMock.Object, lifelineNodeMock.Object);
+        }
+
     }
 }

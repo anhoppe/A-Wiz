@@ -9,9 +9,12 @@ namespace Awiz.Core.SequenceDiagram
     internal interface IMethodSelector
     {
         /// <summary>
-        /// Creates a selection of methods in the list for direct selection
+        /// Creates a selection of classes with their methods.
+        /// Serves as the initial selection for a call sequence in the sequence diagram that starts at the user node.
         /// </summary>
         /// <param name="methods"></param>
+        IList<ContextMenuItem> CreateStartSequenceSelection(IList<ClassInfo> classesInDiagram, Action<ClassInfo, MethodInfo> startCallSequence);
+
         IList<ContextMenuItem> CreateStartSequenceSelection(IList<MethodInfo> methods, Action<MethodInfo> startCallSequence);
 
         /// <summary>

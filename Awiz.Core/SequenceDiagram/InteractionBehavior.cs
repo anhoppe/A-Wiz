@@ -1,51 +1,29 @@
-﻿using Awiz.Core.Contract;
-using Awiz.Core.Contract.CodeInfo;
+﻿using Awiz.Core.Contract.CodeInfo;
 using Gwiz.Core.Contract;
 
 namespace Awiz.Core.SequenceDiagram
 {
-    public class InteractionBehavior : IInteractionBehavior
+    internal class InteractionBehavior : IInteractionBehavior
     {
+        private EventHandler? _addMethodEventHandler = null;
+
+        private EventHandler? _returnFromCallEventHandler = null;
+
+        internal IGraph? Graph { private get; set; }
+
         internal IMethodSelector? MethodSelector { private get; set; }
 
-        public void AttachButtonBehavior(IArchitectureView architectureView, ClassInfo classInfo, INode lifelineNode)
+        public void RemoveButtons(CallInfo callInfo)
         {
-            var graph = architectureView.Graph;
-            if (graph == null)
-            {
-                throw new NullReferenceException("Graph is not set");
-            }
-            if (MethodSelector == null)
-            {
-                throw new InvalidOperationException("MethodSelector is not set");
-            }
+            DisableClassButtons(callInfo.TargetNode);
 
-            var startCallSequenceButton = lifelineNode.GetButtonById("StartCallSequence");
-            startCallSequenceButton.Visible = true;
-
-            var addMethodCallButton = lifelineNode.GetButtonById("AddMethodCall");
-            addMethodCallButton.Visible = false;
-
-            startCallSequenceButton.Clicked += (sender, args) =>
-            {
-                var methodSelection = MethodSelector.CreateStartSequenceSelection(classInfo.Methods, (methodInfo) =>
-                {
-                    addMethodCallButton.Visible = true;
-                    addMethodCallButton.Clicked += (sender, args) =>
-                    {
-                        var methodSelection = MethodSelector.CreateAddMethodCallSelection(methodInfo, (targetClass, calledMethod) => architectureView.AddMethodCall(classInfo, targetClass, calledMethod));
-                        graph.ShowContextMenu(methodSelection);
-                    };
-                });
-
-                graph.ShowContextMenu(methodSelection);
-            };
+            _addMethodEventHandler = null;
+            _returnFromCallEventHandler = null;
         }
 
-        public void UpdateAddMethodButtonBehavior(IArchitectureView architectureView, ClassInfo classInfo, MethodInfo methodInfo, INode lifelineNode)
+        public void UpdateButtons(CallInfo callInfo, Action<ClassInfo, MethodInfo> addMethodCall, Action returnFromMethodCall)
         {
-            var graph = architectureView.Graph;
-            if (graph == null)
+            if (Graph == null)
             {
                 throw new NullReferenceException("Graph is not set");
             }
@@ -54,13 +32,81 @@ namespace Awiz.Core.SequenceDiagram
                 throw new InvalidOperationException("MethodSelector is not set");
             }
 
-            var addMethodCallButton = lifelineNode.GetButtonById("AddMethodCall");
+            DisableClassButtons(callInfo.SourceNode);
+
+            _addMethodEventHandler = (sender, args) =>
+            {
+                var methodSelection = MethodSelector.CreateAddMethodCallSelection(callInfo.CalledMethod, addMethodCall);
+                Graph.ShowContextMenu(methodSelection);
+            };
+            _returnFromCallEventHandler = (sender, args) =>
+            {
+                returnFromMethodCall();
+            };
+
+            EnableClassButtons(callInfo.TargetNode);
+        }
+
+        public void UpdateUserInitiaiteCallSequence(INode userLifelineNode, IList<ClassInfo> classesInDiagram, Action<ClassInfo, MethodInfo> createInitialCall)
+        {
+            if (Graph == null)
+            {
+                throw new NullReferenceException("Graph is not set");
+            }
+            if (MethodSelector == null)
+            {
+                throw new InvalidOperationException("MethodSelector is not set");
+            }
+
+            var addMethodCallButton = userLifelineNode.GetButtonById("AddMethodCall");
             addMethodCallButton.Visible = true;
+
             addMethodCallButton.Clicked += (sender, args) =>
             {
-                var methodSelection = MethodSelector.CreateAddMethodCallSelection(methodInfo, (targetClass, calledMethod) => architectureView.AddMethodCall(classInfo, targetClass, calledMethod));
-                graph.ShowContextMenu(methodSelection);
+                var methodSelection = MethodSelector.CreateStartSequenceSelection(classesInDiagram, createInitialCall);
+                Graph.ShowContextMenu(methodSelection);
             };
         }
+
+        private void EnableClassButtons(INode? node)
+        {
+            if (node == null)
+            {
+                throw new InvalidOperationException($"No lifeline node for target or source class set");
+            }
+
+            var addMethodCallButton = node.GetButtonById("AddMethodCall");
+            addMethodCallButton.Visible = true;
+            addMethodCallButton.Clicked += _addMethodEventHandler;
+
+            var returnCallButton = node.GetButtonById("ReturnCall");
+            returnCallButton.Visible = true;
+            returnCallButton.Clicked += _returnFromCallEventHandler;
+        }
+
+        private void DisableClassButtons(INode? node)
+        {
+            if (node == null)
+            {
+                throw new InvalidOperationException($"No lifeline node for target or source class set");
+            }
+
+            var addMethodCallButton = node.GetButtonById("AddMethodCall");
+            addMethodCallButton.Visible = false;
+
+            if (_addMethodEventHandler != null)
+            {
+                addMethodCallButton.Clicked -= _addMethodEventHandler;
+            }
+
+            var returnCallButton = node.GetButtonById("ReturnCall");
+            returnCallButton.Visible = false;
+
+            if (_returnFromCallEventHandler != null)
+            {
+                returnCallButton.Clicked -= _returnFromCallEventHandler;
+            }
+        }
+
     }
 }

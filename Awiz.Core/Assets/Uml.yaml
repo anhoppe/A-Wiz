@@ -50,6 +50,9 @@
       - Id: AddMethodCall
         Alignment: BottomRight
         Icon: ArrowRight
+      - Id: ReturnCall
+        Alignment: BottomLeft
+        Icon: ArrowLeft
   
 EdgeTemplates:
   - Source: Actor

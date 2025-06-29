@@ -19,7 +19,7 @@ namespace Awiz.Core
             ProjectParser = new ProjectParser(),
         };
 
-        private IInteractionBehavior _interactionBehavior;
+        private InteractionBehavior _interactionBehavior;
 
         private IMethodSelector _methodSelector;
 
@@ -29,7 +29,7 @@ namespace Awiz.Core
 
         private RelationBuilder _relationBuilder = new();
 
-        private IStorageAccess _storageAccess = new YamlStorageAccess();
+        private IStorageAccess _storageAccess;
 
         private Dictionary<string, string> _sequenceDiagramNameToViewPath = new Dictionary<string, string>();
 
@@ -54,6 +54,11 @@ namespace Awiz.Core
             _relationBuilder.ClassNodeGenerator = _classNodeGenerator;
             
             _sequenceNodeGenerator = new SequenceNodeGenerator()
+            {
+                SourceCode = _classParser,
+            };
+
+            _storageAccess = new YamlStorageAccess()
             {
                 SourceCode = _classParser,
             };
@@ -114,6 +119,11 @@ namespace Awiz.Core
                 SequenceNodeGenerator = _sequenceNodeGenerator,
                 StorageAccess = _storageAccess,
             };
+
+            _interactionBehavior.Graph = graph;
+
+            architectureView.Load(VersionUpdater);
+            architectureView.Initialize();
 
             return architectureView;
         }

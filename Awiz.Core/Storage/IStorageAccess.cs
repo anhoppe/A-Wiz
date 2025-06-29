@@ -1,5 +1,6 @@
 ﻿using Awiz.Core.Contract.CodeInfo;
 using Awiz.Core.Contract.Git;
+using Awiz.Core.SequenceDiagram;
 using Gwiz.Core.Contract;
 
 namespace Awiz.Core.Storage
@@ -9,6 +10,12 @@ namespace Awiz.Core.Storage
     /// </summary>
     internal interface IStorageAccess
     {
+        /// <summary>
+        /// Loads a callstack used in a sequnce diagram from a stream
+        /// </summary>
+        /// <param name="stream"></param>
+        /// <returns></returns>
+        Stack<CallInfo> LoadSequenceCallstack(Stream stream, IDictionary<INode, ClassInfo> nodeToClassInfoMapping);
 
         /// <summary>
         /// Loads a graph that belongs to a diagram
@@ -30,6 +37,11 @@ namespace Awiz.Core.Storage
         /// <param name="stream">Strean the mapping is loaded from</param>
         /// <returns>Dictionary with the mapping</returns>
         IDictionary<string, ClassInfo> LoadNodeIdToClassInfoMapping(Stream stream);
+
+        /// <summary>
+        /// Saves the callstack used for a sequnce diagram to a stream
+        /// </summary>
+        void SaveSequenceCallstack(Stack<CallInfo> callstack, Stream stream);
 
         /// <summary>
         /// Saves the git info to a stream

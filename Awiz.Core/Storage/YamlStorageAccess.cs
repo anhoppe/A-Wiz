@@ -3,15 +3,59 @@ using YamlDotNet.Serialization.NamingConventions;
 using YamlDotNet.Serialization;
 using Gwiz.Core.Serializer;
 using System.Text;
-using System.Reflection;
 using Awiz.Core.Git;
 using Awiz.Core.Contract.Git;
 using Awiz.Core.Contract.CodeInfo;
+using Awiz.Core.SequenceDiagram;
+using Awiz.Core.SequenceDiagram.Serializer;
+using Awiz.Core.CSharpParsing;
 
 namespace Awiz.Core.Storage
 {
     internal class YamlStorageAccess : IStorageAccess
     {
+        internal ISourceCode? SourceCode { private get; init; }
+
+        public Stack<CallInfo> LoadSequenceCallstack(Stream stream, IDictionary<INode, ClassInfo> nodeToClassInfoMapping)
+        {
+            if (SourceCode == null)
+            {
+                throw new NullReferenceException("SourceCode is not set");
+            }
+
+            var callstack = new Stack<CallInfo>();
+
+            using (var reader = new StreamReader(stream))
+            {
+                string yaml = reader.ReadToEnd();
+                var serializer = new DeserializerBuilder()
+                .WithNamingConvention(PascalCaseNamingConvention.Instance)
+                .Build();
+
+                var callstackAsList = serializer.Deserialize<List<CallInfoDto>>(yaml) ?? new();
+
+                foreach (var callInfoDto in callstackAsList)
+                {
+                    var sourceNode = nodeToClassInfoMapping.Keys.FirstOrDefault(n => n.Id == callInfoDto.SourceNodeId);
+                    var targetNode = nodeToClassInfoMapping.Keys.FirstOrDefault(n => n.Id == callInfoDto.TargetNodeId);
+                    if (sourceNode == null || targetNode == null)
+                    {
+                        continue;
+                    }
+
+                    var callInfo = new CallInfo
+                    {
+                        SourceNode = sourceNode,
+                        TargetNode = targetNode,
+                        CalledMethod = SourceCode.GetMethodInfoById(callInfoDto.CalledMethodId) ?? throw new InvalidOperationException($"Method with ID {callInfoDto.CalledMethodId} not found in source code"),
+                    };
+                    callstack.Push(callInfo);
+                }
+            }
+
+            return callstack;
+        }
+
         public IGraph LoadDiagramGraph(string name, string path)
         {
             using (var templateDefinitions = GetEmbeddedUmlYaml())
@@ -56,6 +100,11 @@ namespace Awiz.Core.Storage
 
         public IDictionary<string, ClassInfo> LoadNodeIdToClassInfoMapping(Stream stream)
         {
+            if (SourceCode == null)
+            {
+                throw new NullReferenceException("SourceCode is not set");
+            }
+
             Dictionary<string, ClassInfo> nodeToClassMapping = new();
 
             using (var reader = new StreamReader(stream))
@@ -65,7 +114,27 @@ namespace Awiz.Core.Storage
                 .WithNamingConvention(PascalCaseNamingConvention.Instance)
                 .Build();
 
-                nodeToClassMapping = serializer.Deserialize<Dictionary<string, ClassInfo>>(yaml) ?? new();
+                var deserializedNodeToClassMapping = serializer.Deserialize<Dictionary<string, ClassInfo>>(yaml) ?? new();
+
+                foreach (var kvp in deserializedNodeToClassMapping)
+                {
+                    if (kvp.Value is null)
+                    {
+                        throw new InvalidOperationException($"ClassInfo for node ID {kvp.Key} is null");
+                    }
+
+                    var deserializedClassInfo = kvp.Value;
+                    try
+                    {
+                        nodeToClassMapping[kvp.Key] = SourceCode.GetClassInfoById(deserializedClassInfo.Id());
+                    }
+                    catch (InvalidDataException)
+                    {
+                        // This happens for the ClassInfo that was generated for the user. For this case
+                        // we can just use the deserialized object
+                        nodeToClassMapping[kvp.Key] = deserializedClassInfo;
+                    }
+                }
             }
 
             return nodeToClassMapping;
@@ -78,6 +147,20 @@ namespace Awiz.Core.Storage
                 .Build();
 
             var yaml = serializer.Serialize(classInfos);
+
+            using (var writer = new StreamWriter(stream))
+            {
+                writer.Write(yaml);
+            }
+        }
+
+        public void SaveSequenceCallstack(Stack<CallInfo> callstack, Stream stream)
+        {
+            var serializer = new SerializerBuilder()
+                .WithNamingConvention(PascalCaseNamingConvention.Instance)
+                .Build();
+
+            var yaml = serializer.Serialize(callstack.Select(p => new CallInfoDto(p)).ToList());
 
             using (var writer = new StreamWriter(stream))
             {
@@ -115,7 +198,7 @@ namespace Awiz.Core.Storage
 
         private static Stream GetEmbeddedUmlYaml()
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             string resourceName = "Awiz.Core.Assets.Uml.yaml";
 

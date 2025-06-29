@@ -1,0 +1,328 @@
+f0f7a393-aad3-49c5-933c-b6e44cf5c682: &o0
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: ''
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: ''
+  Fields: []
+  ImplementedInterfaces: []
+  Methods: []
+  Name: User
+  Namespace: 13be42a7-f36a-4aa9-bc5b-a1d05d7d8e96
+  Properties: []
+  Type: Class
+13be42a7-f36a-4aa9-bc5b-a1d05d7d8e96: *o0
+6d5281cf-e066-4219-829b-f5cf2b74f7bb: &o1
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: Awiz.Core.ArchitectureView
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\ArchitectureClassView.cs
+  Fields:
+  - AccessModifier: private
+    Name: _classNodeGenerator
+    Type: IClassNodeGenerator?
+  - AccessModifier: private
+    Name: _nodeToClassInfo
+    Type: Dictionary<INode, ClassInfo>
+  - AccessModifier: private
+    Name: _repoClassInfos
+    Type: IList<ClassInfo>
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].AddBaseClassNode.derivedClassInfo: ClassInfo'
+    Name: AddBaseClassNode
+    ParentClass: *o1
+    Parameters:
+    - Name: derivedClassInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].AddMethodCall.sourceClass: ClassInfo, targetClass: ClassInfo, methodInfo: MethodInfo'
+    Name: AddMethodCall
+    ParentClass: *o1
+    Parameters:
+    - Name: sourceClass
+      Type: ClassInfo
+    - Name: targetClass
+      Type: ClassInfo
+    - Name: methodInfo
+      Type: MethodInfo
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].AddClassNode.classInfo: ClassInfo'
+    Name: AddClassNode
+    ParentClass: *o1
+    Parameters:
+    - Name: classInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].AddUseCaseNode.node: INode'
+    Name: AddUseCaseNode
+    ParentClass: *o1
+    Parameters:
+    - Name: node
+      Type: INode
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].Load.versionUpdater: IVersionUpdater'
+    Name: Load
+    ParentClass: *o1
+    Parameters:
+    - Name: versionUpdater
+      Type: IVersionUpdater
+    ReturnType: void
+  - AccessModifier: public
+    Id: System.Func`1[System.String].Save.
+    Name: Save
+    ParentClass: *o1
+    Parameters: []
+    ReturnType: void
+  - AccessModifier: protected
+    Id: 'System.Func`1[System.String].OnNodeRemoved.node: INode'
+    Name: OnNodeRemoved
+    ParentClass: *o1
+    Parameters:
+    - Name: node
+      Type: INode
+    ReturnType: void
+  - AccessModifier: private
+    Id: 'System.Func`1[System.String].RegisterNodeForSelectionEvent.classInfo: ClassInfo, node: INode'
+    Name: RegisterNodeForSelectionEvent
+    ParentClass: *o1
+    Parameters:
+    - Name: classInfo
+      Type: ClassInfo
+    - Name: node
+      Type: INode
+    ReturnType: void
+  Name: ArchitectureClassView
+  Namespace: Awiz.Core
+  Properties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: Type
+    TypeNamespace: Awiz.Core.Contract
+    TypeName: ArchitectureViewType
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: ClassNodeGenerator
+    TypeNamespace: Awiz.Core.ClassDiagram
+    TypeName: IClassNodeGenerator?
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: FileSystem
+    TypeNamespace: Wiz.Infrastructure.IO
+    TypeName: IFileSystem
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: RelationBuilder
+    TypeNamespace: Awiz.Core.ClassDiagram
+    TypeName: IRelationBuilder?
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: Serializer
+    TypeNamespace: <global namespace>
+    TypeName: ISerializer
+  Type: Class
+8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:514ef8bf-d45b-4a42-930a-f7a5fd2b5628: *o1
+73d4febe-9032-43bf-9a0d-55b1fdcbe27a: &o2
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\Storage\YamlStorageAccess.cs
+  Fields: []
+  ImplementedInterfaces:
+  - Awiz.Core.Storage.IStorageAccess
+  Methods:
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].LoadSequenceCallstack.stream: Stream, nodeToClassInfoMapping: IDictionary<INode, ClassInfo>'
+    Name: LoadSequenceCallstack
+    ParentClass: *o2
+    Parameters:
+    - Name: stream
+      Type: Stream
+    - Name: nodeToClassInfoMapping
+      Type: IDictionary<INode, ClassInfo>
+    ReturnType: Stack<CallInfo>
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].LoadDiagramGraph.name: string, path: string'
+    Name: LoadDiagramGraph
+    ParentClass: *o2
+    Parameters:
+    - Name: name
+      Type: string
+    - Name: path
+      Type: string
+    ReturnType: IGraph
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].LoadGitInfo.stream: Stream'
+    Name: LoadGitInfo
+    ParentClass: *o2
+    Parameters:
+    - Name: stream
+      Type: Stream
+    ReturnType: Dictionary<string, IGitNodeInfo>
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].LoadNodeIdToClassInfoMapping.stream: Stream'
+    Name: LoadNodeIdToClassInfoMapping
+    ParentClass: *o2
+    Parameters:
+    - Name: stream
+      Type: Stream
+    ReturnType: IDictionary<string, ClassInfo>
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].SaveClassInfos.classInfos: IList<ClassInfo>, stream: Stream'
+    Name: SaveClassInfos
+    ParentClass: *o2
+    Parameters:
+    - Name: classInfos
+      Type: IList<ClassInfo>
+    - Name: stream
+      Type: Stream
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].SaveSequenceCallstack.callstack: Stack<CallInfo>, stream: Stream'
+    Name: SaveSequenceCallstack
+    ParentClass: *o2
+    Parameters:
+    - Name: callstack
+      Type: Stack<CallInfo>
+    - Name: stream
+      Type: Stream
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].SaveGitInfo.gitInfo: Dictionary<string, IGitNodeInfo>, stream: Stream'
+    Name: SaveGitInfo
+    ParentClass: *o2
+    Parameters:
+    - Name: gitInfo
+      Type: Dictionary<string, IGitNodeInfo>
+    - Name: stream
+      Type: Stream
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].SaveNodeIdToClassInfoMapping.nodeToClassMapping: IDictionary<string, ClassInfo>, stream: Stream'
+    Name: SaveNodeIdToClassInfoMapping
+    ParentClass: *o2
+    Parameters:
+    - Name: nodeToClassMapping
+      Type: IDictionary<string, ClassInfo>
+    - Name: stream
+      Type: Stream
+    ReturnType: void
+  - AccessModifier: private
+    Id: System.Func`1[System.String].GetEmbeddedUmlYaml.
+    Name: GetEmbeddedUmlYaml
+    ParentClass: *o2
+    Parameters: []
+    ReturnType: Stream
+  Name: YamlStorageAccess
+  Namespace: Awiz.Core.Storage
+  Properties:
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: SourceCode
+    TypeNamespace: Awiz.Core.CSharpParsing
+    TypeName: ISourceCode?
+  Type: Class
+8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:1193dc38-fced-40e2-a3ae-2b99cad5fbb8: *o2

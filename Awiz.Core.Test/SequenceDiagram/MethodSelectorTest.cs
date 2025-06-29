@@ -89,5 +89,50 @@ namespace Awiz.Core.Test.SequenceDiagram
             // Assert
             Assert.That(contextMenuItems.Count, Is.EqualTo(2));
         }
+
+        [Test]
+        public void CreateStartSequenceSelection_WhenCalled_ThenTreeWithClassesAndMethodsAndCorrectCallbacks()
+        {
+            // Arrange
+            var classInfos = new List<ClassInfo>()
+            {
+                new ClassInfo()
+                {
+                    Methods =
+                    [
+                        new MethodInfo()
+                        {
+                            Name = "Method1",
+                        },
+                    ]
+                },
+                new ClassInfo()
+                {
+                    Methods =
+                    [
+                        new MethodInfo()
+                        {
+                            Name = "Method2",
+                        },
+                    ]
+                }
+            };
+
+            bool expectedCallbackInvoked = false;
+         
+            // Act
+            var contextMenu =_sut.CreateStartSequenceSelection(classInfos, (classInfo, calledMethod) =>
+            {
+                if (classInfo == classInfos[1] && calledMethod.Name == "Method2")
+                {
+                    expectedCallbackInvoked = true;
+                }
+            });
+            contextMenu[1].SubMenuItems[0].Callback.Invoke();
+
+            // Assert
+            Assert.That(contextMenu.Count, Is.EqualTo(2));
+            Assert.That(expectedCallbackInvoked, Is.True);
+        }
     }
 }

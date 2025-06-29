@@ -8,18 +8,6 @@ namespace Awiz.Core.SequenceDiagram
     {
         internal ISourceCode? SourceCode { private get; set; }
 
-        public IList<ContextMenuItem> CreateStartSequenceSelection(IList<MethodInfo> methods, Action<MethodInfo> startCallSequence)
-        {
-            return methods.Select(p => new ContextMenuItem()
-            {
-                Callback = () =>
-                {
-                    startCallSequence(p);
-                },
-                Name = p.Name,
-            }).ToList();
-        }
-
         public IList<ContextMenuItem> CreateAddMethodCallSelection(MethodInfo calledMethod, Action<ClassInfo, MethodInfo> addMethodCall)
         {
             if (SourceCode == null)
@@ -58,6 +46,31 @@ namespace Awiz.Core.SequenceDiagram
                     addMethodCall(implClass, implMethod);
                 },
                 Name = $"{p.Class.Name}.{p.Method.Name}",
+            }).ToList();
+        }
+
+        public IList<ContextMenuItem> CreateStartSequenceSelection(IList<MethodInfo> methods, Action<MethodInfo> startCallSequence)
+        {
+            return methods.Select(p => new ContextMenuItem()
+            {
+                Callback = () =>
+                {
+                    startCallSequence(p);
+                },
+                Name = p.Name,
+            }).ToList();
+        }
+
+        public IList<ContextMenuItem> CreateStartSequenceSelection(IList<ClassInfo> classesInDiagram, Action<ClassInfo, MethodInfo> startCallSequence)
+        {
+            return classesInDiagram.Select(classInfo => new ContextMenuItem() 
+            {
+                Name = classInfo.Id(),
+                SubMenuItems = classInfo.Methods.Select(methodInfo => new ContextMenuItem()
+                {
+                    Name = methodInfo.Name,
+                    Callback = () => startCallSequence(classInfo, methodInfo)
+                }).ToList()
             }).ToList();
         }
     }

@@ -10,20 +10,21 @@ namespace Awiz.Core.Test.SequenceDiagram
     [TestFixture]
     public class SequenceNodeGeneratorTest
     {
-        private Mock<IEdgeBuilder> edgeBuilderMock = new();
+        private Mock<IEdgeBuilder> edgeBuilderMock = null!;
 
-        private Mock<IGraph> _graphMock = new();
+        private Mock<IGraph> _graphMock = null!;
 
-        private Mock<INode> _lifelineNodeMock = new();
+        private Mock<INode> _headerNodeMock = null!;
 
-        private Mock<ISourceCode> _sourceCodeMock = new();
+        private Mock<INode> _lifelineNodeMock = null!;
 
-        private SequenceNodeGenerator _sut = new();
+        private Mock<ISourceCode> _sourceCodeMock = null!;
+
+        private SequenceNodeGenerator _sut = null!;
 
         [SetUp]
         public void SetUp()
         {
-            var headerNodeMock = new Mock<INode>();
             _lifelineNodeMock = new Mock<INode>();
 
             _graphMock = new();
@@ -43,9 +44,11 @@ namespace Awiz.Core.Test.SequenceDiagram
                     cell.Object,
                 }
             });
-            headerNodeMock.Setup(m => m.Grid).Returns(gridMock.Object);
 
-            _graphMock.Setup(p => p.AddNode("SequenceHeader")).Returns(headerNodeMock.Object);
+            _headerNodeMock = new Mock<INode>();
+            _headerNodeMock.Setup(m => m.Grid).Returns(gridMock.Object);
+
+            _graphMock.Setup(p => p.AddNode("SequenceHeader")).Returns(_headerNodeMock.Object);
             _graphMock.Setup(p => p.AddNode("SequenceLifeline")).Returns(_lifelineNodeMock.Object);
 
             edgeBuilderMock = new();
@@ -57,89 +60,24 @@ namespace Awiz.Core.Test.SequenceDiagram
             _graphMock.Setup(m => m.AddEdge(It.IsAny<INode>(), It.IsAny<INode>())).Returns(edgeBuilderMock.Object);
         }
 
-
         [Test]
-        public void CreateClassNode_WhenClassNodeIsAdded_ThenTwoNodesAreInsertedIntoGraph()
+        public void CreateClassNode_WhenCalled_ThenReturnsCorrectNodes()
         {
             // Arrange
-            var classInfo = new ClassInfo()
-            {
-                Name = "Class1",
-                Namespace = "MyNamespace",
-            };
-
+            var classInfo = new ClassInfo();
+            
             // Act
-            _sut.CreateClassNode(_graphMock.Object, classInfo);
-
+            var (header, lifeline) = _sut.CreateClassNode(_graphMock.Object, classInfo, 100);
+            
             // Assert
-            _graphMock.Verify(m => m.AddNode("SequenceHeader"));
-            _graphMock.Verify(m => m.AddNode("SequenceLifeline"));
-        }
+            Assert.That(header == _headerNodeMock.Object);
+            Assert.That(lifeline == _lifelineNodeMock.Object);
 
-        [Test]
-        public void CreateMethodCall_WhenSourceWasNotAdded_ThenExceptionThrown()
-        {
-            // Arrange
-            var sourceLifeline = new ClassInfo();
-            var targetLifeline = new ClassInfo();
-            var methodInfo = new MethodInfo();
+            _headerNodeMock.VerifySet(p => p.Width = Design.SequenceHeaderWidth, Times.Once);
+            _headerNodeMock.VerifySet(p => p.Height= Design.SequenceHeaderHeight, Times.Once);
 
-            // Act / Assert
-            Assert.Throws<InvalidOperationException>(() => _sut.CreateMethodCall(_graphMock.Object, sourceLifeline, targetLifeline, methodInfo));
-        }
-
-        [Test]
-        public void CreateMethodCall_WhenTargetWasAdded_ThenExceptionThrown()
-        {
-            // Arrange
-            var sourceLifeline = new ClassInfo();
-            var targetLifeline = new ClassInfo();
-            var methodInfo = new MethodInfo();
-            var (headerNode, lifelineNode) = _sut.CreateClassNode(_graphMock.Object, sourceLifeline);
-
-            // Act / Assert
-            Assert.Throws<InvalidOperationException>(() => _sut.CreateMethodCall(_graphMock.Object, sourceLifeline, targetLifeline, methodInfo));
-        }
-
-        [Test]
-        public void CreateMethodCall_WhenCalled_ThenAllLiflinesExtendedInHeight()
-        {
-            // Arrange
-            var sourceLifeline = new ClassInfo();
-            var targetLifeline = new ClassInfo();
-            var methodInfo = new MethodInfo();
-
-            _lifelineNodeMock.Setup(p => p.Height).Returns(Design.SequenceLifelineHeight);
-
-            _ = _sut.CreateClassNode(_graphMock.Object, sourceLifeline);
-            _ = _sut.CreateClassNode(_graphMock.Object, targetLifeline);
-
-            // Act
-            _sut.CreateMethodCall(_graphMock.Object, sourceLifeline, targetLifeline, methodInfo);
-
-            // Assert
-            _lifelineNodeMock.VerifySet(p => p.Height = Design.SequenceLifelineHeight * 2);
-        }
-
-        [Test]
-        public void CreateMethodCall_WhenCalled_ThenEdgeCreated()
-        {
-            var sourceLifeline = new ClassInfo();
-            var targetLifeline = new ClassInfo();
-            var methodInfo = new MethodInfo();
-
-            _ = _sut.CreateClassNode(_graphMock.Object, sourceLifeline);
-            _ = _sut.CreateClassNode(_graphMock.Object, targetLifeline);
-
-            _lifelineNodeMock.Setup(p => p.Height).Returns(Design.SequenceLifelineHeight);
-
-            // Act
-            _sut.CreateMethodCall(_graphMock.Object, sourceLifeline, targetLifeline, methodInfo);
-
-            // Assert
-            edgeBuilderMock.Verify(m => m.WithFromDockingPosition(Direction.Right, Design.SequenceLifelineHeight));
-            edgeBuilderMock.Verify(m => m.WithToDockingPosition(Direction.Left, Design.SequenceLifelineHeight));
-            edgeBuilderMock.Verify(m => m.Build());
+            _lifelineNodeMock.VerifySet(p => p.Width = Design.SequenceLifelineWidth, Times.Once);
+            _lifelineNodeMock.VerifySet(p => p.Height = 100, Times.Once);
         }
     }
 }

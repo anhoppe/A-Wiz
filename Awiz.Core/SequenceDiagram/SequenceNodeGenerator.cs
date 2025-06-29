@@ -6,15 +6,11 @@ namespace Awiz.Core.SequenceDiagram
 {
     internal class SequenceNodeGenerator : ISequenceNodeGenerator
     {
-        private int _classCounter = 0;
-
-        private int _currentLifelineHeight = Design.SequenceLifelineHeight;
-
-        private IDictionary<ClassInfo, INode> _classToLifelineNodeMapping = new Dictionary<ClassInfo, INode>();
+        private int _lifelineCounter = 0;
 
         internal ISourceCode? SourceCode { private get; set; }
 
-        public (INode, INode) CreateClassNode(IGraph graph, ClassInfo classInfo)
+        public (INode, INode) CreateClassNode(IGraph graph, ClassInfo classInfo, int lifelineHeight)
         {
             if (SourceCode == null)
             {
@@ -25,50 +21,54 @@ namespace Awiz.Core.SequenceDiagram
             head.Grid.Cells[0, 0].Text = classInfo.Name;
             head.Width = Design.SequenceHeaderWidth;
             head.Height = Design.SequenceHeaderHeight;
-            head.X = _classCounter * Design.SequenceClassesDistance;
+            head.X = _lifelineCounter * Design.SequenceClassesDistance;
             head.Y = 0;
 
             var lifeline = graph.AddNode("SequenceLifeline");
+            lifeline.SetId($"{ISequenceNodeGenerator.LifelineId}:{lifeline.Id}");
             lifeline.Width = Design.SequenceLifelineWidth;
-            lifeline.Height = _currentLifelineHeight;
-            lifeline.X = head.Width / 2 - lifeline.Width / 2 +  _classCounter * Design.SequenceClassesDistance;
+            lifeline.Height = lifelineHeight;
+            lifeline.X = head.Width / 2 - lifeline.Width / 2 + _lifelineCounter * Design.SequenceClassesDistance;
             lifeline.Y = Design.SequenceHeaderHeight;
 
-            _classToLifelineNodeMapping[classInfo] = lifeline;
-
-            _classCounter++;
+            _lifelineCounter++;
 
             return (head, lifeline);
         }
 
-        public INode CreateMethodCall(IGraph graph, ClassInfo sourceLifeline, ClassInfo targetLifeline, MethodInfo methodInfo)
+        public void CreateMethodCall(IGraph graph, CallInfo callInfo)
         {
-            if (!_classToLifelineNodeMapping.ContainsKey(sourceLifeline))
+            if (callInfo.SourceNode == null || callInfo.TargetNode == null)
             {
-                throw new InvalidOperationException($"Source lifeline {sourceLifeline.Name} was not added");
-            }
-            if (!_classToLifelineNodeMapping.ContainsKey(targetLifeline))
-            {
-                throw new InvalidOperationException($"Target lifeline {targetLifeline.Name} was not added");
+                throw new InvalidOperationException("Source or target class is not set in the call info");
             }
 
-            var sourceLifelineNode = _classToLifelineNodeMapping[sourceLifeline];
-            var targetLifelineNode = _classToLifelineNodeMapping[targetLifeline];
-            var edgeBuilder = graph.AddEdge(sourceLifelineNode, targetLifelineNode);
-            edgeBuilder.WithFromDockingPosition(Direction.Right, sourceLifelineNode.Height)
-                .WithToDockingPosition(Direction.Left, sourceLifelineNode.Height)
+            var edgeBuilder = graph.AddEdge(callInfo.SourceNode, callInfo.TargetNode);
+            edgeBuilder.WithFromDockingPosition(Direction.Right, callInfo.SourceNode.Height)
+                .WithToDockingPosition(Direction.Left, callInfo.SourceNode.Height)
                 .WithEnding(Ending.OpenArrow)
-                .WithText(methodInfo.ToString())
+                .WithText(callInfo.CalledMethod.ToString())
                 .Build();
+        }
 
-            _currentLifelineHeight += Design.SequenceLifelineHeight;
-            
-            foreach (var lifeline in _classToLifelineNodeMapping.Values)
+        public void CreateReturnCall(IGraph graph, CallInfo callInfo)
+        {
+            if (callInfo.SourceNode == null || callInfo.TargetNode == null)
             {
-                lifeline.Height = _currentLifelineHeight;
+                throw new InvalidOperationException("Source or target class is not set in the call info");
             }
 
-            return targetLifelineNode;
+            var edgeBuilder = graph.AddEdge(callInfo.SourceNode, callInfo.TargetNode);
+            edgeBuilder.WithFromDockingPosition(Direction.Left, callInfo.SourceNode.Height)
+                .WithToDockingPosition(Direction.Right, callInfo.SourceNode.Height)
+                .WithEnding(Ending.OpenArrow)
+                .WithStyle(Style.Dashed)
+                .Build();
+        }
+
+        public void SetLifelineCounter(int lifelineCounter)
+        {
+            _lifelineCounter = lifelineCounter;
         }
     }
 }

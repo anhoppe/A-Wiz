@@ -5,10 +5,6 @@ namespace Awiz.Core.ClassDiagram
 {
     public class ClassFilter : IClassFilter
     {
-        private readonly List<string> _allowedFiles = new();
-        
-        private readonly DynamicDeserializerYaml _dynamicDeserializer = new();
-
         private class ClassProvider : ISourceCode
         {
             public List<ClassInfo> Classes { get; } = new();
@@ -18,12 +14,25 @@ namespace Awiz.Core.ClassDiagram
                 throw new NotImplementedException();
             }
 
+            public ClassInfo GetClassInfoById(string classId)
+            {
+                throw new NotImplementedException();
+            }
+
             public IList<ClassInfo> GetImplementations(ClassInfo interfaceInfo)
+            {
+                throw new NotImplementedException();
+            }
+
+            public MethodInfo GetMethodInfoById(string methodId)
             {
                 throw new NotImplementedException();
             }
         }
 
+        private readonly List<string> _allowedFiles = new();
+
+        private readonly DynamicDeserializerYaml _dynamicDeserializer = new();
         public ClassFilter() { }
 
         public ClassFilter(string pathToRepo, string viewName)
