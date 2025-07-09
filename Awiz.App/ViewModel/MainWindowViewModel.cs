@@ -5,6 +5,7 @@ using Awiz.Core.Contract;
 using Awiz.ViewModel.ClassDiagram;
 using Gwiz.Core;
 using Gwiz.Core.Contract;
+using Gwiz.UiControl.WinUi3;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Prism.Mvvm;
@@ -23,6 +24,12 @@ namespace Awiz.ViewModel
         {
             //_viewReader.ReadProject("C:\\repo\\A-Wiz\\Awiz.Core.Test\\Assets\\ExtendsImplements\\");
             //_viewReader.ReadProject("C:\\repo\\G-Wiz\\");
+            _viewReader.SetTextSizeCalculator((text) => 
+            {
+                var size = TextSizeCalculator.GetTextSize(text);
+                return (size.Width, size.Height);
+            });
+
             _viewReader.ReadProject("C:\\repo\\A-Wiz\\");
 
             CommitInfoPanelViewModel = new CommitInfoPanelViewModel(_viewReader.GitAccess);
@@ -49,6 +56,16 @@ namespace Awiz.ViewModel
             set
             {
                 SetProperty(ref _graph, value);
+
+                if (_graph != null)
+                {
+                    _graph.SetTextSizeCalculator((text) => 
+                    {
+                        var size = TextSizeCalculator.GetTextSize(text);
+
+                        return (size.Width, size.Height);
+                    });
+                }
             }
         }
 

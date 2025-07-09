@@ -123,14 +123,14 @@ namespace Awiz.Core.Test
         {
             // Arrange
             _sut.ReadProject("Assets\\ExtendsImplements\\");
-
+            _sut.SetTextSizeCalculator((text) => (10, 10));
+            
             // Act
             var view = _sut.LoadSequenceDiagram("my_sequence");
 
             // Assert
             // ToDo: Assert content of the diagram
         }
-
 
         [Test]
         public void LoadUseCase_WhenReadingExtendsImplementsProject_ThenTheUseCaseGrapgIsAvailable()

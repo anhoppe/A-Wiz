@@ -68,12 +68,10 @@ namespace Awiz.ViewModel
                 return;
             }
 
-            var node = Graph.AddNode("Actor");
-            node.Width = 80;
-            node.Height = 80;
-
-            node.X = 100;
-            node.Y = 100;
+            Graph.AddNode("Actor")
+                .WithSize(80, 80)
+                .WithPos(100, 100)
+                .Build();
         }
 
         private void AddBoundary()
@@ -83,12 +81,10 @@ namespace Awiz.ViewModel
                 return;
             }
 
-            var node = Graph.AddNode("Boundary");
-            node.Width = 300;
-            node.Height = 300;
-
-            node.X = 100;
-            node.Y = 100;
+            Graph.AddNode("Boundary")
+                .WithSize(300, 300)
+                .WithPos(100, 100)
+                .Build();
         }
 
         private void AddUseCase()
@@ -98,12 +94,10 @@ namespace Awiz.ViewModel
                 return;
             }
 
-            var node = Graph.AddNode("UseCase");
-            node.Width = 180;
-            node.Height = 120;
-
-            node.X = 120;
-            node.Y = 120;
+            Graph.AddNode("UseCase")
+                .WithSize(180, 120)
+                .WithPos(120, 120)
+                .Build();
         }
     }
 }

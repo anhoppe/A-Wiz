@@ -69,5 +69,12 @@ namespace Awiz.Core.Contract
         /// </summary>
         /// <param name="pathToRepo"></param>
         IGitRepo ReadProject(string pathToRepo);
+
+        /// <summary>
+        /// Sets a method to compute text sizes for nodes. Needed when nodes are supposed to fit
+        /// to their text
+        /// </summary>
+        /// <param name="textSizeCalculator">Method that receives a string and returns the required space as a width/height tupe</param>
+        void SetTextSizeCalculator(Func<string, (int, int)> textSizeCalculator);
     }
 }

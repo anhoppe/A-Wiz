@@ -14,8 +14,10 @@ namespace Awiz.Core.Test.SequenceDiagram
 
         private Mock<IGraph> _graphMock = null!;
 
+        private Mock<INodeBuilder> _headerNodeBuilderMock = null!;
         private Mock<INode> _headerNodeMock = null!;
 
+        private Mock<INodeBuilder> _lifelineNodeBuilderMock = null!;
         private Mock<INode> _lifelineNodeMock = null!;
 
         private Mock<ISourceCode> _sourceCodeMock = null!;
@@ -48,8 +50,12 @@ namespace Awiz.Core.Test.SequenceDiagram
             _headerNodeMock = new Mock<INode>();
             _headerNodeMock.Setup(m => m.Grid).Returns(gridMock.Object);
 
-            _graphMock.Setup(p => p.AddNode("SequenceHeader")).Returns(_headerNodeMock.Object);
-            _graphMock.Setup(p => p.AddNode("SequenceLifeline")).Returns(_lifelineNodeMock.Object);
+            _headerNodeBuilderMock = new Mock<INodeBuilder>();
+
+            _lifelineNodeBuilderMock = new Mock<INodeBuilder>();
+            
+            _graphMock.Setup(p => p.AddNode("SequenceHeader")).Returns(_headerNodeBuilderMock.Object);
+            _graphMock.Setup(p => p.AddNode("SequenceLifeline")).Returns(_lifelineNodeBuilderMock.Object);
 
             edgeBuilderMock = new();
             edgeBuilderMock.Setup(p => p.WithFromDockingPosition(It.IsAny<Direction>(), It.IsAny<int>())).Returns(edgeBuilderMock.Object);
@@ -65,19 +71,25 @@ namespace Awiz.Core.Test.SequenceDiagram
         {
             // Arrange
             var classInfo = new ClassInfo();
-            
+
+            _headerNodeBuilderMock.Setup(m => m.WithAutoWidth())
+                .Returns(_headerNodeBuilderMock.Object);
+            _headerNodeBuilderMock.Setup(m => m.WithText(It.IsAny<int>(), It.IsAny<int>(), It.IsAny<string>()))
+                .Returns(_headerNodeBuilderMock.Object);
+            _headerNodeBuilderMock.Setup(m => m.WithHeight(Design.SequenceHeaderHeight)).Returns(_headerNodeBuilderMock.Object);
+            _headerNodeBuilderMock.Setup(m => m.WithPos(It.IsAny<int>(), It.IsAny<int>())).Returns(_headerNodeBuilderMock.Object);
+            _headerNodeBuilderMock.Setup(m => m.Build()).Returns(_headerNodeMock.Object);
+
+            _lifelineNodeBuilderMock.Setup(m => m.WithSize(Design.SequenceLifelineWidth, 100)).Returns(_lifelineNodeBuilderMock.Object);
+            _lifelineNodeBuilderMock.Setup(m => m.WithPos(It.IsAny<int>(), It.IsAny<int>())).Returns(_lifelineNodeBuilderMock.Object);
+            _lifelineNodeBuilderMock.Setup(m => m.Build()).Returns(_lifelineNodeMock.Object);
+
             // Act
             var (header, lifeline) = _sut.CreateClassNode(_graphMock.Object, classInfo, 100);
             
             // Assert
             Assert.That(header == _headerNodeMock.Object);
             Assert.That(lifeline == _lifelineNodeMock.Object);
-
-            _headerNodeMock.VerifySet(p => p.Width = Design.SequenceHeaderWidth, Times.Once);
-            _headerNodeMock.VerifySet(p => p.Height= Design.SequenceHeaderHeight, Times.Once);
-
-            _lifelineNodeMock.VerifySet(p => p.Width = Design.SequenceLifelineWidth, Times.Once);
-            _lifelineNodeMock.VerifySet(p => p.Height = 100, Times.Once);
         }
     }
 }

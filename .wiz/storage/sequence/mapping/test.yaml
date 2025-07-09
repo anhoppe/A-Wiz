@@ -1,4 +1,4 @@
-f0f7a393-aad3-49c5-933c-b6e44cf5c682: &o0
+41734827-78c7-4517-b202-0955bc559fc5: &o0
   AddedMethods: []
   AddedProperties: []
   Assembly: ''
@@ -14,7 +14,7 @@ f0f7a393-aad3-49c5-933c-b6e44cf5c682: &o0
   Properties: []
   Type: Class
 13be42a7-f36a-4aa9-bc5b-a1d05d7d8e96: *o0
-6d5281cf-e066-4219-829b-f5cf2b74f7bb: &o1
+436f3d3d-76a4-49a2-a384-6bc3600f60cc: &o1
   AddedMethods: []
   AddedProperties: []
   Assembly: Awiz.Core
@@ -206,8 +206,8 @@ f0f7a393-aad3-49c5-933c-b6e44cf5c682: &o0
     TypeNamespace: <global namespace>
     TypeName: ISerializer
   Type: Class
-8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:514ef8bf-d45b-4a42-930a-f7a5fd2b5628: *o1
-73d4febe-9032-43bf-9a0d-55b1fdcbe27a: &o2
+8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:3826a205-a1bf-4fbd-b79e-bceef8916f61: *o1
+27b9fc18-c907-4c69-b17a-649642a46b34: &o2
   AddedMethods: []
   AddedProperties: []
   Assembly: Awiz.Core
@@ -325,4 +325,4 @@ f0f7a393-aad3-49c5-933c-b6e44cf5c682: &o0
     TypeNamespace: Awiz.Core.CSharpParsing
     TypeName: ISourceCode?
   Type: Class
-8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:1193dc38-fced-40e2-a3ae-2b99cad5fbb8: *o2
+8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:8d1dfb5a-c73b-436b-b212-4dcd7f0a363c: *o2

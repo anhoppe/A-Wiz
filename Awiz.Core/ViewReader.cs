@@ -34,7 +34,9 @@ namespace Awiz.Core
         private Dictionary<string, string> _sequenceDiagramNameToViewPath = new Dictionary<string, string>();
 
         private SequenceNodeGenerator _sequenceNodeGenerator;
-        
+
+        private Func<string, (int, int)> _textSizeCalculator = (text) => throw new NotImplementedException("Text size calculator is not set in ViewReader.");
+
         private Dictionary<string, string> _useCaseNameToViewPath = new Dictionary<string, string>();
 
         private Dictionary<string, string> _viewNameToViewPath = new Dictionary<string, string>();
@@ -110,6 +112,8 @@ namespace Awiz.Core
         public IArchitectureView LoadSequenceDiagram(string sequenceDiagramName)
         {
             var graph = _storageAccess.LoadDiagramGraph(sequenceDiagramName, _sequenceDiagramNameToViewPath[sequenceDiagramName]);
+            graph.SetTextSizeCalculator(_textSizeCalculator);
+
             var architectureView = new ArchitectureSequenceView()
             {
                 Graph = graph,
@@ -167,6 +171,11 @@ namespace Awiz.Core
             ReadSequenceDiagrams();
 
             return LoadableGitAccess;
+        }
+
+        public void SetTextSizeCalculator(Func<string, (int, int)> textSizeCalculator)
+        {
+            _textSizeCalculator = textSizeCalculator;
         }
 
         private void ReadClassDiagrams()

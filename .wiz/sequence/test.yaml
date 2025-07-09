@@ -4,60 +4,60 @@ Nodes:
     Row: 0
     Text: User
   Height: 40
-  Id: f0f7a393-aad3-49c5-933c-b6e44cf5c682
+  Id: 41734827-78c7-4517-b202-0955bc559fc5
   Template: SequenceHeader
-  Width: 120
+  Width: 52
   X: 0
   Y: 0
 - Content:
   - Col: 0
     Row: 0
     Text: ''
-  Height: 400
+  Height: 500
   Id: 13be42a7-f36a-4aa9-bc5b-a1d05d7d8e96
   Template: SequenceLifeline
   Width: 25
-  X: 48
+  X: 14
   Y: 40
 - Content:
   - Col: 0
     Row: 0
     Text: ArchitectureClassView
   Height: 40
-  Id: 6d5281cf-e066-4219-829b-f5cf2b74f7bb
+  Id: 436f3d3d-76a4-49a2-a384-6bc3600f60cc
   Template: SequenceHeader
-  Width: 120
+  Width: 176
   X: 260
   Y: 0
 - Content:
   - Col: 0
     Row: 0
     Text: ''
-  Height: 400
-  Id: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:514ef8bf-d45b-4a42-930a-f7a5fd2b5628
+  Height: 500
+  Id: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:3826a205-a1bf-4fbd-b79e-bceef8916f61
   Template: SequenceLifeline
   Width: 25
-  X: 308
+  X: 336
   Y: 40
 - Content:
   - Col: 0
     Row: 0
     Text: YamlStorageAccess
   Height: 40
-  Id: 73d4febe-9032-43bf-9a0d-55b1fdcbe27a
+  Id: 27b9fc18-c907-4c69-b17a-649642a46b34
   Template: SequenceHeader
-  Width: 120
+  Width: 157
   X: 520
   Y: 0
 - Content:
   - Col: 0
     Row: 0
     Text: ''
-  Height: 400
-  Id: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:1193dc38-fced-40e2-a3ae-2b99cad5fbb8
+  Height: 500
+  Id: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:8d1dfb5a-c73b-436b-b212-4dcd7f0a363c
   Template: SequenceLifeline
   Width: 25
-  X: 568
+  X: 586
   Y: 40
 Edges:
 - Ending: OpenArrow
@@ -68,31 +68,43 @@ Edges:
   LabelOffsetPerCent: 0
   Style: None
   Text: '+ Load(versionUpdater: IVersionUpdater): void'
-  To: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:514ef8bf-d45b-4a42-930a-f7a5fd2b5628
+  To: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:3826a205-a1bf-4fbd-b79e-bceef8916f61
   ToDocking: Left
   ToDockingPos: 100
   ToLabel: ''
 - Ending: OpenArrow
-  From: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:514ef8bf-d45b-4a42-930a-f7a5fd2b5628
+  From: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:3826a205-a1bf-4fbd-b79e-bceef8916f61
   FromDocking: Right
   FromDockingPos: 200
   FromLabel: ''
   LabelOffsetPerCent: 0
   Style: None
   Text: '+ LoadNodeIdToClassInfoMapping(stream: Stream): IDictionary<string, ClassInfo>'
-  To: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:1193dc38-fced-40e2-a3ae-2b99cad5fbb8
+  To: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:8d1dfb5a-c73b-436b-b212-4dcd7f0a363c
   ToDocking: Left
   ToDockingPos: 200
   ToLabel: ''
 - Ending: OpenArrow
-  From: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:1193dc38-fced-40e2-a3ae-2b99cad5fbb8
+  From: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:8d1dfb5a-c73b-436b-b212-4dcd7f0a363c
   FromDocking: Left
   FromDockingPos: 300
   FromLabel: ''
   LabelOffsetPerCent: 0
   Style: Dashed
   Text: ''
-  To: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:514ef8bf-d45b-4a42-930a-f7a5fd2b5628
+  To: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:3826a205-a1bf-4fbd-b79e-bceef8916f61
   ToDocking: Right
   ToDockingPos: 300
+  ToLabel: ''
+- Ending: OpenArrow
+  From: 8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d:3826a205-a1bf-4fbd-b79e-bceef8916f61
+  FromDocking: Left
+  FromDockingPos: 400
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dashed
+  Text: ''
+  To: 13be42a7-f36a-4aa9-bc5b-a1d05d7d8e96
+  ToDocking: Right
+  ToDockingPos: 400
   ToLabel: ''

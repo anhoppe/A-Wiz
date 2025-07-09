@@ -29,12 +29,12 @@ namespace Awiz.Core.ClassDiagram
 
         public INode CreateClassNode(IGraph graph, ClassInfo classInfo, Action<ClassInfo> updateAction)
         {
-            var node = graph.AddNode("Class");
+            var nodeBuilder = graph.AddNode("Class");
 
+            nodeBuilder.WithSize(Design.ClassNodeWidth, Design.ClassNodeHeight);
+
+            var node = nodeBuilder.Build();
             UpdateClassNode(node, classInfo, updateAction);
-
-            node.Width = Design.ClassNodeWidth;
-            node.Height = Design.ClassNodeHeight;
 
             return node;
         }

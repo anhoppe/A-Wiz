@@ -17,23 +17,27 @@ namespace Awiz.Core.SequenceDiagram
                 throw new InvalidOperationException("SourceCode is not set");
             }
 
-            var head = graph.AddNode("SequenceHeader");
-            head.Grid.Cells[0, 0].Text = classInfo.Name;
-            head.Width = Design.SequenceHeaderWidth;
-            head.Height = Design.SequenceHeaderHeight;
-            head.X = _lifelineCounter * Design.SequenceClassesDistance;
-            head.Y = 0;
+            var nodeBuilder = graph.AddNode("SequenceHeader");
 
-            var lifeline = graph.AddNode("SequenceLifeline");
+            nodeBuilder.
+                WithAutoWidth().
+                WithText(0, 0, classInfo.Name).
+                WithHeight(Design.SequenceHeaderHeight).
+                WithPos(_lifelineCounter * Design.SequenceClassesDistance, 0);
+
+            var header = nodeBuilder.Build();
+
+            nodeBuilder = graph.AddNode("SequenceLifeline");
+            nodeBuilder.
+                WithSize(Design.SequenceLifelineWidth, lifelineHeight).
+                WithPos(header.Width / 2 - Design.SequenceLifelineWidth / 2 + _lifelineCounter * Design.SequenceClassesDistance, Design.SequenceHeaderHeight);
+
+            var lifeline = nodeBuilder.Build();
             lifeline.SetId($"{ISequenceNodeGenerator.LifelineId}:{lifeline.Id}");
-            lifeline.Width = Design.SequenceLifelineWidth;
-            lifeline.Height = lifelineHeight;
-            lifeline.X = head.Width / 2 - lifeline.Width / 2 + _lifelineCounter * Design.SequenceClassesDistance;
-            lifeline.Y = Design.SequenceHeaderHeight;
 
             _lifelineCounter++;
 
-            return (head, lifeline);
+            return (header, lifeline);
         }
 
         public void CreateMethodCall(IGraph graph, CallInfo callInfo)
