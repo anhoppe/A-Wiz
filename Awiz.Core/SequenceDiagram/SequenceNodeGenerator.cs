@@ -52,6 +52,7 @@ namespace Awiz.Core.SequenceDiagram
                 .WithToDockingPosition(Direction.Left, callInfo.SourceNode.Height)
                 .WithEnding(Ending.OpenArrow)
                 .WithText(callInfo.CalledMethod.ToString())
+                .WithTextDistance(0, -13)
                 .Build();
         }
 
