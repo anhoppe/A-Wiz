@@ -44,11 +44,16 @@ namespace Awiz.Core.Test.ClassDiagram
                 [node2Mock.Object] = classInfo2,
             };
 
+            var edgeBuilderMock = new Mock<IEdgeBuilder>();
+
+            _graphMock.Setup(m => m.AddEdge(node1Mock.Object, node2Mock.Object))
+                .Returns(edgeBuilderMock.Object);
+
             // Act
             _sut.CreateAssociation(_graphMock.Object, classInfo1, classInfo2);
 
             // Assert
-            _graphMock.Verify(m => m.AddEdge(node1Mock.Object, node2Mock.Object));
+            edgeBuilderMock.Verify(m => m.Build(), "EdgeBuilder.Build should have been called because it finalizes the creation of the association");
         }
 
         [Test]

@@ -13,7 +13,9 @@ namespace Awiz.Core.ClassDiagram
         {
             var (node1, node2) = GetNodes(from, to);
 
-            graph.AddEdge(node1, node2);
+            var edgeBuilder = graph.AddEdge(node1, node2);
+
+            edgeBuilder.Build();
         }
 
         public void CreateAssociation(IGraph graph, ClassInfo from, ClassInfo to, string fromMultiplicity, string toMultiplicity)
