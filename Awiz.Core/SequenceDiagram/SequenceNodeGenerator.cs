@@ -51,7 +51,7 @@ namespace Awiz.Core.SequenceDiagram
             edgeBuilder.WithFromDockingPosition(Direction.Right, callInfo.SourceNode.Height)
                 .WithToDockingPosition(Direction.Left, callInfo.SourceNode.Height)
                 .WithEnding(Ending.OpenArrow)
-                .WithText(callInfo.CalledMethod.ToString())
+                .WithText(GetMethodCallText(callInfo.CalledMethod))
                 .WithTextDistance(0, -13)
                 .Build();
         }
@@ -74,6 +74,11 @@ namespace Awiz.Core.SequenceDiagram
         public void SetLifelineCounter(int lifelineCounter)
         {
             _lifelineCounter = lifelineCounter;
+        }
+
+        private static string GetMethodCallText(MethodInfo calledMethod)
+        {
+            return $"{calledMethod.Name}({string.Join(", ", calledMethod.Parameters.Select(p => p.Name))})";
         }
     }
 }

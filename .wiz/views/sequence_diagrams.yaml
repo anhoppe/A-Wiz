@@ -1,0 +1,216 @@
+Nodes:
+- Content:
+  - Col: 0
+    Row: 0
+    Text: IInteractionBehavior
+  - Col: 0
+    Row: 1
+    Text: ''
+  - Col: 0
+    Row: 2
+    Text: >2
+       RemoveButtons(callInfo: CallInfo): void
+       UpdateButtons(callInfo: CallInfo, addMethodCall: Action<ClassInfo, MethodInfo>, returnFromMethodCall: Action): void
+       UpdateUserInitiaiteCallSequence(userLifelineNode: INode, classesInDiagram: IList<ClassInfo>, createInitialCall: Action<ClassInfo, MethodInfo>): void
+  Height: 226
+  Id: ee07c994-7f4a-4f5f-b636-5149a59f78c8
+  Template: Class
+  Width: 377
+  X: -271
+  Y: -643
+- Content:
+  - Col: 0
+    Row: 0
+    Text: InteractionBehavior
+  - Col: 0
+    Row: 1
+    Text: >
+      ~ IGraph? Graph
+
+      ~ IMethodSelector? MethodSelector
+  - Col: 0
+    Row: 2
+    Text: >
+      + RemoveButtons(callInfo: CallInfo): void
+
+      + UpdateButtons(callInfo: CallInfo, addMethodCall: Action<ClassInfo, MethodInfo>, returnFromMethodCall: Action): void
+
+      + UpdateUserInitiaiteCallSequence(userLifelineNode: INode, classesInDiagram: IList<ClassInfo>, createInitialCall: Action<ClassInfo, MethodInfo>): void
+
+      - EnableClassButtons(node: INode?): void
+
+      - DisableClassButtons(node: INode?): void
+  Height: 384
+  Id: 0575dbbb-95f3-48a3-8237-7315e9e67d3b
+  Template: Class
+  Width: 551
+  X: -358
+  Y: -237
+- Content:
+  - Col: 0
+    Row: 0
+    Text: SequenceNodeGenerator
+  - Col: 0
+    Row: 1
+    Text: >
+      ~ ISourceCode? SourceCode
+  - Col: 0
+    Row: 2
+    Text: >
+      + CreateClassNode(graph: IGraph, classInfo: ClassInfo, lifelineHeight: int): (INode, INode)
+
+      + CreateMethodCall(graph: IGraph, callInfo: CallInfo): void
+
+      + CreateReturnCall(graph: IGraph, callInfo: CallInfo): void
+
+      + SetLifelineCounter(lifelineCounter: int): void
+
+      - GetMethodCallText(calledMethod: MethodInfo): string
+  Height: 160
+  Id: 68722b45-516d-4352-8661-d2b128ccc1ab
+  Template: Class
+  Width: 120
+  X: -1410
+  Y: -145
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ISequenceNodeGenerator
+  - Col: 0
+    Row: 1
+    Text: ''
+  - Col: 0
+    Row: 2
+    Text: >2
+       CreateClassNode(graph: IGraph, classInfo: ClassInfo, lifelineHeight: int): (INode, INode)
+       CreateMethodCall(graph: IGraph, callInfo: CallInfo): void
+       CreateReturnCall(graph: IGraph, callInfo: CallInfo): void
+       SetLifelineCounter(lifelineCounter: int): void
+  Height: 277
+  Id: 2e1cc81f-2460-4b23-94e4-1d7c2c7254ce
+  Template: Class
+  Width: 451
+  X: -1573
+  Y: -655
+- Content:
+  - Col: 0
+    Row: 0
+    Text: ArchitectureSequenceView
+  - Col: 0
+    Row: 1
+    Text: >
+      + Stack<CallInfo> CallInfo
+
+      + ArchitectureViewType Type
+
+      ~ IFileSystem FileSystem
+
+      ~ IInteractionBehavior? InteractionBehavior
+
+      ~ ISequenceNodeGenerator? SequenceNodeGenerator
+
+      ~ ISerializer Serializer
+  - Col: 0
+    Row: 2
+    Text: >
+      + AddBaseClassNode(derivedClassInfo: ClassInfo): void
+
+      + AddClassNode(classInfo: ClassInfo): void
+
+      + AddMethodCall(sourceClass: ClassInfo, targetClass: ClassInfo, methodInfo: MethodInfo): void
+
+      + AddUseCaseNode(node: INode): void
+
+      + Initialize(): void
+
+      + Load(versionUpdater: IVersionUpdater): void
+
+      + Save(): void
+
+      # OnNodeRemoved(node: INode): void
+
+      - AddMethodCallReturn(): void
+
+      - GetLifelineNodeForClass(classInfo: ClassInfo): INode
+
+      - GetLifelineClassInfosInDiagram(): List<ClassInfo>
+
+      - IncreaseDiagramHeight(): void
+
+      - StartCallSequenceFromUser(targetClass: ClassInfo, calledMethod: MethodInfo): void
+  Height: 741
+  Id: a065ed26-005f-4713-b729-324c7c72a7da
+  Template: Class
+  Width: 608
+  X: -1050
+  Y: -250
+- Content:
+  - Col: 0
+    Row: 0
+    Text: CallInfo
+  - Col: 0
+    Row: 1
+    Text: >
+      + MethodInfo CalledMethod
+
+      + INode? SourceNode
+
+      + INode? TargetNode
+  - Col: 0
+    Row: 2
+    Text: ''
+  Height: 250
+  Id: d43208ab-a42d-4f32-9479-e5762f6fe683
+  Template: Class
+  Width: 373
+  X: -859
+  Y: -544
+Edges:
+- Ending: ClosedArrow
+  From: 0575dbbb-95f3-48a3-8237-7315e9e67d3b
+  FromDocking: None
+  FromDockingPos: 0
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dashed
+  Text: ''
+  To: ee07c994-7f4a-4f5f-b636-5149a59f78c8
+  ToDocking: None
+  ToDockingPos: 0
+  ToLabel: ''
+- Ending: ClosedArrow
+  From: 68722b45-516d-4352-8661-d2b128ccc1ab
+  FromDocking: None
+  FromDockingPos: 0
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: Dashed
+  Text: ''
+  To: 2e1cc81f-2460-4b23-94e4-1d7c2c7254ce
+  ToDocking: None
+  ToDockingPos: 0
+  ToLabel: ''
+- Ending: None
+  From: a065ed26-005f-4713-b729-324c7c72a7da
+  FromDocking: None
+  FromDockingPos: 0
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: ee07c994-7f4a-4f5f-b636-5149a59f78c8
+  ToDocking: None
+  ToDockingPos: 0
+  ToLabel: ''
+- Ending: None
+  From: a065ed26-005f-4713-b729-324c7c72a7da
+  FromDocking: None
+  FromDockingPos: 0
+  FromLabel: ''
+  LabelOffsetPerCent: 0
+  Style: None
+  Text: ''
+  To: 2e1cc81f-2460-4b23-94e4-1d7c2c7254ce
+  ToDocking: None
+  ToDockingPos: 0
+  ToLabel: ''

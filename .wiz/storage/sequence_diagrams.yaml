@@ -1,0 +1,624 @@
+ee07c994-7f4a-4f5f-b636-5149a59f78c8: &o0
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\SequenceDiagram\IInteractionBehavior.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: ''
+    Id: 'System.Func`1[System.String].RemoveButtons.callInfo: CallInfo'
+    Name: RemoveButtons
+    ParentClass: *o0
+    Parameters:
+    - Name: callInfo
+      Type: CallInfo
+    ReturnType: void
+  - AccessModifier: ''
+    Id: 'System.Func`1[System.String].UpdateButtons.callInfo: CallInfo, addMethodCall: Action<ClassInfo, MethodInfo>, returnFromMethodCall: Action'
+    Name: UpdateButtons
+    ParentClass: *o0
+    Parameters:
+    - Name: callInfo
+      Type: CallInfo
+    - Name: addMethodCall
+      Type: Action<ClassInfo, MethodInfo>
+    - Name: returnFromMethodCall
+      Type: Action
+    ReturnType: void
+  - AccessModifier: ''
+    Id: 'System.Func`1[System.String].UpdateUserInitiaiteCallSequence.userLifelineNode: INode, classesInDiagram: IList<ClassInfo>, createInitialCall: Action<ClassInfo, MethodInfo>'
+    Name: UpdateUserInitiaiteCallSequence
+    ParentClass: *o0
+    Parameters:
+    - Name: userLifelineNode
+      Type: INode
+    - Name: classesInDiagram
+      Type: IList<ClassInfo>
+    - Name: createInitialCall
+      Type: Action<ClassInfo, MethodInfo>
+    ReturnType: void
+  Name: IInteractionBehavior
+  Namespace: Awiz.Core.SequenceDiagram
+  Properties: []
+  Type: Interface
+0575dbbb-95f3-48a3-8237-7315e9e67d3b: &o1
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\SequenceDiagram\InteractionBehavior.cs
+  Fields:
+  - AccessModifier: private
+    Name: _addMethodEventHandler
+    Type: EventHandler?
+  - AccessModifier: private
+    Name: _returnFromCallEventHandler
+    Type: EventHandler?
+  ImplementedInterfaces:
+  - Awiz.Core.SequenceDiagram.IInteractionBehavior
+  Methods:
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].RemoveButtons.callInfo: CallInfo'
+    Name: RemoveButtons
+    ParentClass: *o1
+    Parameters:
+    - Name: callInfo
+      Type: CallInfo
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].UpdateButtons.callInfo: CallInfo, addMethodCall: Action<ClassInfo, MethodInfo>, returnFromMethodCall: Action'
+    Name: UpdateButtons
+    ParentClass: *o1
+    Parameters:
+    - Name: callInfo
+      Type: CallInfo
+    - Name: addMethodCall
+      Type: Action<ClassInfo, MethodInfo>
+    - Name: returnFromMethodCall
+      Type: Action
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].UpdateUserInitiaiteCallSequence.userLifelineNode: INode, classesInDiagram: IList<ClassInfo>, createInitialCall: Action<ClassInfo, MethodInfo>'
+    Name: UpdateUserInitiaiteCallSequence
+    ParentClass: *o1
+    Parameters:
+    - Name: userLifelineNode
+      Type: INode
+    - Name: classesInDiagram
+      Type: IList<ClassInfo>
+    - Name: createInitialCall
+      Type: Action<ClassInfo, MethodInfo>
+    ReturnType: void
+  - AccessModifier: private
+    Id: 'System.Func`1[System.String].EnableClassButtons.node: INode?'
+    Name: EnableClassButtons
+    ParentClass: *o1
+    Parameters:
+    - Name: node
+      Type: INode?
+    ReturnType: void
+  - AccessModifier: private
+    Id: 'System.Func`1[System.String].DisableClassButtons.node: INode?'
+    Name: DisableClassButtons
+    ParentClass: *o1
+    Parameters:
+    - Name: node
+      Type: INode?
+    ReturnType: void
+  Name: InteractionBehavior
+  Namespace: Awiz.Core.SequenceDiagram
+  Properties:
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: Graph
+    TypeNamespace: System
+    TypeName: IGraph?
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: MethodSelector
+    TypeNamespace: Awiz.Core.SequenceDiagram
+    TypeName: IMethodSelector?
+  Type: Class
+68722b45-516d-4352-8661-d2b128ccc1ab: &o2
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\SequenceDiagram\SequenceNodeGenerator.cs
+  Fields:
+  - AccessModifier: private
+    Name: _lifelineCounter
+    Type: int
+  ImplementedInterfaces:
+  - Awiz.Core.SequenceDiagram.ISequenceNodeGenerator
+  Methods:
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].CreateClassNode.graph: IGraph, classInfo: ClassInfo, lifelineHeight: int'
+    Name: CreateClassNode
+    ParentClass: *o2
+    Parameters:
+    - Name: graph
+      Type: IGraph
+    - Name: classInfo
+      Type: ClassInfo
+    - Name: lifelineHeight
+      Type: int
+    ReturnType: (INode, INode)
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].CreateMethodCall.graph: IGraph, callInfo: CallInfo'
+    Name: CreateMethodCall
+    ParentClass: *o2
+    Parameters:
+    - Name: graph
+      Type: IGraph
+    - Name: callInfo
+      Type: CallInfo
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].CreateReturnCall.graph: IGraph, callInfo: CallInfo'
+    Name: CreateReturnCall
+    ParentClass: *o2
+    Parameters:
+    - Name: graph
+      Type: IGraph
+    - Name: callInfo
+      Type: CallInfo
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].SetLifelineCounter.lifelineCounter: int'
+    Name: SetLifelineCounter
+    ParentClass: *o2
+    Parameters:
+    - Name: lifelineCounter
+      Type: int
+    ReturnType: void
+  - AccessModifier: private
+    Id: 'System.Func`1[System.String].GetMethodCallText.calledMethod: MethodInfo'
+    Name: GetMethodCallText
+    ParentClass: *o2
+    Parameters:
+    - Name: calledMethod
+      Type: MethodInfo
+    ReturnType: string
+  Name: SequenceNodeGenerator
+  Namespace: Awiz.Core.SequenceDiagram
+  Properties:
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: SourceCode
+    TypeNamespace: Awiz.Core.CSharpParsing
+    TypeName: ISourceCode?
+  Type: Class
+2e1cc81f-2460-4b23-94e4-1d7c2c7254ce: &o3
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\SequenceDiagram\ISequenceNodeGenerator.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: ''
+    Id: 'System.Func`1[System.String].CreateClassNode.graph: IGraph, classInfo: ClassInfo, lifelineHeight: int'
+    Name: CreateClassNode
+    ParentClass: *o3
+    Parameters:
+    - Name: graph
+      Type: IGraph
+    - Name: classInfo
+      Type: ClassInfo
+    - Name: lifelineHeight
+      Type: int
+    ReturnType: (INode, INode)
+  - AccessModifier: ''
+    Id: 'System.Func`1[System.String].CreateMethodCall.graph: IGraph, callInfo: CallInfo'
+    Name: CreateMethodCall
+    ParentClass: *o3
+    Parameters:
+    - Name: graph
+      Type: IGraph
+    - Name: callInfo
+      Type: CallInfo
+    ReturnType: void
+  - AccessModifier: ''
+    Id: 'System.Func`1[System.String].CreateReturnCall.graph: IGraph, callInfo: CallInfo'
+    Name: CreateReturnCall
+    ParentClass: *o3
+    Parameters:
+    - Name: graph
+      Type: IGraph
+    - Name: callInfo
+      Type: CallInfo
+    ReturnType: void
+  - AccessModifier: ''
+    Id: 'System.Func`1[System.String].SetLifelineCounter.lifelineCounter: int'
+    Name: SetLifelineCounter
+    ParentClass: *o3
+    Parameters:
+    - Name: lifelineCounter
+      Type: int
+    ReturnType: void
+  Name: ISequenceNodeGenerator
+  Namespace: Awiz.Core.SequenceDiagram
+  Properties: []
+  Type: Interface
+a065ed26-005f-4713-b729-324c7c72a7da: &o4
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: Awiz.Core.ArchitectureView
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\ArchitectureSequenceView.cs
+  Fields:
+  - AccessModifier: private
+    Name: _unique_user_lifeline_node_id
+    Type: string
+  - AccessModifier: private
+    Name: _currentLifelineHeight
+    Type: int
+  - AccessModifier: private
+    Name: _nodeToClassInfo
+    Type: Dictionary<INode, ClassInfo>
+  - AccessModifier: private
+    Name: _userClass
+    Type: ClassInfo
+  - AccessModifier: private
+    Name: _userLifeline
+    Type: INode?
+  ImplementedInterfaces: []
+  Methods:
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].AddBaseClassNode.derivedClassInfo: ClassInfo'
+    Name: AddBaseClassNode
+    ParentClass: *o4
+    Parameters:
+    - Name: derivedClassInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].AddClassNode.classInfo: ClassInfo'
+    Name: AddClassNode
+    ParentClass: *o4
+    Parameters:
+    - Name: classInfo
+      Type: ClassInfo
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].AddMethodCall.sourceClass: ClassInfo, targetClass: ClassInfo, methodInfo: MethodInfo'
+    Name: AddMethodCall
+    ParentClass: *o4
+    Parameters:
+    - Name: sourceClass
+      Type: ClassInfo
+    - Name: targetClass
+      Type: ClassInfo
+    - Name: methodInfo
+      Type: MethodInfo
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].AddUseCaseNode.node: INode'
+    Name: AddUseCaseNode
+    ParentClass: *o4
+    Parameters:
+    - Name: node
+      Type: INode
+    ReturnType: void
+  - AccessModifier: public
+    Id: System.Func`1[System.String].Initialize.
+    Name: Initialize
+    ParentClass: *o4
+    Parameters: []
+    ReturnType: void
+  - AccessModifier: public
+    Id: 'System.Func`1[System.String].Load.versionUpdater: IVersionUpdater'
+    Name: Load
+    ParentClass: *o4
+    Parameters:
+    - Name: versionUpdater
+      Type: IVersionUpdater
+    ReturnType: void
+  - AccessModifier: public
+    Id: System.Func`1[System.String].Save.
+    Name: Save
+    ParentClass: *o4
+    Parameters: []
+    ReturnType: void
+  - AccessModifier: protected
+    Id: 'System.Func`1[System.String].OnNodeRemoved.node: INode'
+    Name: OnNodeRemoved
+    ParentClass: *o4
+    Parameters:
+    - Name: node
+      Type: INode
+    ReturnType: void
+  - AccessModifier: private
+    Id: System.Func`1[System.String].AddMethodCallReturn.
+    Name: AddMethodCallReturn
+    ParentClass: *o4
+    Parameters: []
+    ReturnType: void
+  - AccessModifier: private
+    Id: 'System.Func`1[System.String].GetLifelineNodeForClass.classInfo: ClassInfo'
+    Name: GetLifelineNodeForClass
+    ParentClass: *o4
+    Parameters:
+    - Name: classInfo
+      Type: ClassInfo
+    ReturnType: INode
+  - AccessModifier: private
+    Id: System.Func`1[System.String].GetLifelineClassInfosInDiagram.
+    Name: GetLifelineClassInfosInDiagram
+    ParentClass: *o4
+    Parameters: []
+    ReturnType: List<ClassInfo>
+  - AccessModifier: private
+    Id: System.Func`1[System.String].IncreaseDiagramHeight.
+    Name: IncreaseDiagramHeight
+    ParentClass: *o4
+    Parameters: []
+    ReturnType: void
+  - AccessModifier: private
+    Id: 'System.Func`1[System.String].StartCallSequenceFromUser.targetClass: ClassInfo, calledMethod: MethodInfo'
+    Name: StartCallSequenceFromUser
+    ParentClass: *o4
+    Parameters:
+    - Name: targetClass
+      Type: ClassInfo
+    - Name: calledMethod
+      Type: MethodInfo
+    ReturnType: void
+  Name: ArchitectureSequenceView
+  Namespace: Awiz.Core
+  Properties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: CallInfo
+    TypeNamespace: <global namespace>
+    TypeName: Stack<CallInfo>
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: Type
+    TypeNamespace: Awiz.Core.Contract
+    TypeName: ArchitectureViewType
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: FileSystem
+    TypeNamespace: Wiz.Infrastructure.IO
+    TypeName: IFileSystem
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: InteractionBehavior
+    TypeNamespace: Awiz.Core.SequenceDiagram
+    TypeName: IInteractionBehavior?
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: SequenceNodeGenerator
+    TypeNamespace: Awiz.Core.SequenceDiagram
+    TypeName: ISequenceNodeGenerator?
+  - AccessModifier: internal
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: Serializer
+    TypeNamespace: <global namespace>
+    TypeName: ISerializer
+  Type: Class
+d43208ab-a42d-4f32-9479-e5762f6fe683:
+  AddedMethods: []
+  AddedProperties: []
+  Assembly: Awiz.Core
+  BaseClass: ''
+  DeletedMethods: []
+  DeletedProperties: []
+  Directory: C:\repo\A-Wiz\Awiz.Core\SequenceDiagram\CallInfo.cs
+  Fields: []
+  ImplementedInterfaces: []
+  Methods: []
+  Name: CallInfo
+  Namespace: Awiz.Core.SequenceDiagram
+  Properties:
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: CalledMethod
+    TypeNamespace: Awiz.Core.Contract.CodeInfo
+    TypeName: MethodInfo
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: SourceNode
+    TypeNamespace: System
+    TypeName: INode?
+  - AccessModifier: public
+    GenericType:
+      AddedMethods: []
+      AddedProperties: []
+      Assembly: ''
+      BaseClass: ''
+      DeletedMethods: []
+      DeletedProperties: []
+      Directory: ''
+      Fields: []
+      ImplementedInterfaces: []
+      Methods: []
+      Name: ''
+      Namespace: ''
+      Properties: []
+      Type: Class
+    IsEnumerable: false
+    Name: TargetNode
+    TypeNamespace: System
+    TypeName: INode?
+  Type: Class
