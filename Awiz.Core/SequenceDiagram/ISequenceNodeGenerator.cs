@@ -8,9 +8,32 @@ namespace Awiz.Core.SequenceDiagram
     /// </summary>
     internal interface ISequenceNodeGenerator
     {
-        const string LifelineId = "8dbe0ba5-ef9a-4f1d-a4a2-fc7e16c1286d";
+        /// <summary>
+        /// Access tohe current height of the lifeline in the sequence diagram.
+        /// </summary>
+        int CurrentLifelineHeight { get; set; }
 
-        (INode, INode) CreateClassNode(IGraph graph, ClassInfo classInfo, int lifelineHeight);
+        /// <summary>
+        /// Gets the unique ID of the lifeline node in the sequence diagram.
+        /// </summary>
+        string LifelineId { get; }
+
+        /// <summary>
+        /// Access to the mapping of nodes to class information.
+        /// </summary>
+        IDictionary<INode, ClassInfo> NodeToClassInfo { get; }
+
+        /// <summary>
+        /// Gets the class info object associated with the user lifeline.
+        /// </summary>
+        ClassInfo UserClass { get; }
+
+        /// <summary>
+        /// The node that represents the user lifeline in the sequence diagram.
+        /// </summary>
+        INode UserLifeline { get; }
+
+        void CreateClassNode(IGraph graph, ClassInfo classInfo);
 
         /// <summary>
         /// Creates a method call in the graph based on the passed callInfo
@@ -19,7 +42,20 @@ namespace Awiz.Core.SequenceDiagram
         /// <param name="callInfo">Information on the method call to be added</param>
         void CreateMethodCall(IGraph graph, CallInfo callInfo);
 
-        void CreateReturnCall(IGraph graph, CallInfo callInfo);
+        bool CreateReturnCall(IGraph graph, CallInfo callInfo);
+
+        /// <summary>
+        /// Initializes the sequence node generator
+        /// </summary>
+        /// <param name="graph">Reference to the graph the sequence diagram is created in</param>
+        void Initialize(IGraph graph);
+
+        /// <summary>
+        /// Restores the sequence diagram from the mapping of node ids to class information
+        /// </summary>
+        /// <param name="graph">The graph that contains the nodes of the diagram</param>
+        /// <param name="nodeIdToClassInfoMapping">Mapping from node ID's to class infos</param>
+        void Restore(IGraph graph, IDictionary<string, ClassInfo> nodeIdToClassInfoMapping);
 
         /// <summary>
         /// Sets the number of lifelines in the sequence diagram.

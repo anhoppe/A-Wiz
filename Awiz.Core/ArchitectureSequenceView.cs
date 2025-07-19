@@ -1,4 +1,5 @@
-﻿using Awiz.Core.Contract;
+﻿using Awiz.Core.ClassDiagram;
+using Awiz.Core.Contract;
 using Awiz.Core.Contract.CodeInfo;
 using Awiz.Core.SequenceDiagram;
 using Gwiz.Core.Contract;
@@ -9,20 +10,6 @@ namespace Awiz.Core
 {
     class ArchitectureSequenceView : ArchitectureView
     {
-        private static readonly string _unique_user_lifeline_node_id = "13be42a7-f36a-4aa9-bc5b-a1d05d7d8e96";
-
-        private int _currentLifelineHeight = Design.SequenceLifelineHeight;
-
-        private Dictionary<INode, ClassInfo> _nodeToClassInfo = new();
-
-        private ClassInfo _userClass = new ClassInfo()
-        {
-            Name = "User",
-            Namespace = _unique_user_lifeline_node_id
-        };
-
-        private INode? _userLifeline = null;
-
         public Stack<CallInfo> CallInfo { get; private set; } = new Stack<CallInfo>();
         
         public override ArchitectureViewType Type => ArchitectureViewType.Sequence;
@@ -42,11 +29,6 @@ namespace Awiz.Core
 
         public override void AddClassNode(ClassInfo classInfo)
         {
-            if (_nodeToClassInfo.ContainsValue(classInfo))
-            {
-                return;
-            }
-
             if (Graph == null)
             {
                 throw new NullReferenceException("Graph is not set");
@@ -62,20 +44,13 @@ namespace Awiz.Core
                 throw new NullReferenceException("SequenceNodeGenerator is not set");
             }
 
-            if (_userLifeline == null)
-            {
-                throw new NullReferenceException("User lifeline is not initialized");
-            }
+            SequenceNodeGenerator.CreateClassNode(Graph, classInfo);
 
-            (var headerNode, var lifelineNode) = SequenceNodeGenerator.CreateClassNode(Graph, classInfo, _currentLifelineHeight);
-
-            _nodeToClassInfo[headerNode] = classInfo;
-            _nodeToClassInfo[lifelineNode] = classInfo;
-
-            // Add the information to the interaction behavior of the user lifeline only if the call stack is empty => button to start call sequence is available
+            // Add the information to the interaction behavior of the user lifeline only if the call stack is empty
+            // => button to start call sequence is available
             if (CallInfo.Count == 0)
             {
-                InteractionBehavior.UpdateUserInitiaiteCallSequence(_userLifeline,
+                InteractionBehavior.UpdateUserInitiaiteCallSequence(SequenceNodeGenerator.UserLifeline,
                     GetLifelineClassInfosInDiagram(),
                     StartCallSequenceFromUser);
 
@@ -109,8 +84,6 @@ namespace Awiz.Core
 
             SequenceNodeGenerator.CreateMethodCall(Graph, callInfo);
             InteractionBehavior.UpdateButtons(callInfo , (targetClass, calledMethod) => AddMethodCall(sourceClass, targetClass, calledMethod), AddMethodCallReturn);
-
-            IncreaseDiagramHeight();
         }
 
         public override void AddUseCaseNode(INode node)
@@ -133,17 +106,14 @@ namespace Awiz.Core
                 throw new NullReferenceException("SequenceNodeGenerator is not set");
             }
 
-            if (!_nodeToClassInfo.Any())
-            {
-                (var header, _userLifeline) = SequenceNodeGenerator.CreateClassNode(Graph, _userClass, _currentLifelineHeight);
-                InteractionBehavior.UpdateUserInitiaiteCallSequence(_userLifeline,
+            SequenceNodeGenerator.Initialize(Graph);
+
+            //if (!SequenceNodeGenerator.NodeToClassInfo.Any())
+            //{
+                InteractionBehavior.UpdateUserInitiaiteCallSequence(SequenceNodeGenerator.UserLifeline,
                     GetLifelineClassInfosInDiagram(),
                     StartCallSequenceFromUser);
-
-                _userLifeline.SetId(_unique_user_lifeline_node_id);
-                _nodeToClassInfo[header] = _userClass;
-                _nodeToClassInfo[_userLifeline] = _userClass;
-            }
+            //}
         }
 
         public override void Load(IVersionUpdater versionUpdater)
@@ -170,19 +140,7 @@ namespace Awiz.Core
                 {
                     var mapping = StorageAccess.LoadNodeIdToClassInfoMapping(stream);
 
-                    foreach (var (nodeId, classInfo) in mapping)
-                    {
-                        var node = Graph.Nodes.FirstOrDefault(p => p.Id == nodeId);
-                        if (classInfo != null && node != null)
-                        {
-                            _nodeToClassInfo[node] = classInfo;
-
-                            if (node.Id == _unique_user_lifeline_node_id)
-                            {
-                                _userLifeline = node;
-                            }
-                        }
-                    }
+                    SequenceNodeGenerator.Restore(Graph, mapping);
                 }
             }
 
@@ -192,12 +150,12 @@ namespace Awiz.Core
             {
                 using (var fileStream = FileSystem.OpenRead(storagePath))
                 {
-                    CallInfo = StorageAccess.LoadSequenceCallstack(fileStream, _nodeToClassInfo);
+                    CallInfo = StorageAccess.LoadSequenceCallstack(fileStream, SequenceNodeGenerator.NodeToClassInfo);
                 }
             }
 
             // Update the interaction buttons and lifeline counter
-            if (_userLifeline != null)
+            if (SequenceNodeGenerator.UserLifeline != null)
             {
                 var classInfos = GetLifelineClassInfosInDiagram();
 
@@ -205,7 +163,7 @@ namespace Awiz.Core
 
                 if (!CallInfo.Any())
                 {
-                    InteractionBehavior.UpdateUserInitiaiteCallSequence(_userLifeline,
+                    InteractionBehavior.UpdateUserInitiaiteCallSequence(SequenceNodeGenerator.UserLifeline,
                         classInfos,
                         StartCallSequenceFromUser);
                 }
@@ -217,7 +175,7 @@ namespace Awiz.Core
                         throw new NullReferenceException("CallInfo has no valid TargetNode when Loading");
                     }
 
-                    var sourceClassForNextCall = _nodeToClassInfo[callInfo.TargetNode];
+                    var sourceClassForNextCall = SequenceNodeGenerator.NodeToClassInfo[callInfo.TargetNode];
 
                     InteractionBehavior.UpdateButtons(callInfo,
                         (nextTargetClass, calledMethod) => AddMethodCall(sourceClassForNextCall, nextTargetClass, calledMethod),
@@ -238,7 +196,7 @@ namespace Awiz.Core
                         var deserializer = new YamlDotNet.Serialization.DeserializerBuilder()
                             .WithNamingConvention(YamlDotNet.Serialization.NamingConventions.PascalCaseNamingConvention.Instance)
                             .Build();
-                        _currentLifelineHeight = deserializer.Deserialize<int>(yaml);
+                        SequenceNodeGenerator.CurrentLifelineHeight = deserializer.Deserialize<int>(yaml);
                     }
                 }
             }
@@ -252,6 +210,11 @@ namespace Awiz.Core
                 throw new InvalidOperationException("No class diagram loaded");
             }
 
+            if (SequenceNodeGenerator == null)
+            {
+                throw new NullReferenceException("SequenceNodeGenerator is not set");
+            }
+
             var graphStoragePath = Path.Combine(RepoPath, $".wiz\\sequence\\{Name}.yaml");
             using (var fileStream = FileSystem.Create(graphStoragePath))
             {
@@ -262,7 +225,7 @@ namespace Awiz.Core
             var storagePath = Path.Combine(RepoPath, $".wiz\\storage\\sequence\\mapping\\{Name}.yaml");
             using (var fileStream = FileSystem.Create(storagePath))
             {
-                StorageAccess.SaveNodeIdToClassInfoMapping(_nodeToClassInfo.Select(p => (p.Key.Id, p.Value)).ToDictionary(), fileStream);
+                StorageAccess.SaveNodeIdToClassInfoMapping(SequenceNodeGenerator.NodeToClassInfo.Select(p => (p.Key.Id, p.Value)).ToDictionary(), fileStream);
             }
 
             // Save the current call stack
@@ -280,7 +243,7 @@ namespace Awiz.Core
                 var serializer = new YamlDotNet.Serialization.SerializerBuilder()
                     .WithNamingConvention(YamlDotNet.Serialization.NamingConventions.PascalCaseNamingConvention.Instance)
                     .Build();
-                var yaml = serializer.Serialize(_currentLifelineHeight);
+                var yaml = serializer.Serialize(SequenceNodeGenerator.CurrentLifelineHeight);
 
                 using (var writer = new StreamWriter(fileStream))
                 {
@@ -313,7 +276,7 @@ namespace Awiz.Core
                 throw new InvalidOperationException("Cannot return from method call because no call was pushed on the call stack");
             }
 
-            var callToReturn = CallInfo.Pop();
+            var callToReturnFrom = CallInfo.Pop();
 
             MethodInfo? callToPrevious = null;
 
@@ -322,7 +285,7 @@ namespace Awiz.Core
                 callToPrevious = CallInfo.Peek().CalledMethod;
             }
 
-            if (callToReturn.SourceNode == null || callToReturn.TargetNode == null)
+            if (callToReturnFrom.SourceNode == null || callToReturnFrom.TargetNode == null)
             {
                 throw new InvalidOperationException("Source or target class is not set in the call info");
             }
@@ -331,19 +294,19 @@ namespace Awiz.Core
 
             if (callToPrevious != null)
             {
-                callInfo = new CallInfo(callToReturn.TargetNode, callToReturn.SourceNode, callToPrevious);
+                callInfo = new CallInfo(callToReturnFrom.TargetNode, callToReturnFrom.SourceNode, callToPrevious);
             }
             else
             {
-                callInfo = new CallInfo(callToReturn.TargetNode, callToReturn.SourceNode);
+                callInfo = new CallInfo(callToReturnFrom.TargetNode, callToReturnFrom.SourceNode);
             }
 
-            SequenceNodeGenerator.CreateReturnCall(Graph, callInfo);
-            InteractionBehavior.RemoveButtons(callToReturn);
+            bool returnedToUserLifeline = SequenceNodeGenerator.CreateReturnCall(Graph, callInfo);
+            InteractionBehavior.RemoveButtons(callToReturnFrom);
 
-            if (callInfo.TargetNode?.Id != _unique_user_lifeline_node_id)
+            if (!returnedToUserLifeline)
             {
-                var prevMethodCallInfo = _nodeToClassInfo.FirstOrDefault(kvp => kvp.Key == callInfo.TargetNode).Value;
+                var prevMethodCallInfo = SequenceNodeGenerator.NodeToClassInfo.FirstOrDefault(kvp => kvp.Key == callInfo.TargetNode).Value;
 
                 if (prevMethodCallInfo == null)
                 {
@@ -355,25 +318,28 @@ namespace Awiz.Core
             }
             else
             {
-                if (_userLifeline == null)
+                if (SequenceNodeGenerator.UserLifeline == null)
                 {
                     throw new InvalidOperationException("User lifeline is not initialized");
                 }
 
-                InteractionBehavior.UpdateUserInitiaiteCallSequence(_userLifeline,
+                InteractionBehavior.UpdateUserInitiaiteCallSequence(SequenceNodeGenerator.UserLifeline,
                     GetLifelineClassInfosInDiagram(),
                     StartCallSequenceFromUser);
             }
-
-            IncreaseDiagramHeight();
         }
 
         private INode GetLifelineNodeForClass(ClassInfo classInfo)
         {
-            var lifelineNode = _nodeToClassInfo.Where(kvp =>
+            if (SequenceNodeGenerator == null)
+            {
+                throw new NullReferenceException("SequenceNodeGenerator is not set");
+            }
+
+            var lifelineNode = SequenceNodeGenerator.NodeToClassInfo.Where(kvp =>
             {
                 var ids = kvp.Key.Id.Split(":");
-                return kvp.Key.Id.StartsWith(ISequenceNodeGenerator.LifelineId);
+                return kvp.Key.Id.StartsWith(SequenceNodeGenerator.LifelineId);
             }).FirstOrDefault(kvp => kvp.Value == classInfo).Key;
 
             if (lifelineNode == null)
@@ -386,33 +352,18 @@ namespace Awiz.Core
 
         private List<ClassInfo> GetLifelineClassInfosInDiagram()
         {
-            var lifelineNodes = _nodeToClassInfo.Where(kvp =>
+            if (SequenceNodeGenerator == null)
+            {
+                throw new NullReferenceException("SequenceNodeGenerator is not set");
+            }
+
+            var lifelineNodes = SequenceNodeGenerator.NodeToClassInfo.Where(kvp =>
                 {
                     var ids = kvp.Key.Id.Split(":");
-                    return kvp.Key.Id.StartsWith(ISequenceNodeGenerator.LifelineId);
+                    return kvp.Key.Id.StartsWith(SequenceNodeGenerator.LifelineId);
                 }).ToDictionary();
 
-            return lifelineNodes.Values.Where(classInfo => classInfo != _userClass).ToList();
-        }
-
-        private void IncreaseDiagramHeight()
-        {
-            _currentLifelineHeight += Design.SequenceLifelineHeight;
-
-            foreach (var kvp in _nodeToClassInfo)
-            {
-                var node = kvp.Key;
-                if (node.Id.StartsWith(ISequenceNodeGenerator.LifelineId))
-                {
-                    node.Height = _currentLifelineHeight;
-                }
-            }
-
-            if (_userLifeline == null)
-            {
-                throw new InvalidOperationException("User lifeline is not initialized");
-            }
-            _userLifeline.Height = _currentLifelineHeight;
+            return lifelineNodes.Values.Where(classInfo => classInfo != SequenceNodeGenerator.UserClass).ToList();
         }
 
         private void StartCallSequenceFromUser(ClassInfo targetClass, MethodInfo calledMethod)
@@ -429,18 +380,16 @@ namespace Awiz.Core
             {
                 throw new NullReferenceException("SequenceNodeGenerator is not set");
             }
-            if (_userLifeline == null)
+            if (SequenceNodeGenerator.UserLifeline == null)
             {
                 throw new NullReferenceException("User lifeline is not initialized");
             }
 
-            var callInfo = new CallInfo(_userLifeline, GetLifelineNodeForClass(targetClass), calledMethod);
+            var callInfo = new CallInfo(SequenceNodeGenerator.UserLifeline, GetLifelineNodeForClass(targetClass), calledMethod);
             CallInfo.Push(callInfo);
             SequenceNodeGenerator.CreateMethodCall(Graph, callInfo);
 
             InteractionBehavior.UpdateButtons(callInfo , (nextTargetClass, calledMethod) => AddMethodCall(targetClass, nextTargetClass, calledMethod), AddMethodCallReturn);
-
-            IncreaseDiagramHeight();
         }
     }
 }

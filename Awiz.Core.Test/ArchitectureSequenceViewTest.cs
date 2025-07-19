@@ -34,7 +34,7 @@ namespace Awiz.Core.Test
             };
 
             // Mocking here for the user lifeline that is created in the Initialize method
-            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, It.IsAny<ClassInfo>(), It.IsAny<int>())).Returns(CreateHeaderAndLifelineNodes());
+            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, It.IsAny<ClassInfo>()));
             _sut.Initialize();
         }
 
@@ -74,8 +74,8 @@ namespace Awiz.Core.Test
             (var sourceHeaderNode, var sourceLifelineNode) = CreateHeaderAndLifelineNodes();
             (var targetHeaderNode, var targetLifelineNode) = CreateHeaderAndLifelineNodes();
 
-            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, sourceClassInfo, It.IsAny<int>())).Returns((sourceHeaderNode, sourceLifelineNode));
-            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, targetClassInfo, It.IsAny<int>())).Returns((targetHeaderNode, targetLifelineNode));
+            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, sourceClassInfo));
+            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, targetClassInfo));
 
             _sut.AddClassNode(sourceClassInfo);
 
@@ -109,8 +109,8 @@ namespace Awiz.Core.Test
                 Namespace = "MyNamespace",
             };
 
-            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, sourceClassInfo, It.IsAny<int>())).Returns(CreateHeaderAndLifelineNodes());
-            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, targetClassInfo, It.IsAny<int>())).Returns(CreateHeaderAndLifelineNodes());
+            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, sourceClassInfo));
+            _sequenceNodeGeneratorMock.Setup(m => m.CreateClassNode(_graphMock.Object, targetClassInfo));
 
             _sut.AddClassNode(sourceClassInfo);
             _sut.AddClassNode(targetClassInfo);
@@ -119,7 +119,7 @@ namespace Awiz.Core.Test
             _sut.AddMethodCall(sourceClassInfo, targetClassInfo, new MethodInfo());
 
             // Assert
-            _sequenceNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, It.IsAny<ClassInfo>(), It.IsAny<int>()), Times.Exactly(3), 
+            _sequenceNodeGeneratorMock.Verify(m => m.CreateClassNode(_graphMock.Object, It.IsAny<ClassInfo>()), Times.Exactly(3), 
                 "Expected that only three class nodes are added, 1 for the user, 1 for source and 1 for target class. Target class is not added again with AddMethodCall");
         }
 
@@ -197,7 +197,7 @@ namespace Awiz.Core.Test
             var lifelineNodeMock = new Mock<INode>();
 
             headerNodeMock.Setup(p => p.Id).Returns("");
-            lifelineNodeMock.Setup(p => p.Id).Returns($"{ISequenceNodeGenerator.LifelineId}:bar");
+            //lifelineNodeMock.Setup(p => p.Id).Returns($"{ISequenceNodeGenerator.LifelineId}:bar");
 
             return (headerNodeMock.Object, lifelineNodeMock.Object);
         }
