@@ -14,11 +14,6 @@ namespace Awiz.Core.SequenceDiagram
         int CurrentLifelineHeight { get; set; }
 
         /// <summary>
-        /// Gets the unique ID of the lifeline node in the sequence diagram.
-        /// </summary>
-        string LifelineId { get; }
-
-        /// <summary>
         /// Access to the mapping of nodes to class information.
         /// </summary>
         IDictionary<INode, ClassInfo> NodeToClassInfo { get; }
@@ -33,16 +28,23 @@ namespace Awiz.Core.SequenceDiagram
         /// </summary>
         INode UserLifeline { get; }
 
-        void CreateClassNode(IGraph graph, ClassInfo classInfo);
+        void CreateClassNode(ClassInfo classInfo);
 
         /// <summary>
         /// Creates a method call in the graph based on the passed callInfo
         /// </summary>
         /// <param name="graph">Graph the arrow that represents the method call is added to</param>
         /// <param name="callInfo">Information on the method call to be added</param>
-        void CreateMethodCall(IGraph graph, CallInfo callInfo);
+        CallInfo CreateMethodCall(ClassInfo sourceClass, ClassInfo targetClass, MethodInfo calledMethod);
 
-        bool CreateReturnCall(IGraph graph, CallInfo callInfo);
+        bool CreateReturnCall(CallInfo callInfo);
+
+        /// <summary>
+        /// Returns all class information of classes in the sequence diagram.
+        /// UserClass is excluded from the list.
+        /// </summary>
+        /// <returns>List of all classes represented in the diagram</returns>
+        List<ClassInfo> GetLifelineClassInfosInDiagram();
 
         /// <summary>
         /// Initializes the sequence node generator
@@ -55,7 +57,16 @@ namespace Awiz.Core.SequenceDiagram
         /// </summary>
         /// <param name="graph">The graph that contains the nodes of the diagram</param>
         /// <param name="nodeIdToClassInfoMapping">Mapping from node ID's to class infos</param>
-        void Restore(IGraph graph, IDictionary<string, ClassInfo> nodeIdToClassInfoMapping);
+        void Restore(IDictionary<string, ClassInfo> nodeIdToClassInfoMapping);
+
+        /// <summary>
+        /// Starts a call sequence from the user, allowing the user to select the target class and method to call.
+        /// </summary>
+        /// <param name="graph">The graph the call is added to</param>
+        /// <param name="targetClass">The class the method call is going to</param>
+        /// <param name="calledMethod"></param>
+        /// <returns></returns>
+        CallInfo StartCallSequenceFromUser(ClassInfo targetClass, MethodInfo calledMethod);
 
         /// <summary>
         /// Sets the number of lifelines in the sequence diagram.

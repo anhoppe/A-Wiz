@@ -32,7 +32,7 @@ namespace Awiz.Core.Test.SequenceDiagram
             _graphMock = new();
             _sourceCodeMock = new();
 
-            _sut = new SequenceNodeGenerator()
+            _sut = new SequenceNodeGenerator((text) => (10, 10))
             {
                 SourceCode = _sourceCodeMock.Object,
             };

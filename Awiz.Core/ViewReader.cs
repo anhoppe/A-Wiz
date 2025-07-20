@@ -176,6 +176,7 @@ namespace Awiz.Core
         public void SetTextSizeCalculator(Func<string, (int, int)> textSizeCalculator)
         {
             _textSizeCalculator = textSizeCalculator;
+            _sequenceNodeGenerator.SetTextSizeCalculator(textSizeCalculator);
         }
 
         private void ReadClassDiagrams()

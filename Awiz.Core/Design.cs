@@ -17,5 +17,7 @@ namespace Awiz.Core
         
         public static int SequenceLifelineHeight => 100;
 
+        public static int SequenceMethodCallPadding = 20;
+
     }
 }
