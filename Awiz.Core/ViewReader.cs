@@ -54,11 +54,11 @@ namespace Awiz.Core
             };
 
             _relationBuilder.ClassNodeGenerator = _classNodeGenerator;
-            
-            _sequenceNodeGenerator = new SequenceNodeGenerator()
-            {
-                SourceCode = _classParser,
-            };
+
+            var state = new SequenceDiagramState();
+            var layoutManager = new SequenceDiagramLayoutManager(state.Lifelines);
+
+            _sequenceNodeGenerator = new SequenceNodeGenerator(layoutManager, state);
 
             _storageAccess = new YamlStorageAccess()
             {

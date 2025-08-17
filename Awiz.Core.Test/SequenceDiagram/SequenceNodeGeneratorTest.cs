@@ -32,10 +32,8 @@ namespace Awiz.Core.Test.SequenceDiagram
             _graphMock = new();
             _sourceCodeMock = new();
 
-            _sut = new SequenceNodeGenerator((text) => (10, 10))
-            {
-                SourceCode = _sourceCodeMock.Object,
-            };
+            _sut = new SequenceNodeGenerator(Mock.Of<ISequenceDiagramLayoutManager>(),
+                Mock.Of<ISequenceDiagramState>());
 
             var gridMock = new Mock<IGrid>();
             var cell = new Mock<IGridCell>();
@@ -85,7 +83,7 @@ namespace Awiz.Core.Test.SequenceDiagram
             _lifelineNodeBuilderMock.Setup(m => m.Build()).Returns(_lifelineNodeMock.Object);
 
             // Act
-            _sut.CreateClassNode(_graphMock.Object, classInfo);
+            _sut.CreateClassNode(classInfo);
             
             // Assert
             //Assert.That(header == _headerNodeMock.Object);

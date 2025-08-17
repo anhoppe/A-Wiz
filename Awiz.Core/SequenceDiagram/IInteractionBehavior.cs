@@ -14,7 +14,7 @@ namespace Awiz.Core.SequenceDiagram
         void RemoveButtons(CallInfo callInfo);
 
         /// <summary>
-        /// Updates the buttons on the calstack to enable/disable
+        /// Updates the buttons on the callstack to enable/disable
         /// </summary>
         /// <param name="addMethodCall"></param>
         /// <param name="returnFromMethodCall"></param>

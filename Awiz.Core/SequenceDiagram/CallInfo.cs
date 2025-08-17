@@ -7,23 +7,25 @@ namespace Awiz.Core.SequenceDiagram
     {
         public CallInfo() { }
 
-        public CallInfo(INode sourceClass, INode targetClass)
-        {
-            SourceNode = sourceClass;
-            TargetNode = targetClass;
-        }
 
-        public CallInfo(INode sourceClass, INode targetClass, MethodInfo calledMethod)
+        public CallInfo(INode sourceNode, INode targetNode, ClassInfo sourceClass, ClassInfo targetClass, MethodInfo calledMethod)
         {
-            SourceNode = sourceClass;
-            TargetNode = targetClass;
+            SourceNode = sourceNode;
+            TargetNode = targetNode;
+            SourceClass = sourceClass;
+            TargetClass = targetClass;
+
             CalledMethod = calledMethod;
         }
 
         public MethodInfo CalledMethod { get; set; } = new MethodInfo();
 
+        public ClassInfo SourceClass { get; }
+        
         public INode? SourceNode { get; set; }
 
         public INode? TargetNode { get; set; }
+
+        public ClassInfo TargetClass { get; }
     }
 }
